@@ -4,6 +4,7 @@ import logo from '../../Assets/Images/Login/login_logo.png';
 import background from '../../Assets/Images/Login/login_img.png';
 import UserLoginInfo from "./UserLoginInfo";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 function Login() {
     //Id 입력시 Validation 이 없기 때문에 UseState 를 사용하지 않고 UseRef 사용
@@ -11,18 +12,54 @@ function Login() {
     const passInput = useRef();  //Pass
     const rememberYnChecked = useRef();  //Remember Me
 
-    //로그인 요청
+    // 로그인 성공시 MainPage 로 이동하게 하기 위해 선언
+    const navigate = useNavigate();
+
+    // 로그인 요청
     const handledLogin = () => {
-        axios.post(process.env.REACT_APP_BASE_URL + '/login/checkLogin.ajax', null, {
-            params: {
-                ...new UserLoginInfo(
-                    idInput.current.value,  // ID
-                    passInput.current.value, // Pass
-                    rememberYnChecked.current.checked ? 'Y' : 'N') //Remember Me
-            }
-        })
-            .then(data => console.log(data))
-            .catch(e => console.log(e))
+        // 아이디가 공백일때
+        if (!idInput.current.value) {
+            alert('아이디가 공백입니다.');
+            idInput.current.focus();
+        }
+        // 비밀번호가 공백일때
+        else if (!passInput.current.value) {
+            alert('비밀번호가 공백입니다.')
+            passInput.current.focus();
+        }
+        // 아이디와 비밀번호가 공백이 아닐때
+        else {
+            axios.post(
+                process.env.REACT_APP_BASE_URL + '/api/userLogin',
+                JSON.stringify({
+                    ...new UserLoginInfo(
+                        idInput.current.value,
+                        passInput.current.value,
+                        rememberYnChecked.current.checked ? 'Y' : 'N')
+                }),
+
+                {headers: {'Content-Type': "application/json"}})
+                //통신 성공시
+                .then(({data}) => {
+                    const {code, message} = data;
+                    // 로그인 성공시
+                    if (code === '00') {
+                        navigate('/treatmentCenter')
+                    }
+                    // 비밀번호 불일치
+                    else if (code === '10') {
+                        passInput.current.focus();
+                        alert(message);
+                    }
+                    // 사용자 정보 없을시
+                    else if (code === '15') {
+                        idInput.current.focus();
+                        alert(message);
+                    }
+                })
+                //통신 실패시
+                .catch(e => console.error(e))
+        }
     }
 
     return (

@@ -2,9 +2,9 @@
  * UserLoginInfo
  */
 class UserLoginInfo {
-    constructor(id, pass, rememberYn) {
-        this.id = id;
-        this.pass = pass;
+    constructor(loginId, password, rememberYn) {
+        this.loginId = loginId;
+        this.password = password;
         this.rememberYn = rememberYn;
     }
 }
