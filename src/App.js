@@ -13,6 +13,7 @@ function App() {
             <Routes>
                 <Route exact path={'/'} element={<Login/>}/>
                 <Route element={<Layouts/>}>
+                    <Route exact path={'/treatmentCenter'} element={<treatmentCenter/>}/>
                 </Route>
                 <Route exact path={'*'} element={<Error404/>}/>
             </Routes>
