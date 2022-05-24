@@ -2,7 +2,6 @@ import React, {useEffect, useRef} from 'react';
 import {Outlet} from "react-router-dom";
 import Side from "./Side";
 import Header from "./Header";
-import Main from "./Main";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min';
 import '../Assets/Styles/style.css';
@@ -12,12 +11,13 @@ const LayoutBody = styled.div`
   background: #f5f5f5;
   min-width: 1400px;
 `
+
 function Layouts() {
 
     let wrapper = useRef();
 
     // 윈도우 ClientWidth 에 따라서 사이드바 Collapse 여부 설정
-    const resize = ()=>{
+    const resize = () => {
         let windowClientWidth = document.querySelector('body').clientWidth;
         if (windowClientWidth <= 1400) {
             wrapper.current.classList.add('toggled');
@@ -27,9 +27,9 @@ function Layouts() {
     };
 
     // 윈도우 ClientWidth 에 따라서 처음 로딩시 사이드바 Collapse 여부 설정
-    useEffect(()=>{
+    useEffect(() => {
         resize();
-    },[]);
+    }, []);
 
     // 윈도우 ClientWidth 가 변경될 때 사이드바 Collapse 여부 설정
     window.onresize = function () {
@@ -42,9 +42,7 @@ function Layouts() {
                 <Side/>
                 <div id="page-content-wrapper">
                     <Header wrapper={wrapper}/>
-                    <Main>
-                        <Outlet/>
-                    </Main>
+                    <Outlet/>
                 </div>
             </div>
         </LayoutBody>
