@@ -5,7 +5,6 @@ import background from '../../Assets/Images/Login/login_img.png';
 import UserLoginInfo from "./UserLoginInfo";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import AuthorizationAxios from "../../Hooks/AuthorizationAxios";
 
 function Login() {
     //Id 입력시 Validation 이 없기 때문에 UseState 를 사용하지 않고 UseRef 사용
@@ -46,7 +45,6 @@ function Login() {
                     // 로그인 성공시
                     if (code === '00') {
                         localStorage.setItem('Authorization',token);
-                        AuthorizationAxios.defaults.headers.common['Authorization'] = token;
                         navigate('/treatmentCenter')
                     }
                     // 비밀번호 불일치
