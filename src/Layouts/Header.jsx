@@ -22,6 +22,6 @@ function Header({wrapper}) {
 }
 
 Header.propTypes = {
-    wrapper: PropTypes.element.isRequired
+    wrapper: PropTypes.object.isRequired
 }
 export default Header;
