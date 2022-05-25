@@ -5,6 +5,7 @@ import Error404 from "./Pages/Error/Error404";
 import Login from "./Pages/Login/Login";
 import Layouts from "./Layouts/Layouts";
 import TitleStore from "./Providers/TitleContext";
+import TreatmentCenter from "./Pages/Common/TreatmentCenter";
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
             <Routes>
                 <Route exact path={'/'} element={<Login/>}/>
                 <Route element={<Layouts/>}>
+                    <Route exact path={'/treatmentCenter'} element={<TreatmentCenter/>}/>
                 </Route>
                 <Route exact path={'*'} element={<Error404/>}/>
             </Routes>
