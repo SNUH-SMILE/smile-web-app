@@ -1,19 +1,22 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import '../../Assets/Styles/Login/login.css';
 import logo from '../../Assets/Images/Login/login_logo.png';
 import background from '../../Assets/Images/Login/login_img.png';
 import UserLoginInfo from "./UserLoginInfo";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import TokenMethod from "../../Hooks/Token";
 
 function Login() {
+
+    // 로그인 성공시 또는 RememberYn 이 Y 일때 MainPage 로 이동하게 하기 위해 선언
+    const navigate = useNavigate();
+
     //Id 입력시 Validation 이 없기 때문에 UseState 를 사용하지 않고 UseRef 사용
     const idInput = useRef();  //ID
     const passInput = useRef();  //Pass
     const rememberYnChecked = useRef();  //Remember Me
 
-    // 로그인 성공시 MainPage 로 이동하게 하기 위해 선언
-    const navigate = useNavigate();
 
     // 로그인 요청
     const handledLogin = () => {
@@ -45,7 +48,13 @@ function Login() {
                     // 로그인 성공시
                     if (code === '00') {
                         localStorage.setItem('Authorization',token);
-                        navigate('/treatmentCenter')
+                        // 로그인 성공시 Token 재발급 Interval
+                        setInterval(()=>{
+                            TokenMethod.Reissue();
+                        },5000)
+                        // 메인 페이지로 이동
+                        navigate('/treatmentCenter');
+
                     }
                     // 비밀번호 불일치
                     else if (code === '10') {
