@@ -7,7 +7,6 @@ import Layouts from "./Layouts/Layouts";
 import TitleStore from "./Providers/TitleContext";
 import TreatmentCenter from "./Pages/Common/TreatmentCenter";
 import TokenMethod from "./Hooks/Token";
-import TreatmentCenter2 from "./Pages/Common/TreatmentCenter2";
 
 function App() {
 
@@ -66,7 +65,6 @@ function App() {
             <Routes>
                 <Route exact path={'/'} element={<Login />}/>
                     <Route element={<Layouts/>}>
-                        <Route exact path={'/treatmentCenter2'} element={<TreatmentCenter2/>}/>
                         <Route exact path={'/treatmentCenter'} element={<TreatmentCenter/>}/>
                     </Route>
                 <Route exact path={'*'} element={<Error404/>}/>
