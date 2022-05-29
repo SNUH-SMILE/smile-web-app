@@ -17,6 +17,11 @@ function Login() {
     const passInput = useRef();  //Pass
     const rememberYnChecked = useRef();  //Remember Me
 
+    const handledLoginWithEnter = (e) => {
+        if(e.keyCode===13){
+            handledLogin();
+        }
+    }
 
     // 로그인 요청
     const handledLogin = () => {
@@ -93,6 +98,7 @@ function Login() {
                                     <input type="password"
                                            className="form-control"
                                            placeholder="Password"
+                                           onKeyUp={(e)=>handledLoginWithEnter(e)}
                                            ref={passInput}
                                     />
                                 </div>
