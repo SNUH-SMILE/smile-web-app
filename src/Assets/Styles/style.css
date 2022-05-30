@@ -234,12 +234,13 @@
 
 .wrapper.toggled .page-head h2.page-title {margin:0 0 0 60px;}
 
-.page-head a.logout {
-    text-decoration:none;
+.page-head button.logout {
     display:inline-block;
+    background-color:transparent;
+    border: none;
     position:absolute; top:50%; transform:translateY(-50%); right:30px; z-index:10;
 }
-.page-head a.logout span {
+.page-head button.logout span {
     display:inline-block;
     font-size: 14px;
     font-weight: normal;
@@ -250,7 +251,7 @@
     text-align: left;
     color: #f0f0f0;
 }
-.page-head a.logout i {
+.page-head button.logout i {
     display:inline-block; width:14px; height:14px; vertical-align:middle; margin-left:2px;
     background:url("../Images/ic_logout.png") no-repeat center;
 }
