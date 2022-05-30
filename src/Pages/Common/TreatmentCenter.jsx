@@ -1,17 +1,36 @@
-import React, {useEffect, useState} from 'react';
-import UseSetPageTitle from "../../Hooks/UseSetPageTitle";
-import AuthorizationAxios from "../../Hooks/AuthorizationAxios";
-import TreatmentCenterTr from "../../component/TreatmentCenterTr";
+import React, {useEffect, useRef, useState} from 'react';
+import UseSetPageTitle from "../../Utils/UseSetPageTitle";
+import TreatmentCenterApi from "../../Apis/TreatmentCenterApi";
 
 function TreatmentCenter() {
 
+    const centerId = useRef();
+    const centerNm = useRef();
+    const centerLocation = useRef();
+    // const hospitalNm = useRef(hospitalNm);
+    const hospitalCd = useRef();
+    // 생활치료센터 Api
+    const treatmentCenterApi = new TreatmentCenterApi(centerId,centerNm,centerLocation);
+
+    // React-Table Table Header
+    const treatmentCenterTableColumn = [
+        {Header:'치료센터ID',accessor:'centerId', styleClassName:'cid'},
+        {Header:'치료센터명',accessor:'centerNm', styleClassName:'cname'},
+        {Header:'위치',accessor:'centerLocation', styleClassName:'caddr text-start'},
+        {Header:'병원명',accessor:'hospitalNm', styleClassName:'hname'},
+    ]
+
     // 헤더에 페이지 타이틀 설정
     UseSetPageTitle('생활치료센터 관리');
-    const [treatmentCenterList, setTreatmentCenterList] = useState(null);
+
+    // 생활치료센터 리스트 관리
+    const [treatmentCenterList, setTreatmentCenterList] = useState([]);
+
     // Mount 시 생활치료센터 리스트 요청
     useEffect(() => {
-        AuthorizationAxios.get('/api/treatmentCenter/list').then(({data}) => setTreatmentCenterList(data));
+        treatmentCenterApi.select().then(response => setTreatmentCenterList(response.data));
     }, []);
+
     return (
         <main className="flex_layout_2col">
             <div className="row">
@@ -41,34 +60,9 @@ function TreatmentCenter() {
                                         </div>
                                     </form>
                                 </div>
+
                                 <div className="table-body height100">
-                                    <table id="table-a"
-                                           className="table table-striped table-hover text-expert table-fixed">
-                                        <thead>
-                                        <tr>
-                                            <th className="cid">치료센터ID</th>
-                                            <th className="cname">치료센터명</th>
-                                            <th className="caddr text-start">위치</th>
-                                            <th className="hname">병원명</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {
-                                            treatmentCenterList===null ?
-                                                <tr><td>Loading</td></tr>:
-                                            treatmentCenterList.map((
-                                                {centerId, centerNm, centerLocation, hospitalNm})=>
-                                                <TreatmentCenterTr
-                                                    key={centerId}
-                                                    centerId={centerId}
-                                                    centerNm={centerNm}
-                                                    centerLocation={centerLocation}
-                                                    hospitalNm={hospitalNm}
-                                                />
-                                            )
-                                        }
-                                        </tbody>
-                                    </table>
+                                    {/*<ReactTable tableHeader={treatmentCenterTableColumn} tableBody={treatmentCenterList}/>*/}
                                 </div>
                             </div>
                         </div>
@@ -99,25 +93,26 @@ function TreatmentCenter() {
                                                 <td className="cid">
                                                     <input className="form-control w-100" type="text" value=""
                                                            maxLength="4"
+                                                           ref={centerId}
                                                            readOnly/>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>생활치료센터 명</th>
                                                 <td className="cname">
-                                                    <input className="form-control w-100" type="text" maxLength="100"/>
+                                                    <input className="form-control w-100" type="text" maxLength="100" ref={centerNm}/>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>생활치료센터 위치</th>
                                                 <td className="caddr">
-                                                    <textarea className="form-control w-100 h60" maxLength="500"/>
+                                                    <textarea className="form-control w-100 h60" maxLength="500" ref={centerLocation}/>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>병원</th>
                                                 <td className="hname">
-                                                    <select className="form-select w-100">
+                                                    <select className="form-select w-100" ref={hospitalCd}>
                                                         <option defaultValue={''}>선택</option>
                                                         <option value="OO 병원">OO 병원</option>
                                                         <option value="XX 병원">XX 병원</option>
