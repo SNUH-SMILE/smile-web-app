@@ -5,9 +5,10 @@ import background from '../../Assets/Images/Login/login_img.png';
 import UserLoginInfo from "./UserLoginInfo";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import TokenMethod from "../../Hooks/Token";
+import TokenMethod from "../../Apis/Token";
+import PropTypes from "prop-types";
 
-function Login() {
+function Login({setTokenInterval}) {
 
     // 로그인 성공시 또는 RememberYn 이 Y 일때 MainPage 로 이동하게 하기 위해 선언
     const navigate = useNavigate();
@@ -49,14 +50,15 @@ function Login() {
                 {headers: {'Content-Type': "application/json"}})
                 //통신 성공시
                 .then(({data}) => {
-                    const {code, message, token} = data;
+                    const {code, message, result} = data;
                     // 로그인 성공시
                     if (code === '00') {
-                        localStorage.setItem('Authorization',token);
+                        console.log(data);
+                        localStorage.setItem('Authorization',result);
                         // 로그인 성공시 Token 재발급 Interval
-                        setInterval(()=>{
+                        setTokenInterval(setInterval(()=>{
                             TokenMethod.Reissue();
-                        },5000)
+                        },5000))
                         // 메인 페이지로 이동
                         navigate('/treatmentCenter');
 
@@ -125,5 +127,7 @@ function Login() {
         </div>
     );
 }
-
+Login.propTypes = {
+    setTokenInterval: PropTypes.func.isRequired
+}
 export default Login;

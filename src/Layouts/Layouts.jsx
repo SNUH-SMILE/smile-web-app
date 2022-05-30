@@ -6,13 +6,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min';
 import '../Assets/Styles/style.css';
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const LayoutBody = styled.div`
   background: #f5f5f5;
   min-width: 1400px;
 `
 
-function Layouts() {
+function Layouts({interval}) {
 
     let wrapper = useRef();
 
@@ -41,7 +42,7 @@ function Layouts() {
             <div className="d-flex wrapper" ref={wrapper}>
                 <Side/>
                 <div id="page-content-wrapper">
-                    <Header wrapper={wrapper}/>
+                    <Header wrapper={wrapper} interval={interval}/>
                     <Outlet/>
                 </div>
             </div>
@@ -50,4 +51,7 @@ function Layouts() {
 }
 
 
+Layouts.propTypes = {
+    interval: PropTypes.number
+}
 export default Layouts;

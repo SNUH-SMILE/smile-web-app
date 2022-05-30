@@ -6,12 +6,12 @@ import Login from "./Pages/Login/Login";
 import Layouts from "./Layouts/Layouts";
 import TitleStore from "./Providers/TitleContext";
 import TreatmentCenter from "./Pages/Common/TreatmentCenter";
-import TokenMethod from "./Hooks/Token";
+import TokenMethod from "./Apis/Token";
 
 function App() {
 
     // Interval Clear 시 사용하려고 선언
-    let interval = null;
+    const [tokenInterval,setTokenInterval ] = useState(null);
 
     // 로그인 성공시 또는 RememberYn 이 Y 일때 MainPage 또는 입력한 URL 로 이동하게 하기 위해 선언
     const location = useLocation();
@@ -29,9 +29,9 @@ function App() {
                     // 메인페이지 또는 입력한 URL 로 이동
                     navigate(location.pathname === '/'? '/treatmentCenter':location.pathname);
                     // Interval 실행
-                    interval = setInterval(()=>{
+                    setTokenInterval(setInterval(()=>{
                         TokenMethod.Reissue();
-                    },5000)
+                    },5000))
 
                 }
                 else if( tokenStatus === '80'){ // 토큰 만료
@@ -63,8 +63,8 @@ function App() {
     return (
         <TitleStore>
             <Routes>
-                <Route exact path={'/'} element={<Login />}/>
-                    <Route element={<Layouts/>}>
+                <Route exact path={'/'} element={<Login setTokenInterval={setTokenInterval}/>}/>
+                    <Route element={<Layouts interval={tokenInterval}/>}>
                         <Route exact path={'/treatmentCenter'} element={<TreatmentCenter/>}/>
                     </Route>
                 <Route exact path={'*'} element={<Error404/>}/>
