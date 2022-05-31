@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.min';
 import '../Assets/Styles/style.css';
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import HcAlert from "../component/HCAlert";
 
 const LayoutBody = styled.div`
   background: #f5f5f5;
@@ -44,6 +45,7 @@ function Layouts({interval}) {
                 <div id="page-content-wrapper">
                     <Header wrapper={wrapper} interval={interval}/>
                     <Outlet/>
+                    <HcAlert />
                 </div>
             </div>
         </LayoutBody>
