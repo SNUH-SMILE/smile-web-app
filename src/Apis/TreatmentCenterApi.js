@@ -37,7 +37,6 @@ class TreatmentCenterApi {
 
     //생활치료센터 리스트 조회
     async select () {
-        console.log(this.treatmentCenterSearchHospitalNm.current.value)
         try{
             const response = await AuthorizationAxios.post(
                                                   process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/list',

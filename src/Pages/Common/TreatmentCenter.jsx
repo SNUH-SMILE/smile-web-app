@@ -146,7 +146,6 @@ function TreatmentCenter() {
 
     // 생활치료센터Id 존재 여부에 따라 신규 생성 또는 수정
     const save = () => {
-        console.log(hospitalCd.current.value);
         // 생활치료센터 명이 공백인지 체크
         if(!centerNm.current.value){
             alertContext.setShowAlert(true);

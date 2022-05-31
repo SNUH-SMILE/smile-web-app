@@ -53,7 +53,6 @@ function Login({setTokenInterval}) {
                     const {code, message, result} = data;
                     // 로그인 성공시
                     if (code === '00') {
-                        console.log(data);
                         localStorage.setItem('Authorization',result);
                         // 로그인 성공시 Token 재발급 Interval
                         setTokenInterval(setInterval(()=>{
