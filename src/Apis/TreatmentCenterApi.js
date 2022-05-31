@@ -17,65 +17,54 @@ class TreatmentCenterApi {
         centerId,
         centerNm,
         centerLocation,
-        // hospitalCd,
-        // hospitalNm,
-        // TreatmentCenterSearchId,
-        // TreatmentCenterSearchNm,
-        // TreatmentCenterSearchHospitalNm,
-        useYn='Y',
+        hospitalCd,
+        treatmentCenterSearchId,
+        treatmentCenterSearchNm,
+        treatmentCenterSearchHospitalNm,
     ) {
-        //공통
-
         // 상세조회, 신규, 수정, 삭제
-        this.centerId = centerId.value;
-        this.centerNm = centerNm.value;
-        this.centerLocation = centerLocation.value;
-        // this.hospitalCd = hospitalCd.value;
-        // this.hospitalNm = hospitalNm.value;
-
+        this.centerId = centerId;
+        this.centerNm = centerNm;
+        this.centerLocation = centerLocation;
+        this.hospitalCd = hospitalCd;
 
         // 검색
+        this.treatmentCenterSearchId=treatmentCenterSearchId;
+        this.treatmentCenterSearchNm=treatmentCenterSearchNm;
+        this.treatmentCenterSearchHospitalNm=treatmentCenterSearchHospitalNm;
 
     }
 
     //생활치료센터 리스트 조회
     async select () {
-        console.log('TEST');
+        console.log(this.treatmentCenterSearchHospitalNm.current.value)
         try{
             const response = await AuthorizationAxios.post(
                                                   process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/list',
                                                       JSON.stringify({
-                                                          centerId:'',
-                                                          centerNm:'',
-                                                          centerLocation:'',
-                                                          hospitalCd: '',
-                                                          hospitalNm: '',
-                                                          useYn:'Y'
+                                                          centerId:this.treatmentCenterSearchId.current.value,
+                                                          centerNm:this.treatmentCenterSearchNm.current.value,
+                                                          hospitalNm: this.treatmentCenterSearchHospitalNm.current.value
                                                       }),
                                                {headers: {'Content-Type': "application/json"}}
             );
             return response;
         }catch (e) {
-            console.error(`TreatmentCenterApi Select ${e}`);
+            console.log(e);
             return false;
         }
     }
 
-    //생활치료센터 리스트 검색
-    async search () {
-        try{
-            const response = await AuthorizationAxios.get(process.env.REACT_APP_BASE_URL + `/api/treatmentCenter/list/${this.centerId}`);
-            return response;
-        }catch (e) {
-            console.log(`TreatmentCenterApi Select`);
-            return false;
-        }
-    }
 
     //생활치료센터 상세조회
-    async detail (){
+    async detail (selectCenterId){
         try{
-            const response = await AuthorizationAxios.get(process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/list');
+            const response = await AuthorizationAxios.post(process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/info',
+                                                               JSON.stringify({
+                                                                   centerId:selectCenterId,
+                                                               }),
+                                                       {headers: {'Content-Type': "application/json"}}
+                );
             return response;
         }catch (e) {
             console.log(`TreatmentCenterApi Detail`);
@@ -86,7 +75,18 @@ class TreatmentCenterApi {
     //생활치료센터 신규 생성
     async insert (){
         try{
-            const response = await AuthorizationAxios.post(process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/list');
+            const response = await AuthorizationAxios.put( process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/save',
+                JSON.stringify({
+                    searchInfo:{
+                        centerId:this.treatmentCenterSearchId.current.value,
+                        centerNm:this.treatmentCenterSearchNm.current.value,
+                        hospitalNm: this.treatmentCenterSearchHospitalNm.current.value
+                    },
+                    centerNm:this.centerNm.current.value,
+                    centerLocation:this.centerLocation.current.value,
+                    hospitalCd: this.hospitalCd.current.value,
+                }),
+                {headers: {'Content-Type': "application/json"}});
             return response;
         }catch (e) {
             console.log(`TreatmentCenterApi Insert`);
@@ -97,7 +97,19 @@ class TreatmentCenterApi {
     //생활치료센터 업데이트
     async update (){
         try{
-            const response = await AuthorizationAxios.put(process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/list');
+            const response = await AuthorizationAxios.put(process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/save',
+                                                              JSON.stringify({
+                                                                  searchInfo:{
+                                                                      centerId:this.treatmentCenterSearchId.current.value,
+                                                                      centerNm:this.treatmentCenterSearchNm.current.value,
+                                                                      hospitalNm: this.treatmentCenterSearchHospitalNm.current.value
+                                                                  },
+                                                                  centerId:this.centerId.current.value,
+                                                                  centerNm:this.centerNm.current.value,
+                                                                  centerLocation:this.centerLocation.current.value,
+                                                                  hospitalCd: this.hospitalCd.current.value,
+                                                              }),
+                                                            {headers: {'Content-Type': "application/json"}});
             return response;
         }catch (e) {
             console.log(`TreatmentCenterApi Update`);
@@ -108,7 +120,18 @@ class TreatmentCenterApi {
     //생활치료센터 삭제
     async delete (){
         try{
-            const response = await AuthorizationAxios.delete(process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/list');
+            const response = await AuthorizationAxios.delete(process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/save',
+                                                          {
+                                                                  data:JSON.stringify({
+                                                                      searchInfo:{
+                                                                          centerId:this.treatmentCenterSearchId.current.value,
+                                                                          centerNm:this.treatmentCenterSearchNm.current.value,
+                                                                          hospitalNm: this.treatmentCenterSearchHospitalNm.current.value
+                                                                      },
+                                                                      centerId:this.centerId.current.value
+                                                                  }),
+                                                                  headers: {'Content-Type': "application/json"}}
+                );
             return response;
         }catch (e) {
             console.log(`TreatmentCenterApi Delete`);
