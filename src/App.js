@@ -7,6 +7,7 @@ import Layouts from "./Layouts/Layouts";
 import TitleStore from "./Providers/TitleContext";
 import TreatmentCenter from "./Pages/Common/TreatmentCenter";
 import TokenMethod from "./Apis/Token";
+import AlertStore from "./Providers/AlertContext";
 
 function App() {
 
@@ -61,15 +62,17 @@ function App() {
         checkedTokenAndRememberMe();
     },[]);
     return (
-        <TitleStore>
-            <Routes>
-                <Route exact path={'/'} element={<Login setTokenInterval={setTokenInterval}/>}/>
-                    <Route element={<Layouts interval={tokenInterval}/>}>
-                        <Route exact path={'/treatmentCenter'} element={<TreatmentCenter/>}/>
-                    </Route>
-                <Route exact path={'*'} element={<Error404/>}/>
-            </Routes>
-        </TitleStore>
+        <AlertStore>
+            <TitleStore>
+                <Routes>
+                        <Route exact path={'/'} element={<Login setTokenInterval={setTokenInterval}/>}/>
+                            <Route element={<Layouts interval={tokenInterval}/>}>
+                                <Route exact path={'/treatmentCenter'} element={<TreatmentCenter/>}/>
+                            </Route>
+                        <Route exact path={'*'} element={<Error404/>}/>
+                </Routes>
+            </TitleStore>
+        </AlertStore>
     );
 }
 
