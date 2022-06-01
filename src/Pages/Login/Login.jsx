@@ -57,7 +57,7 @@ function Login({setTokenInterval}) {
                         // 로그인 성공시 Token 재발급 Interval
                         setTokenInterval(setInterval(()=>{
                             TokenMethod.Reissue();
-                        },5000))
+                        },1800000))
                         // 메인 페이지로 이동
                         navigate('/treatmentCenter');
 

@@ -32,7 +32,7 @@ function App() {
                     // Interval 실행
                     setTokenInterval(setInterval(()=>{
                         TokenMethod.Reissue();
-                    },5000))
+                    },1800000))
 
                 }
                 else if( tokenStatus === '80'){ // 토큰 만료
