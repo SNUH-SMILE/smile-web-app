@@ -52,7 +52,7 @@ function TreatmentCenter() {
     // 생활치료센터 상세정보 요청
     const detailTreatmentCenter = (selectCenterId) => {
         treatmentCenterApi.detail(selectCenterId).then(({data}) => {
-            console.log(data);
+
             if(data.code === '00'){
                 centerId.current.value=data.result.centerId;
                 centerNm.current.value=data.result.centerNm;
@@ -136,6 +136,7 @@ function TreatmentCenter() {
                 alertContext.setShowAlert(true);
                 alertContext.setAlertContent('생활치료센터가 삭제 되었습니다.');
                 setTreatmentCenterList(data.result);
+                clear();
             }
             else{
                 alertContext.setShowAlert(true);
@@ -176,6 +177,7 @@ function TreatmentCenter() {
         centerId.current.value='';
         centerNm.current.value='';
         centerLocation.current.value='';
+        hospitalCd.current.value= '';
     }
 
     // 검색 Input Enter 이벤트
@@ -284,7 +286,7 @@ function TreatmentCenter() {
                                                 <th>병원</th>
                                                 <td className="hname">
                                                     <select className="form-select w-100" ref={hospitalCd}>
-                                                        <option defaultValue={''}>선택</option>
+                                                        <option value={''}>선택</option>
                                                         {hospitalList.map(value =>
                                                             <option value={value.detailCd}
                                                                     key={value.detailCd}>
