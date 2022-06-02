@@ -27,7 +27,7 @@ class ItemApi {
 
     /**
      * 측정항목 리스트
-     * @returns {Promise<AxiosResponse<any>|boolean>}
+     * @returns ResponseVO<List<ItemVO>>
      */
     async getItemList() {
         try{
@@ -44,41 +44,39 @@ class ItemApi {
                         }
                     }
                 );
-            // const response = {
-            //     "code":"00",
-            //     "message":"조회성공",
-            //     "result":[
-            //         {
-            //             "itemId":"CD001",
-            //             "itemNm":"측정항목1",
-            //             "unit":"kg",
-            //             "refFrom":"1",
-            //             "refTo":"10"
-            //         },{
-            //             "itemId":"CD002",
-            //             "itemNm":"측정항목2",
-            //             "unit":"kg",
-            //             "refFrom":"1",
-            //             "refTo":"10"
-            //         },{
-            //             "itemId":"CD003",
-            //             "itemNm":"측정항목3",
-            //             "unit":"kg",
-            //             "refFrom":"1",
-            //             "refTo":"10"
-            //         }
-            //     ]
-            // }
 
             return response;
-        }catch (e) {
+        } catch (e) {
             console.log(e);
             return false;
         }
     }
 
-    async getItem() {
+    /**
+     * 측정항목 정보 조회
+     * @param itemId 측정항목ID
+     * @returns ResponseVO<ItemVO>
+     */
+    async getItemInfo(itemId) {
+        try{
+            const response =
+                await AuthorizationAxios.post(
+                    process.env.REACT_APP_BASE_URL + '/api/item/info',
+                    JSON.stringify({
+                        itemId: itemId,
+                    }),
+                    {
+                        headers: {
+                            'Content-Type': "application/json"
+                        }
+                    }
+                );
 
+            return response;
+        } catch (e) {
+            console.log(e);
+            return false;
+        }
     }
 }
 

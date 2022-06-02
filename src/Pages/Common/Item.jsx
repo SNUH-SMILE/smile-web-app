@@ -59,9 +59,7 @@ function Item() {
 
     // 검색 Input Enter 이벤트
     const handledOnSearch = (e) =>{
-        if(e.keyCode === 13){
-            console.log('getItemList :: ');
-            console.log(e);
+        if (e.keyCode === 13) {
             getItemList();
         }
     }
@@ -69,13 +67,58 @@ function Item() {
     // 측정항목 리스트 요청
     const getItemList = () => {
         itemApi.getItemList().then(({data}) => {
-            console.log('Call getItemList :: ');
-            console.log(data);
-
             setItemList(data.result);
         });
     }
 
+    // 측정항목 상세정보 요청
+    const getItemInfo = (searchItemId) => {
+        itemApi.getItemInfo(searchItemId).then(({data}) => {
+            clearItemDetail(false);
+
+            if (data.code === '00') {
+                itemId.current.value = data.result.itemId;
+                itemNm.current.value = data.result.itemNm;
+                unit.current.value = data.result.unit;
+                refFrom.current.value = data.result.refFrom;
+                refTo.current.value = data.result.refTo;
+            }
+        });
+    }
+
+    // 상세정보 초기화
+    const clearItemDetail = (isNew) => {
+        itemId.current.value = null;
+        itemNm.current.value = null;
+        unit.current.value = null;
+        refFrom.current.value = null;
+        refTo.current.value = null;
+
+        if (isNew) {
+            itemNm.current.focus();
+        }
+    }
+
+    // 저장
+    const saveItem = () => {
+        console.log("Call saveItem");
+    }
+
+    // 삭제
+    const deleteItem = () => {
+        console.log("Call DeleteItem");
+
+        if (!itemId.current.value) {
+            alertContext.setShowAlert(true);
+            alertContext.setAlertTitle('알림');
+            alertContext.setAlertContent('선택된 측정항목이 없습니다.');
+        } else {
+            alertContext.setShowAlert(true);
+            alertContext.setAlertContent(`선택한 측정항목을 삭제하시겠습니까? [${itemId.current.value}]`);
+            alertContext.setIsConfirm(true);
+            // alertContext.setConfirmCallback(()=>createTreatmentCenterMethod)
+        }
+    }
 
     return (
         <main className="flex_layout_2col">
@@ -114,8 +157,8 @@ function Item() {
                                         </div>
                                     </form>
                                 </div>
-                                <div className="table-body">
-                                    <ReactTable tableHeader={itemTableColumns} tableBody={itemList} />
+                                <div className="table-body height100">
+                                    <ReactTable tableHeader={itemTableColumns} tableBody={itemList} trOnclick={getItemInfo} />
                                 </div>
                             </div>
                         </div>
@@ -131,9 +174,15 @@ function Item() {
                                             <div className="tbl_title nobar">상세정보</div>
                                             <div className="ms-auto">
                                                 <div className="btn_wrap d-flex">
-                                                    <button type="button" className="btn btn-wgray">삭제</button>
-                                                    <button type="button" className="btn btn-white btn-new">신규</button>
-                                                    <button type="button" className="btn btn-ccolor">저장</button>
+                                                    <button type="button"
+                                                            className="btn btn-wgray"
+                                                            onClick={deleteItem}>삭제</button>
+                                                    <button type="button"
+                                                            className="btn btn-white btn-new"
+                                                            onClick={() => clearItemDetail(true)}>신규</button>
+                                                    <button type="button"
+                                                            className="btn btn-ccolor"
+                                                            onClick={saveItem}>저장</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -144,31 +193,54 @@ function Item() {
                                             <tr>
                                                 <th>측정항목ID</th>
                                                 <td className="mid">
-                                                    <input className="form-control w-100" type="text" defaultValue={''} readOnly />
+                                                    <input className="form-control w-100"
+                                                           type="text"
+                                                           defaultValue={''}
+                                                           ref={itemId}
+                                                           readOnly
+                                                    />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>측정항목 명칭</th>
                                                 <td className="mname">
-                                                    <input className="form-control w-100" type="text" defaultValue={''} maxLength="50" />
+                                                    <input className="form-control w-100"
+                                                           type="text"
+                                                           defaultValue={''}
+                                                           maxLength="50"
+                                                           ref={itemNm}
+                                                    />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>측정항목 단위</th>
                                                 <td className="munit">
-                                                    <input className="form-control w-100" type="text" defaultValue={''} maxLength="20" />
+                                                    <input className="form-control w-100"
+                                                           type="text"
+                                                           defaultValue={''}
+                                                           maxLength="20"
+                                                           ref={unit}
+                                                    />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>참고치-From</th>
                                                 <td className="mfrom">
-                                                    <input className="form-control w-100" type="number" defaultValue={''} />
+                                                    <input className="form-control w-100"
+                                                           type="number"
+                                                           defaultValue={''}
+                                                           ref={refFrom}
+                                                    />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>참고치-To</th>
                                                 <td className="mto">
-                                                    <input className="form-control w-100" type="number" defaultValue={''} />
+                                                    <input className="form-control w-100"
+                                                           type="number"
+                                                           defaultValue={''}
+                                                           ref={refTo}
+                                                    />
                                                 </td>
                                             </tr>
                                             </tbody>
