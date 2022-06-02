@@ -1,9 +1,81 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
+import ItemApi from "../../Apis/ItemApi";
+import {AlertContext} from "../../Providers/AlertContext";
+import ReactTable from "../../component/ReactTable";
 
 function Item() {
     // 헤더에 페이지 타이틀 설정
     UseSetPageTitle('측정항목 관리');
+
+    const alertContext = useContext(AlertContext);
+    const itemId = useRef();
+    const itemNm = useRef();
+    const unit = useRef();
+    const refFrom = useRef();
+    const refTo = useRef();
+
+    const searchItemId = useRef();
+    const searchItemNm = useRef();
+
+    // 측정항목 관리 API
+    const itemApi = new ItemApi(itemId, itemNm, unit, refFrom, refTo, searchItemId, searchItemNm);
+
+    const itemTableColumns = [
+        {
+            Header:'측정항목ID',
+            accessor:'itemId',
+            styleClassName:'mid'
+        },
+        {
+            Header:'측정항목명',
+            accessor:'itemNm',
+            styleClassName:'mname'
+        },
+        {
+            Header:'단위',
+            accessor:'unit',
+            styleClassName:'munit'
+        },
+        {
+            Header:'참고치-From',
+            accessor:'refFrom',
+            styleClassName:'mfrom'
+        },
+        {
+            Header:'참고치-To',
+            accessor:'refTo',
+            styleClassName:'mto'
+        },
+    ]
+
+    // 측정항목 리스트 데이터
+    const [itemList, setItemList] = useState([]);
+
+    // Mount 시 생활치료센터 리스트 요청
+    useEffect(() => {
+        getItemList();
+    }, []);
+
+    // 검색 Input Enter 이벤트
+    const handledOnSearch = (e) =>{
+        if(e.keyCode === 13){
+            console.log('getItemList :: ');
+            console.log(e);
+            getItemList();
+        }
+    }
+
+    // 측정항목 리스트 요청
+    const getItemList = () => {
+        itemApi.getItemList().then(({data}) => {
+            console.log('Call getItemList :: ');
+            console.log(data);
+
+            setItemList(data.result);
+        });
+    }
+
 
     return (
         <main className="flex_layout_2col">
@@ -18,88 +90,32 @@ function Item() {
                                             <div className="tbl_title">측정항목 리스트</div>
                                             <div className="me-3 d-flex">
                                                 <span className="stit">측정항목ID</span>
-                                                <input className="form-control w120" type="text" value="" />
+                                                <input className="form-control w120"
+                                                       type="text"
+                                                       defaultValue={''}
+                                                       maxLength="5"
+                                                       ref={searchItemId}
+                                                       onKeyUp={ (e) => handledOnSearch(e) }
+                                                />
                                             </div>
                                             <div className="me-1 d-flex">
                                                 <span className="stit">측정항목명</span>
-                                                <input className="form-control w120" type="text" maxLength="50" />
+                                                <input className="form-control w120"
+                                                       type="text"
+                                                       defaultValue={''}
+                                                       maxLength="50"
+                                                       ref={searchItemNm}
+                                                       onKeyUp={ (e) => handledOnSearch(e) }
+                                                />
                                             </div>
                                             <div className="ms-auto btn_wrap">
-                                                <button type="button" className="btn btn-gray">검색</button>
+                                                <button type="button" className="btn btn-gray" onClick={getItemList}>검색</button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                                 <div className="table-body">
-                                    <table id="table-c" className="table table-striped table-hover text-expert">
-                                        <thead>
-                                        <tr>
-                                            <th>측정항목ID</th>
-                                            <th>측정항목명</th>
-                                            <th>단위</th>
-                                            <th>참고치-From</th>
-                                            <th>참고치-To</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td className="mid">admin</td>
-                                            <td className="mname">관리자</td>
-                                            <td className="munit">단위</td>
-                                            <td className="mfrom">123</td>
-                                            <td className="mto">123</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="mid">dev</td>
-                                            <td className="mname">roqkfwk</td>
-                                            <td className="munit">단위</td>
-                                            <td className="mfrom">123</td>
-                                            <td className="mto">123</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="mid">admin</td>
-                                            <td className="mname">관리자</td>
-                                            <td className="munit">단위</td>
-                                            <td className="mfrom">123</td>
-                                            <td className="mto">123</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="mid">dev</td>
-                                            <td className="mname">roqkfwk</td>
-                                            <td className="munit">단위</td>
-                                            <td className="mfrom">123</td>
-                                            <td className="mto">123</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="mid">admin</td>
-                                            <td className="mname">관리자</td>
-                                            <td className="munit">단위</td>
-                                            <td className="mfrom">123</td>
-                                            <td className="mto">123</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="mid">dev</td>
-                                            <td className="mname">roqkfwk</td>
-                                            <td className="munit">단위</td>
-                                            <td className="mfrom">123</td>
-                                            <td className="mto">123</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="mid">admin</td>
-                                            <td className="mname">관리자</td>
-                                            <td className="munit">단위</td>
-                                            <td className="mfrom">123</td>
-                                            <td className="mto">123</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="mid">dev</td>
-                                            <td className="mname">roqkfwk</td>
-                                            <td className="munit">단위</td>
-                                            <td className="mfrom">123</td>
-                                            <td className="mto">123</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                    <ReactTable tableHeader={itemTableColumns} tableBody={itemList} />
                                 </div>
                             </div>
                         </div>
@@ -128,31 +144,31 @@ function Item() {
                                             <tr>
                                                 <th>측정항목ID</th>
                                                 <td className="mid">
-                                                    <input className="form-control w-100" type="text" value="" readOnly />
+                                                    <input className="form-control w-100" type="text" defaultValue={''} readOnly />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>측정항목 명칭</th>
                                                 <td className="mname">
-                                                    <input className="form-control w-100" type="text" maxLength="50" />
+                                                    <input className="form-control w-100" type="text" defaultValue={''} maxLength="50" />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>측정항목 단위</th>
                                                 <td className="munit">
-                                                    <input className="form-control w-100" type="text" maxLength="20" />
+                                                    <input className="form-control w-100" type="text" defaultValue={''} maxLength="20" />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>참고치-From</th>
                                                 <td className="mfrom">
-                                                    <input className="form-control w-100" type="number" value="" />
+                                                    <input className="form-control w-100" type="number" defaultValue={''} />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>참고치-To</th>
                                                 <td className="mto">
-                                                    <input className="form-control w-100" type="number" value="" />
+                                                    <input className="form-control w-100" type="number" defaultValue={''} />
                                                 </td>
                                             </tr>
                                             </tbody>
