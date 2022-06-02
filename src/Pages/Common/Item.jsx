@@ -18,6 +18,8 @@ function Item() {
     const searchItemId = useRef();
     const searchItemNm = useRef();
 
+    const [val, setVal] = useState({'refFrom':'', 'refTo':''});
+
     // 측정항목 관리 API
     const itemApi = new ItemApi(itemId, itemNm, unit, refFrom, refTo, searchItemId, searchItemNm);
 
@@ -98,8 +100,7 @@ function Item() {
         itemId.current.value = data.itemId;
         itemNm.current.value = data.itemNm;
         unit.current.value = data.unit;
-        refFrom.current.value = data.refFrom;
-        refTo.current.value = data.refTo;
+        setVal({'refFrom': data.refFrom, 'refTo': data.refTo});
     };
 
     // 상세정보 초기화
@@ -107,8 +108,7 @@ function Item() {
         itemId.current.value = null;
         itemNm.current.value = null;
         unit.current.value = null;
-        refFrom.current.value = null;
-        refTo.current.value = null;
+        setVal({'refFrom': '', 'refTo': ''});
 
         if (isNew) {
             itemNm.current.focus();
@@ -125,11 +125,13 @@ function Item() {
             alertContext.setShowAlert(true);
             alertContext.setAlertContent('측정항목 단위가 누락되었습니다.');
             unit.current.focus();
-        } else if (!refFrom.current.value) {
+            // } else if (!refFrom.current.value) {
+        } else if (!parseInt(refFrom.current.value)) {
             alertContext.setShowAlert(true);
             alertContext.setAlertContent('참고치가 누락되었습니다.');
             refFrom.current.focus();
-        } else if (!refTo.current.value) {
+            // } else if (!refTo.current.value) {
+        } else if (!parseInt(refTo.current.value)) {
             alertContext.setShowAlert(true);
             alertContext.setAlertContent('참고치가 누락되었습니다.');
             refTo.current.focus();
@@ -225,6 +227,26 @@ function Item() {
         }).catch((e) => {
             console.log('[ERROR]-Item.jsx updateItem', e);
         });
+    };
+
+    // 참고치 입력 값 확인
+    const handleChange = (e) => {
+        const inputVal = e.nativeEvent.data;
+        if (inputVal && !/[-, 0-9]/.test(inputVal)) {
+            return;
+        }
+
+        let {name, value} = e.target;
+
+        if (value !== '-' && isNaN(Number(value))) {
+            return;
+        } else if (value > 32767 || value < -32768) {
+            return;
+        }
+
+        value = value.trim() === '' || value.trim() === '-' ? value.trim() : parseInt(value.trim());
+
+        setVal({...val, [name]: value } );
     };
 
     return (
@@ -334,9 +356,11 @@ function Item() {
                                                 <th>참고치-From</th>
                                                 <td className="mfrom">
                                                     <input className="form-control w-100"
-                                                           type="number"
-                                                           defaultValue={''}
+                                                           name="refFrom"
+                                                           type="text"
                                                            ref={refFrom}
+                                                           value={val.refFrom}
+                                                           onChange={ (e) => handleChange(e)}
                                                     />
                                                 </td>
                                             </tr>
@@ -344,9 +368,11 @@ function Item() {
                                                 <th>참고치-To</th>
                                                 <td className="mto">
                                                     <input className="form-control w-100"
-                                                           type="number"
-                                                           defaultValue={''}
+                                                           name="refTo"
+                                                           type="text"
                                                            ref={refTo}
+                                                           value={val.refTo}
+                                                           onChange={ (e) => handleChange(e)}
                                                     />
                                                 </td>
                                             </tr>
