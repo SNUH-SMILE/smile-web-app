@@ -47,7 +47,7 @@ class ItemApi {
 
             return response;
         } catch (e) {
-            console.log(e);
+            console.log("[ERROR]-ItemApi getItemList", e);
             return false;
         }
     }
@@ -74,7 +74,95 @@ class ItemApi {
 
             return response;
         } catch (e) {
-            console.log(e);
+            console.log("[ERROR]-ItemApi getItemInfo", e);
+            return false;
+        }
+    }
+
+    // 측정항목 신규 추가
+    async createItem() {
+        try {
+            const response =
+                await AuthorizationAxios.put(
+                    process.env.REACT_APP_BASE_URL + '/api/item/save',
+                    JSON.stringify({
+                        searchInfo: {
+                            itemId : this.searchItemId.current.value,
+                            itemNm : this.searchItemNm.current.value
+                        },
+                        itemNm  : this.itemNm.current.value,
+                        unit    : this.unit.current.value,
+                        refFrom : this.refFrom.current.value,
+                        refTo   : this.refTo.current.value
+                    }),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+
+            return response;
+        } catch (e) {
+            console.log('[ERROR]-ItemApi createItem', e);
+            return false;
+        }
+    }
+
+    // 측정항목 수정
+    async updateItem() {
+        try {
+            const response =
+                await AuthorizationAxios.patch(
+                    process.env.REACT_APP_BASE_URL + '/api/item/save',
+                    JSON.stringify({
+                        searchInfo: {
+                            itemId : this.searchItemId.current.value,
+                            itemNm : this.searchItemNm.current.value
+                        },
+                        itemId  : this.itemId.current.value,
+                        itemNm  : this.itemNm.current.value,
+                        unit    : this.unit.current.value,
+                        refFrom : this.refFrom.current.value,
+                        refTo   : this.refTo.current.value
+                    }),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+
+            return response;
+        } catch (e) {
+            console.log('[ERROR]-ItemApi updateItem', e);
+            return false;
+        }
+    }
+
+    // 측정항목 삭제
+    async deleteItem() {
+        try {
+            const response =
+                await AuthorizationAxios.delete(
+                    process.env.REACT_APP_BASE_URL + '/api/item/save',
+                    {
+                        data: JSON.stringify({
+                                    searchInfo: {
+                                        itemId : this.searchItemId.current.value,
+                                        itemNm : this.searchItemNm.current.value
+                                    },
+                                    itemId  : this.itemId.current.value
+                                }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+
+            return response;
+        } catch (e) {
+            console.log('[ERROR]-ItemApi deleteItem', e);
             return false;
         }
     }

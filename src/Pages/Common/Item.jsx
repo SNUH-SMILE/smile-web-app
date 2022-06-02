@@ -23,31 +23,31 @@ function Item() {
 
     const itemTableColumns = [
         {
-            Header:'측정항목ID',
-            accessor:'itemId',
-            styleClassName:'mid'
+            Header: '측정항목ID',
+            accessor: 'itemId',
+            styleClassName: 'mid'
         },
         {
-            Header:'측정항목명',
-            accessor:'itemNm',
-            styleClassName:'mname'
+            Header: '측정항목명',
+            accessor: 'itemNm',
+            styleClassName: 'mname'
         },
         {
-            Header:'단위',
-            accessor:'unit',
-            styleClassName:'munit'
+            Header: '단위',
+            accessor: 'unit',
+            styleClassName: 'munit'
         },
         {
-            Header:'참고치-From',
-            accessor:'refFrom',
-            styleClassName:'mfrom'
+            Header: '참고치-From',
+            accessor: 'refFrom',
+            styleClassName: 'mfrom'
         },
         {
-            Header:'참고치-To',
-            accessor:'refTo',
-            styleClassName:'mto'
+            Header: '참고치-To',
+            accessor: 'refTo',
+            styleClassName: 'mto'
         },
-    ]
+    ];
 
     // 측정항목 리스트 데이터
     const [itemList, setItemList] = useState([]);
@@ -58,18 +58,26 @@ function Item() {
     }, []);
 
     // 검색 Input Enter 이벤트
-    const handledOnSearch = (e) =>{
+    const handledOnSearch = (e) => {
         if (e.keyCode === 13) {
             getItemList();
+        } else if (e.keyCode === 27) {
+            e.target.value = null;
         }
-    }
+    };
 
     // 측정항목 리스트 요청
     const getItemList = () => {
+        clearItemDetail(false);
         itemApi.getItemList().then(({data}) => {
-            setItemList(data.result);
+            if (data.code === '00') {
+                setItemList(data.result);
+            } else {
+                alertContext.setShowAlert(true);
+                alertContext.setAlertContent(data.message);
+            }
         });
-    }
+    };
 
     // 측정항목 상세정보 요청
     const getItemInfo = (searchItemId) => {
@@ -77,14 +85,22 @@ function Item() {
             clearItemDetail(false);
 
             if (data.code === '00') {
-                itemId.current.value = data.result.itemId;
-                itemNm.current.value = data.result.itemNm;
-                unit.current.value = data.result.unit;
-                refFrom.current.value = data.result.refFrom;
-                refTo.current.value = data.result.refTo;
+                setItemInfo(data.result);
+            } else {
+                alertContext.setShowAlert(true);
+                alertContext.setAlertContent(data.message);
             }
         });
-    }
+    };
+
+    // 측정항목 상세정보 바인딩
+    const setItemInfo = (data) => {
+        itemId.current.value = data.itemId;
+        itemNm.current.value = data.itemNm;
+        unit.current.value = data.unit;
+        refFrom.current.value = data.refFrom;
+        refTo.current.value = data.refTo;
+    };
 
     // 상세정보 초기화
     const clearItemDetail = (isNew) => {
@@ -97,28 +113,119 @@ function Item() {
         if (isNew) {
             itemNm.current.focus();
         }
-    }
+    };
 
     // 저장
     const saveItem = () => {
-        console.log("Call saveItem");
-    }
+        if (!itemNm.current.value) {
+            alertContext.setShowAlert(true);
+            alertContext.setAlertContent('측정항목 명칭이 누락되었습니다.');
+            itemNm.current.focus();
+        } else if (!unit.current.value) {
+            alertContext.setShowAlert(true);
+            alertContext.setAlertContent('측정항목 단위가 누락되었습니다.');
+            unit.current.focus();
+        } else if (!refFrom.current.value) {
+            alertContext.setShowAlert(true);
+            alertContext.setAlertContent('참고치가 누락되었습니다.');
+            refFrom.current.focus();
+        } else if (!refTo.current.value) {
+            alertContext.setShowAlert(true);
+            alertContext.setAlertContent('참고치가 누락되었습니다.');
+            refTo.current.focus();
+        } else {
+            // 신규/수정 여부
+            const isNewData = !itemId.current.value;
+            const confirmMsg = isNewData ?
+                `[${itemNm.current.value}]-신규 측정항목을 추가하시겠습니까?` :
+                `[${itemNm.current.value}]-해당 측정항목을 수정하시겠습니까?`;
+
+            alertContext.setShowAlert(true);
+            alertContext.setAlertContent(confirmMsg);
+            alertContext.setIsConfirm(true);
+
+            alertContext.setConfirmCallback(() => isNewData ? createItem : updateItem);
+        }
+    };
+
+    // 측정항목 신규 추가
+    const createItem = () => {
+        itemApi.createItem().then(({data}) => {
+            if (data.code === "00") {
+                alertContext.setShowAlert(true);
+                alertContext.setAlertContent('저장 되었습니다.');
+
+                console.log('Completed::createItem');
+                console.log(data);
+
+                clearItemDetail(false);
+                setItemInfo(data.result.data);
+                setItemList(data.result.list);
+
+            } else {
+                alertContext.setShowAlert(true);
+                alertContext.setAlertContent(data.message);
+            }
+        }).catch((e) => {
+            console.log('[ERROR]-Item.jsx createItem', e);
+        });
+    };
+
+    // 측정항목 수정
+    const updateItem = () => {
+        itemApi.updateItem().then(({data}) => {
+            if (data.code === "00") {
+                alertContext.setShowAlert(true);
+                alertContext.setAlertContent('수정 되었습니다.');
+
+                console.log('Completed::updateItem');
+                console.log(data);
+
+                clearItemDetail(false);
+                setItemInfo(data.result.data);
+                setItemList(data.result.list);
+
+            } else {
+                alertContext.setShowAlert(true);
+                alertContext.setAlertContent(data.message);
+            }
+        }).catch((e) => {
+            console.log('[ERROR]-Item.jsx updateItem', e);
+        });        
+    };
 
     // 삭제
     const deleteItem = () => {
-        console.log("Call DeleteItem");
-
         if (!itemId.current.value) {
             alertContext.setShowAlert(true);
             alertContext.setAlertTitle('알림');
             alertContext.setAlertContent('선택된 측정항목이 없습니다.');
         } else {
             alertContext.setShowAlert(true);
-            alertContext.setAlertContent(`선택한 측정항목을 삭제하시겠습니까? [${itemId.current.value}]`);
+            alertContext.setAlertContent(`[${itemNm.current.value}]-선택한 측정항목을 삭제하시겠습니까?`);
             alertContext.setIsConfirm(true);
-            // alertContext.setConfirmCallback(()=>createTreatmentCenterMethod)
+            alertContext.setConfirmCallback(() => deleteItemMethod);
         }
-    }
+    };
+
+    // 측정항목 삭제
+    const deleteItemMethod = () => {
+        itemApi.deleteItem().then(({data}) => {
+            if (data.code === "00") {
+                alertContext.setShowAlert(true);
+                alertContext.setAlertContent('삭제 되었습니다.');
+
+                clearItemDetail(false);
+                setItemList(data.result);
+
+            } else {
+                alertContext.setShowAlert(true);
+                alertContext.setAlertContent(data.message);
+            }
+        }).catch((e) => {
+            console.log('[ERROR]-Item.jsx updateItem', e);
+        });
+    };
 
     return (
         <main className="flex_layout_2col">
