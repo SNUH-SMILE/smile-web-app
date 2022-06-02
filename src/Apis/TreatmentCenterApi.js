@@ -7,11 +7,9 @@ class TreatmentCenterApi {
      * @param centerNm                                 생활치료센터명
      * @param centerLocation                           생활치료센터위치
      * @param hospitalCd                               생활치료센터 병원코드
-     * @param hospitalNm                               생활치료센터 병원이름
-     * @param TreatmentCenterSearchId
-     * @param TreatmentCenterSearchNm
-     * @param TreatmentCenterSearchHospitalNm
-     * @param useYn                                    사용여부
+     * @param treatmentCenterSearchId                  검색 생활치료센터 ID
+     * @param treatmentCenterSearchNm                  검색 생활치료센터명
+     * @param treatmentCenterSearchHospitalNm          검색 생활치료센터 병원병
      */
     constructor(
         centerId,
@@ -96,7 +94,7 @@ class TreatmentCenterApi {
     //생활치료센터 업데이트
     async update (){
         try{
-            const response = await AuthorizationAxios.put(process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/save',
+            const response = await AuthorizationAxios.patch(process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/save',
                                                               JSON.stringify({
                                                                   searchInfo:{
                                                                       centerId:this.treatmentCenterSearchId.current.value,
