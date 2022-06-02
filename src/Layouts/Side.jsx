@@ -26,6 +26,7 @@ function Side() {
                                     <li>
                                         {/* NavLink 에 to Path 와 Location Path 맞춰주면 active Class 자동으로 들어갑니다*/}
                                         <NavLink to={'/treatmentCenter'} className="nav-link fs12">생활치료센터 관리</NavLink>
+                                        <NavLink to={'/item'} className="nav-link fs12">측정항목 관리</NavLink>
                                     </li>
                                 </ul>
                             </div>

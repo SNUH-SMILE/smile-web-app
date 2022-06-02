@@ -8,6 +8,7 @@ import TitleStore from "./Providers/TitleContext";
 import TreatmentCenter from "./Pages/Common/TreatmentCenter";
 import TokenMethod from "./Apis/Token";
 import AlertStore from "./Providers/AlertContext";
+import Item from "./Pages/Common/Item";
 
 function App() {
 
@@ -68,6 +69,7 @@ function App() {
                         <Route exact path={'/'} element={<Login setTokenInterval={setTokenInterval}/>}/>
                             <Route element={<Layouts interval={tokenInterval}/>}>
                                 <Route exact path={'/treatmentCenter'} element={<TreatmentCenter/>}/>
+                                <Route exact path={'/item'} element={<Item/>}/>
                             </Route>
                         <Route exact path={'*'} element={<Error404/>}/>
                 </Routes>
