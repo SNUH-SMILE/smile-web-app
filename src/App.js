@@ -10,6 +10,9 @@ import TokenMethod from "./Apis/Token";
 import AlertStore from "./Providers/AlertContext";
 import Item from "./Pages/Common/Item";
 
+import {ConfirmContextProvider} from "./test/store/ConfirmContextProvider";
+import ConfirmDialog from "./component/ConfirmDialog";
+
 function App() {
 
     // Interval Clear 시 사용하려고 선언
@@ -64,16 +67,21 @@ function App() {
     },[]);
     return (
         <AlertStore>
+            <ConfirmContextProvider>
             <TitleStore>
                 <Routes>
+
                         <Route exact path={'/'} element={<Login setTokenInterval={setTokenInterval}/>}/>
                             <Route element={<Layouts interval={tokenInterval}/>}>
                                 <Route exact path={'/treatmentCenter'} element={<TreatmentCenter/>}/>
                                 <Route exact path={'/item'} element={<Item/>}/>
                             </Route>
                         <Route exact path={'*'} element={<Error404/>}/>
+
                 </Routes>
             </TitleStore>
+            <ConfirmDialog/>
+            </ConfirmContextProvider>
         </AlertStore>
     );
 }

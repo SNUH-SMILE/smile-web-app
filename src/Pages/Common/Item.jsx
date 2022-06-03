@@ -3,6 +3,7 @@ import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 import ItemApi from "../../Apis/ItemApi";
 import {AlertContext} from "../../Providers/AlertContext";
 import ReactTable from "../../component/ReactTable";
+import useConfirm from "../../test/hooks/useConfirm";
 
 function Item() {
     // 헤더에 페이지 타이틀 설정
@@ -197,16 +198,23 @@ function Item() {
     };
 
     // 삭제
-    const deleteItem = () => {
+    const deleteItem = async () => {
         if (!itemId.current.value) {
             alertContext.setShowAlert(true);
             alertContext.setAlertTitle('알림');
             alertContext.setAlertContent('선택된 측정항목이 없습니다.');
         } else {
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent(`[${itemNm.current.value}]-선택한 측정항목을 삭제하시겠습니까?`);
-            alertContext.setIsConfirm(true);
-            alertContext.setConfirmCallback(() => deleteItemMethod);
+            // alertContext.setShowAlert(true);
+            // alertContext.setAlertContent(`[${itemNm.current.value}]-선택한 측정항목을 삭제하시겠습니까?`);
+            // alertContext.setIsConfirm(true);
+            // alertContext.setConfirmCallback(() => deleteItemMethod);
+
+            const isConfirmed = await confirm('선택한 측정항목을 삭제하시겠습니까?');
+
+            if (isConfirmed) {
+                deleteItemMethod();
+            }
+
         }
     };
 
@@ -249,6 +257,25 @@ function Item() {
         setVal({...val, [name]: value } );
     };
 
+    const {confirm} = useConfirm();
+    const [message, setMessage] = useState('');
+    const showConfirm = async () => {
+        console.log("??");
+        const isConfirmed = await confirm('Do you confirm your choice?');
+
+        console.log(isConfirmed);
+
+        if (isConfirmed) {
+            setMessage('Confirmed!')
+        } else {
+            setMessage('Declined.')
+        }
+    };
+
+    const test = () => {
+
+    };
+
     return (
         <main className="flex_layout_2col">
             <div className="row">
@@ -281,7 +308,9 @@ function Item() {
                                                 />
                                             </div>
                                             <div className="ms-auto btn_wrap">
-                                                <button type="button" className="btn btn-gray" onClick={getItemList}>검색</button>
+                                                {/*<button type="button" className="btn btn-gray" onClick={getItemList}>검색</button>*/}
+                                                <p>{message}</p>
+                                                <button type="button" className="btn btn-gray" onClick={showConfirm}>검색</button>
                                             </div>
                                         </div>
                                     </form>
