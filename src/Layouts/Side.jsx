@@ -24,7 +24,7 @@ function Side() {
                     {menu.map((menu,idx) => {
                         let current = menu.child.find(value => value.url === currentUrl.pathname)
                         return (
-                            <li className="py-1">
+                            <li className="py-1" key={menu.parent}>
                                 <a className="nav-link sidebar-link" data-bs-toggle="collapse" href={"#collapse"+idx}
                                    role="button"
                                    aria-controls="collapse1"
@@ -41,7 +41,7 @@ function Side() {
                                         <ul className="submenu navbar-nav my-2 px-3">
                                             {menu.child.map((value,idx) => {
                                                 return (
-                                                    <li>
+                                                    <li key={value.url}>
                                                         <NavLink to={value.url} className="nav-link fs12">{value.name}</NavLink>
                                                     </li>
                                                 )
