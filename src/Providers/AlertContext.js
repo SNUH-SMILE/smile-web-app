@@ -1,4 +1,5 @@
-import {createContext, useState} from "react";
+import React, {createContext, useReducer} from "react";
+import {alertReducer, alertInitialState} from "./AlertReducer";
 
 export const AlertContext = createContext({});
 
@@ -6,19 +7,9 @@ export const AlertContext = createContext({});
  * Alert
  */
 const AlertStore = ({children}) => {
-    const [ showAlert, setShowAlert ] = useState(false);
-    const [ alertTitle, setAlertTitle ] = useState('알림');
-    const [ alertContent, setAlertContent ] = useState('정보');
-    const [ isConfirm, setIsConfirm ] = useState(false);
-    const [ confirmCallback, setConfirmCallback ] = useState(null);
+    const [state, dispatch] = useReducer(alertReducer, alertInitialState);
     return(
-        <AlertContext.Provider value={{
-            showAlert, setShowAlert,
-            alertTitle, setAlertTitle,
-            alertContent, setAlertContent,
-            isConfirm, setIsConfirm,
-            confirmCallback, setConfirmCallback
-        }}>
+        <AlertContext.Provider value={[state,dispatch]}>
             {children}
         </AlertContext.Provider>
     )

@@ -1,7 +1,9 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Alert, Modal} from "react-bootstrap";
-import {AlertContext} from "../Providers/AlertContext";
 import styled from "styled-components";
+import useAlert from "../Utils/UseAlert";
+import {createPortal} from "react-dom";
+
 const AlertHeader = styled.div`
   display: flex;
   align-items: center;
@@ -23,56 +25,48 @@ const AlertBody = styled.div`
 `
 
 const AlertCancelBtn = styled.button`
-  background:#fff; 
-  color:#666; 
-  border:solid 1px #666;
+  background: #fff;
+  color: #666;
+  border: solid 1px #666;
 `
 const AlertConfirmBtn = styled.button`
-  background:var(--primary-color4); 
-  color:#fff; 
-  border:solid 1px var(--primary-color4);
-  &:hover{
-    color:#fff;
+  background: var(--primary-color4);
+  color: #fff;
+  border: solid 1px var(--primary-color4);
+
+  &:hover {
+    color: #fff;
   }
 `
+
 function HcAlert() {
-    const alertContext = useContext(AlertContext);
-    const {showAlert,setShowAlert, alertTitle, setAlertTitle,alertContent,isConfirm, setIsConfirm,confirmCallback, setConfirmCallback} = alertContext;
-    const handleClose = () => {
-        setShowAlert(false);
-        setAlertTitle('알림');
-        setIsConfirm(false);
-        setConfirmCallback(null);
-    };
-    return (
-        <Modal className={'border-0'} show={showAlert} >
-            <Alert className={'m-0 p-0 border-0'} onClose={handleClose} dismissible>
-                <AlertHeader>{alertTitle}</AlertHeader>
-                <AlertBody >
+    const {onConfirm, onCancel, close, alertState} = useAlert();
+    const modalElement = document.getElementById('modal');
+
+    const component = alertState.show ? (
+        <Modal className={'border-0'} show={true}>
+            <Alert className={'m-0 p-0 border-0'} onClose={onCancel} dismissible>
+                <AlertHeader>{alertState.title ? alertState.title : '알림'}</AlertHeader>
+                <AlertBody>
                     <p>
-                        {alertContent}
+                        {alertState?.text && alertState.text}
                     </p>
-                    {isConfirm ?
-                    <>
-                        <hr />
-                        <div className="d-flex justify-content-end">
-                            <AlertConfirmBtn className={"me-2 btn"} onClick={()=>{
-                                confirmCallback()
-                                handleClose()
-                            }} > 확인 </AlertConfirmBtn>
-                            <AlertCancelBtn className={'btn'} onClick={() => handleClose()}> 취소 </AlertCancelBtn>
-                        </div>
-                    </> :<>
-                            <hr />
+
+                            <hr/>
                             <div className="d-flex justify-content-end">
-                                <AlertCancelBtn className={'btn'} onClick={() => handleClose()} > 확인 </AlertCancelBtn>
+                                {alertState.mode === 'confirm' ?
+                                    <>
+                                        <AlertConfirmBtn className={"me-2 btn"} onClick={onConfirm}> 확인 </AlertConfirmBtn>
+                                        <AlertCancelBtn className={'btn'} onClick={onCancel}> 취소 </AlertCancelBtn>
+                                    </>
+                                        :<AlertConfirmBtn className={"me-2 btn"} onClick={close}> 확인 </AlertConfirmBtn>
+                                    }
                             </div>
-                        </>
-                    }
                 </AlertBody>
             </Alert>
         </Modal>
-    )
+    ): null;
+    return createPortal(component, modalElement);
 }
 
 export default HcAlert;

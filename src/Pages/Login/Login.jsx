@@ -7,9 +7,11 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import TokenMethod from "../../Apis/Token";
 import PropTypes from "prop-types";
+import useAlert from "../../Utils/UseAlert";
 
 function Login({setTokenInterval}) {
 
+    const {alert} = useAlert();
     // 로그인 성공시 또는 RememberYn 이 Y 일때 MainPage 로 이동하게 하기 위해 선언
     const navigate = useNavigate();
 

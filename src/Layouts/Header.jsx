@@ -3,19 +3,25 @@ import PropTypes from "prop-types";
 import {TitleContext} from "../Providers/TitleContext";
 import AuthenticationApi from "../Apis/AuthenticationApi";
 import {useNavigate} from "react-router-dom";
+import useAlert from "../Utils/UseAlert";
 
 function Header({wrapper,interval, setHide}) {
+    const {confirm} = useAlert();
+
     // 로그아웃시 로그인 페이지로 이동하기 위해 선언
     const navigate = useNavigate()
 
     // 로그아웃
-    const handledLogOut = () =>{
-        AuthenticationApi.logOut().then(() => {
-            localStorage.setItem('Authorization', null);
-            clearInterval(interval);
-            setHide(false);
-            navigate('/');
-        });
+    const handledLogOut = async () =>{
+        let confirmState =  await confirm('로그아웃 하시겠습니까?');
+        if (confirmState) {
+            AuthenticationApi.logOut().then(() => {
+                localStorage.setItem('Authorization', null);
+                clearInterval(interval);
+                setHide(false);
+                navigate('/');
+            });
+        }
     }
 
     // 사이드바 Collapse 토글
@@ -38,6 +44,7 @@ function Header({wrapper,interval, setHide}) {
 
 Header.propTypes = {
     wrapper: PropTypes.object.isRequired,
-    interval: PropTypes.number
+    interval: PropTypes.number,
+    setHide: PropTypes.func.isRequired
 }
 export default Header;

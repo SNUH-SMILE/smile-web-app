@@ -35,7 +35,6 @@ const TokenMethod ={
                     }
                 })
             .then(({data}) => {
-                console.log('new Token',data);
                 localStorage.setItem('Authorization', data.result);
             });
     }

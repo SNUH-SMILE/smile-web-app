@@ -1,14 +1,16 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 import ItemApi from "../../Apis/ItemApi";
-import {AlertContext} from "../../Providers/AlertContext";
 import ReactTable from "../../component/ReactTable";
+import useAlert from "../../Utils/UseAlert";
 
 function Item() {
+
+    const {confirm, alert} = useAlert();
+
     // 헤더에 페이지 타이틀 설정
     UseSetPageTitle('측정항목 관리');
 
-    const alertContext = useContext(AlertContext);
     const itemId = useRef();
     const itemNm = useRef();
     const unit = useRef();
@@ -75,8 +77,7 @@ function Item() {
             if (data.code === '00') {
                 setItemList(data.result);
             } else {
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent(data.message);
+                alert(data.message);
             }
         });
     };
@@ -89,8 +90,7 @@ function Item() {
             if (data.code === '00') {
                 setItemInfo(data.result);
             } else {
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent(data.message);
+                alert(data.message)
             }
         });
     };
@@ -116,24 +116,20 @@ function Item() {
     };
 
     // 저장
-    const saveItem = () => {
+    const saveItem = async () => {
         if (!itemNm.current.value) {
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent('측정항목 명칭이 누락되었습니다.');
+            alert('측정항목 명칭이 누락되었습니다.');
             itemNm.current.focus();
         } else if (!unit.current.value) {
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent('측정항목 단위가 누락되었습니다.');
+            alert('측정항목 단위가 누락되었습니다.');
             unit.current.focus();
             // } else if (!refFrom.current.value) {
         } else if (!parseInt(refFrom.current.value)) {
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent('참고치가 누락되었습니다.');
+            alert('참고치가 누락되었습니다.');
             refFrom.current.focus();
             // } else if (!refTo.current.value) {
         } else if (!parseInt(refTo.current.value)) {
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent('참고치가 누락되었습니다.');
+            alert('참고치가 누락되었습니다.');
             refTo.current.focus();
         } else {
             // 신규/수정 여부
@@ -141,12 +137,10 @@ function Item() {
             const confirmMsg = isNewData ?
                 `[${itemNm.current.value}]-신규 측정항목을 추가하시겠습니까?` :
                 `[${itemNm.current.value}]-해당 측정항목을 수정하시겠습니까?`;
-
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent(confirmMsg);
-            alertContext.setIsConfirm(true);
-
-            alertContext.setConfirmCallback(() => isNewData ? createItem : updateItem);
+            const confirmStatus = await confirm(confirmMsg);
+            if(confirmStatus){
+                isNewData ? createItem() : updateItem();
+            }
         }
     };
 
@@ -154,8 +148,7 @@ function Item() {
     const createItem = () => {
         itemApi.createItem().then(({data}) => {
             if (data.code === "00") {
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent('저장 되었습니다.');
+                alert('저장 되었습니다.');
 
                 console.log('Completed::createItem');
                 console.log(data);
@@ -165,8 +158,7 @@ function Item() {
                 setItemList(data.result.list);
 
             } else {
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent(data.message);
+                alert(data.message);
             }
         }).catch((e) => {
             console.log('[ERROR]-Item.jsx createItem', e);
@@ -177,8 +169,7 @@ function Item() {
     const updateItem = () => {
         itemApi.updateItem().then(({data}) => {
             if (data.code === "00") {
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent('수정 되었습니다.');
+                alert('수정 되었습니다.');
 
                 console.log('Completed::updateItem');
                 console.log(data);
@@ -188,8 +179,7 @@ function Item() {
                 setItemList(data.result.list);
 
             } else {
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent(data.message);
+                alert(data.message);
             }
         }).catch((e) => {
             console.log('[ERROR]-Item.jsx updateItem', e);
@@ -197,37 +187,28 @@ function Item() {
     };
 
     // 삭제
-    const deleteItem = () => {
+    const deleteItem = async () => {
         if (!itemId.current.value) {
-            alertContext.setShowAlert(true);
-            alertContext.setAlertTitle('알림');
-            alertContext.setAlertContent('선택된 측정항목이 없습니다.');
+            alert('선택된 측정항목이 없습니다.');
         } else {
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent(`[${itemNm.current.value}]-선택한 측정항목을 삭제하시겠습니까?`);
-            alertContext.setIsConfirm(true);
-            alertContext.setConfirmCallback(() => deleteItemMethod);
+            const confirmStatus = await confirm(`[${itemNm.current.value}]-선택한 측정항목을 삭제하시겠습니까?`);
+            if(confirmStatus){
+                itemApi.deleteItem().then(({data}) => {
+                    if (data.code === "00") {
+                        alert('삭제 되었습니다.');
+                        clearItemDetail(false);
+                        setItemList(data.result);
+
+                    } else {
+                        alert(data.message);
+                    }
+                }).catch((e) => {
+                    console.log('[ERROR]-Item.jsx updateItem', e);
+                });
+            }
         }
     };
 
-    // 측정항목 삭제
-    const deleteItemMethod = () => {
-        itemApi.deleteItem().then(({data}) => {
-            if (data.code === "00") {
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent('삭제 되었습니다.');
-
-                clearItemDetail(false);
-                setItemList(data.result);
-
-            } else {
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent(data.message);
-            }
-        }).catch((e) => {
-            console.log('[ERROR]-Item.jsx updateItem', e);
-        });
-    };
 
     // 참고치 입력 값 확인
     const handleChange = (e) => {

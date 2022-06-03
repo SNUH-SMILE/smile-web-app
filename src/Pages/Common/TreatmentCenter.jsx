@@ -1,14 +1,15 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 import TreatmentCenterApi from "../../Apis/TreatmentCenterApi";
 import ReactTable from "../../component/ReactTable";
-import {AlertContext} from "../../Providers/AlertContext";
 import commonCode from "../../Apis/CommonCode";
+import useAlert from "../../Utils/UseAlert";
 
 function TreatmentCenter() {
+    const {confirm, alert} = useAlert();
     // 헤더에 페이지 타이틀 설정
     UseSetPageTitle('생활치료센터 관리');
-    const alertContext = useContext(AlertContext);
+
     const centerId = useRef();
     const centerNm = useRef();
     const centerLocation = useRef();
@@ -18,20 +19,23 @@ function TreatmentCenter() {
     const hospitalCd = useRef();
 
     // 생활치료센터 Api
-    const treatmentCenterApi = new TreatmentCenterApi(centerId,
-                                                      centerNm,
-                                                      centerLocation,
-                                                      hospitalCd,
-                                                      treatmentCenterSearchId,
-                                                      treatmentCenterSearchNm,
-                                                      treatmentCenterSearchHospitalNm);
+    const treatmentCenterApi =
+        new TreatmentCenterApi(
+            centerId,
+            centerNm,
+            centerLocation,
+            hospitalCd,
+            treatmentCenterSearchId,
+            treatmentCenterSearchNm,
+            treatmentCenterSearchHospitalNm
+        );
 
     // React-Table Table Header
     const treatmentCenterTableColumn = [
-        {Header:'치료센터ID',accessor:'centerId', styleClassName:'cid'},
-        {Header:'치료센터명',accessor:'centerNm', styleClassName:'cname'},
-        {Header:'위치',accessor:'centerLocation', styleClassName:'caddr text-start'},
-        {Header:'병원명',accessor:'hospitalNm', styleClassName:'hname'},
+        {Header: '치료센터ID', accessor: 'centerId', styleClassName: 'cid'},
+        {Header: '치료센터명', accessor: 'centerNm', styleClassName: 'cname'},
+        {Header: '위치', accessor: 'centerLocation', styleClassName: 'caddr text-start'},
+        {Header: '병원명', accessor: 'hospitalNm', styleClassName: 'hname'},
     ]
 
     // 생활치료센터 리스트 관리
@@ -53,120 +57,82 @@ function TreatmentCenter() {
     const detailTreatmentCenter = (selectCenterId) => {
         treatmentCenterApi.detail(selectCenterId).then(({data}) => {
 
-            if(data.code === '00'){
-                centerId.current.value=data.result.centerId;
-                centerNm.current.value=data.result.centerNm;
-                centerLocation.current.value=data.result.centerLocation;
-                hospitalCd.current.value=data.result.hospitalCd;
+            if (data.code === '00') {
+                centerId.current.value = data.result.centerId;
+                centerNm.current.value = data.result.centerNm;
+                centerLocation.current.value = data.result.centerLocation;
+                hospitalCd.current.value = data.result.hospitalCd;
             }
 
         });
     }
-    const createTreatmentCenter = () => {
-        alertContext.setShowAlert(true);
-        alertContext.setAlertContent(`${centerNm.current.value}를 생성 하시겠습니까?`);
-        alertContext.setIsConfirm(true);
-        alertContext.setConfirmCallback(()=>createTreatmentCenterMethod)
-    }
 
     //생활치료센터 신규 생성
-    const createTreatmentCenterMethod = () => {
-        treatmentCenterApi.insert().then(({data}) =>{
-            if(data.code === '00'){
-                // alert('신규 생활치료센터가 생성되었습니다.');
-
-                alertContext.setShowAlert(true);
-                alertContext.setAlertTitle('알림');
-                alertContext.setAlertContent('신규 생활치료센터가 생성되었습니다.');
-
-                centerId.current.value=data.result.data.centerId;
-                centerNm.current.value=data.result.data.centerNm;
-                centerLocation.current.value=data.result.data.centerLocation;
+    const createTreatmentCenter = () => {
+        treatmentCenterApi.insert().then(({data}) => {
+            if (data.code === '00') {
+                alert('신규 생활치료센터가 생성되었습니다.');
+                centerId.current.value = data.result.data.centerId;
+                centerNm.current.value = data.result.data.centerNm;
+                centerLocation.current.value = data.result.data.centerLocation;
                 setTreatmentCenterList(data.result.list);
+            } else {
+                alert('신규 생활치료센터가 생성에 실패했습니다.');
             }
-            else{
-                alertContext.setShowAlert(true);
-                alertContext.setAlertTitle('알림');
-                alertContext.setAlertContent('신규 생활치료센터가 생성에 실패했습니다.');
-            }
-        }).catch((e)=>console.log(e));
-    }
-
-
-    const updateTreatmentCenter = () => {
-        alertContext.setShowAlert(true);
-        alertContext.setAlertContent(`[${centerId.current.value}] ${centerNm.current.value}를 수정하시겠습니까?`);
-        alertContext.setIsConfirm(true);
-        alertContext.setConfirmCallback(()=>updateTreatmentCenterMethod)
-
+        }).catch((e) => console.log(e));
     }
 
     //생활치료센터 수정
-    const updateTreatmentCenterMethod = () => {
-        treatmentCenterApi.update().then(({data}) =>{
-            if(data.code === '00'){
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent('생활치료센터가 수정 되었습니다.');
+    const updateTreatmentCenter = () => {
+        treatmentCenterApi.update().then(({data}) => {
+            if (data.code === '00') {
+                alert('생활치료센터가 수정 되었습니다.');
                 setTreatmentCenterList(data.result.list);
+            } else {
+                alert('생활치료센터가 수정에 실패했습니다.');
             }
-            else{
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent('생활치료센터가 수정에 실패했습니다.');
-            }
-        }).catch((e)=>console.log(e));
+        }).catch((e) => console.log(e));
     }
 
-    const deleteTreatmentCenter = () => {
-        // 생활치료센터 Id가 공백인지 체크
-        if(!centerId.current.value) {
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent('생활치료센터를 선택해주세요.');
-        }
-        else{
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent(`[${centerId.current.value}] ${centerNm.current.value}를 삭제하시겠습니까?`);
-            alertContext.setIsConfirm(true);
-            alertContext.setConfirmCallback(()=>deleteTreatmentCenterMethod)
-        }
-    }
     //생활치료센터 삭제
-    const deleteTreatmentCenterMethod = () => {
-        treatmentCenterApi.delete().then(({data}) =>{
-            if(data.code === '00'){
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent('생활치료센터가 삭제 되었습니다.');
-                setTreatmentCenterList(data.result);
-                clear();
+    const deleteTreatmentCenter = async () => {
+        if (!centerId.current.value) {
+            alert('생활치료센터를 선택해주세요.');
+        } else {
+            let confirmState = await confirm(`[${centerId.current.value}] ${centerNm.current.value}를 삭제하시겠습니까?`);
+            if (confirmState) {
+                treatmentCenterApi.delete().then(({data}) => {
+                    if (data.code === '00') {
+                        alert('생활치료센터가 삭제 되었습니다.');
+                        setTreatmentCenterList(data.result);
+                        clear();
+                    } else {
+                        alert('생활치료센터가 삭제에 실패했습니다.');
+                    }
+                }).catch((e) => console.log(e));
             }
-            else{
-                alertContext.setShowAlert(true);
-                alertContext.setAlertContent('생활치료센터가 삭제에 실패했습니다.');
-            }
-        }).catch((e)=>console.log(e));
+        }
     }
 
     // 생활치료센터Id 존재 여부에 따라 신규 생성 또는 수정
-    const save = () => {
+    const save = async () => {
         // 생활치료센터 명이 공백인지 체크
-        if(!centerNm.current.value){
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent('생활치료센터 명이 공백입니다.');
+        if (!centerNm.current.value) {
+            alert('생활치료센터 명이 공백입니다.');
         }
         // 생활치료센터 위치가 공백인지 체크
-        else if(!centerLocation.current.value){
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent('생활치료센터 위치가 공백입니다.');
-        }
-        else if(hospitalCd.current.value === '선택'){
-            alertContext.setShowAlert(true);
-            alertContext.setAlertContent('병원을 선택해주세요.');
-        }
-        else{
-            if(centerId.current.value){
-
+        else if (!centerLocation.current.value) {
+            alert('생활치료센터 위치가 공백입니다.');
+        } else if (hospitalCd.current.value === '') {
+            alert('병원을 선택해주세요.');
+        } else if (centerId.current.value) {
+            let confirmState = await confirm(`${centerNm.current.value}를 수정 하시겠습니까?`);
+            if (confirmState) {
                 updateTreatmentCenter(); // 업데이트
             }
-            else{
+        } else {
+            let confirmState = await confirm(`${centerNm.current.value}를 생성 하시겠습니까?`);
+            if (confirmState) {
                 createTreatmentCenter(); // 신규
             }
         }
@@ -174,15 +140,15 @@ function TreatmentCenter() {
 
     // 신규 (Clear)
     const clear = () => {
-        centerId.current.value='';
-        centerNm.current.value='';
-        centerLocation.current.value='';
-        hospitalCd.current.value= '';
+        centerId.current.value = '';
+        centerNm.current.value = '';
+        centerLocation.current.value = '';
+        hospitalCd.current.value = '';
     }
 
     // 검색 Input Enter 이벤트
-    const handledOnSearch = (e) =>{
-        if(e.keyCode === 13){
+    const handledOnSearch = (e) => {
+        if (e.keyCode === 13) {
             selectTreatmentCenter();
         }
     }
@@ -204,7 +170,7 @@ function TreatmentCenter() {
                                                        maxLength="4"
                                                        ref={treatmentCenterSearchId}
                                                        defaultValue={''}
-                                                       onKeyUp={(e)=>handledOnSearch(e)}
+                                                       onKeyUp={(e) => handledOnSearch(e)}
                                                 />
                                             </div>
                                             <div className="me-3 d-flex">
@@ -214,7 +180,7 @@ function TreatmentCenter() {
                                                        maxLength="100"
                                                        ref={treatmentCenterSearchNm}
                                                        defaultValue={''}
-                                                       onKeyUp={(e)=>handledOnSearch(e)}
+                                                       onKeyUp={(e) => handledOnSearch(e)}
                                                 />
                                             </div>
                                             <div className="me-1 d-flex">
@@ -224,18 +190,21 @@ function TreatmentCenter() {
                                                        maxLength="100"
                                                        ref={treatmentCenterSearchHospitalNm}
                                                        defaultValue={''}
-                                                       onKeyUp={(e)=>handledOnSearch(e)}
+                                                       onKeyUp={(e) => handledOnSearch(e)}
                                                 />
                                             </div>
                                             <div className="ms-auto btn_wrap">
-                                                <button type="button" className="btn btn-gray" onClick={selectTreatmentCenter}>검색</button>
+                                                <button type="button" className="btn btn-gray"
+                                                        onClick={selectTreatmentCenter}>검색
+                                                </button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
 
                                 <div className="table-body height100">
-                                    <ReactTable tableHeader={treatmentCenterTableColumn} tableBody={treatmentCenterList} trOnclick={detailTreatmentCenter}/>
+                                    <ReactTable tableHeader={treatmentCenterTableColumn} tableBody={treatmentCenterList}
+                                                trOnclick={detailTreatmentCenter}/>
                                 </div>
                             </div>
                         </div>
@@ -251,9 +220,14 @@ function TreatmentCenter() {
                                             <div className="tbl_title nobar">상세정보</div>
                                             <div className="ms-auto">
                                                 <div className="btn_wrap d-flex">
-                                                    <button type="button" className="btn btn-wgray" onClick={deleteTreatmentCenter}>삭제</button>
-                                                    <button type="button" className="btn btn-white btn-new" onClick={clear}>신규</button>
-                                                    <button type="button" className="btn btn-ccolor" onClick={save}>저장</button>
+                                                    <button type="button" className="btn btn-wgray"
+                                                            onClick={deleteTreatmentCenter}>삭제
+                                                    </button>
+                                                    <button type="button" className="btn btn-white btn-new"
+                                                            onClick={clear}>신규
+                                                    </button>
+                                                    <button type="button" className="btn btn-ccolor" onClick={save}>저장
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -273,13 +247,15 @@ function TreatmentCenter() {
                                             <tr>
                                                 <th>생활치료센터 명</th>
                                                 <td className="cname">
-                                                    <input className="form-control w-100" type="text" maxLength="100" ref={centerNm}/>
+                                                    <input className="form-control w-100" type="text" maxLength="100"
+                                                           ref={centerNm}/>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>생활치료센터 위치</th>
                                                 <td className="caddr">
-                                                    <textarea className="form-control w-100 h60" maxLength="500" ref={centerLocation}/>
+                                                    <textarea className="form-control w-100 h60" maxLength="500"
+                                                              ref={centerLocation}/>
                                                 </td>
                                             </tr>
                                             <tr>
