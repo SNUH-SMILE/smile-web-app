@@ -1,8 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import SMILELogo from '../Assets/Images/main_logo.png';
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 
+const menu = [
+    {
+        parent: '공통관리',
+        child: [
+            {name: '생활치료센터', url: '/treatmentCenter'},
+            {name: '측정항목관리', url: '/item'},
+        ]
+    }
+
+]
 function Side() {
+    const currentUrl = useLocation();
     return (
         <aside className="bg-white" id="sidebar-wrapper">
             <div className="sidebar-heading">
@@ -10,53 +21,37 @@ function Side() {
             </div>
             <nav className="navbar-light">
                 <ul className="gnb navbar-nav">
-                    {/* 1뎁스 */}
-                    <li className="py-1">
-                        <a className="nav-link sidebar-link" data-bs-toggle="collapse" href="#collapse1" role="button"
-                           aria-expanded="false" aria-controls="collapse1">
-                            <span className="mname">공통 관리</span>
-                            <span className="right-icon ms-auto">
-                                <i/>
-                            </span>
-                        </a>
-                        <div className="collapse" id="collapse1">
-                            <div className="card my-2">
-                                <ul className="submenu navbar-nav my-2 px-3">
-                                    {/* 2뎁스 */}
-                                    <li>
-                                        {/* NavLink 에 to Path 와 Location Path 맞춰주면 active Class 자동으로 들어갑니다*/}
-                                        <NavLink to={'/treatmentCenter'} className="nav-link fs12">생활치료센터 관리</NavLink>
-                                        <NavLink to={'/item'} className="nav-link fs12">측정항목 관리</NavLink>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
+                    {menu.map((menu,idx) => {
+                        let current = menu.child.find(value => value.url === currentUrl.pathname)
+                        return (
+                            <li className="py-1">
+                                <a className="nav-link sidebar-link" data-bs-toggle="collapse" href={"#collapse"+idx}
+                                   role="button"
+                                   aria-controls="collapse1"
+                                   aria-expanded={current ? 'true' : 'false'}
 
-                    <li className="py-1">
-                        <a className="nav-link sidebar-link" data-bs-toggle="collapse" href="#collapse2" role="button"
-                           aria-expanded="false" aria-controls="collapse1">
-                            <span className="mname">생활치료센터 관리</span>
-                            <span className="right-icon ms-auto">
-                                <i/>
-                            </span>
-                        </a>
-                        <div className="collapse" id="collapse2">
-                            <div className="card my-2">
-                                <ul className="submenu navbar-nav my-2 px-3">
-                                    <li>
-                                        <NavLink to={'/home'} className="nav-link fs12">대쉬보드</NavLink>
-                                    </li>
-                                    {/* 2뎁스*/}
-                                    <li>
-                                        <NavLink to={'/home1'} className="nav-link fs12">환자 상세</NavLink>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-
-
+                                >
+                                    <span className="mname">{menu.parent}</span>
+                                    <span className="right-icon ms-auto">
+                                    <i/>
+                                </span>
+                                </a>
+                                <div className={current ? 'collapse show' : 'collapse'} id={"#collapse"+idx}>
+                                    <div className="card my-2">
+                                        <ul className="submenu navbar-nav my-2 px-3">
+                                            {menu.child.map((value,idx) => {
+                                                return (
+                                                    <li>
+                                                        <NavLink to={value.url} className="nav-link fs12">{value.name}</NavLink>
+                                                    </li>
+                                                )
+                                            })}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        )
+                    })}
                 </ul>
             </nav>
         </aside>

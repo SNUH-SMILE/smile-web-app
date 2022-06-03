@@ -7,14 +7,13 @@ import 'bootstrap/dist/js/bootstrap.min';
 import '../Assets/Styles/style.css';
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import HcAlert from "../component/HCAlert";
 
 const LayoutBody = styled.div`
   background: #f5f5f5;
   min-width: 1400px;
 `
 
-function Layouts({interval}) {
+function Layouts({interval,setHide}) {
 
     let wrapper = useRef();
 
@@ -43,9 +42,8 @@ function Layouts({interval}) {
             <div className="d-flex wrapper" ref={wrapper}>
                 <Side/>
                 <div id="page-content-wrapper">
-                    <Header wrapper={wrapper} interval={interval}/>
+                    <Header wrapper={wrapper} interval={interval} setHide={setHide}/>
                     <Outlet/>
-                    <HcAlert />
                 </div>
             </div>
         </LayoutBody>

@@ -15,6 +15,8 @@ function App() {
     // Interval Clear 시 사용하려고 선언
     const [tokenInterval,setTokenInterval ] = useState(null);
 
+    const [hide,setHide ] = useState(true);
+
     // 로그인 성공시 또는 RememberYn 이 Y 일때 MainPage 또는 입력한 URL 로 이동하게 하기 위해 선언
     const location = useLocation();
     const navigate = useNavigate();
@@ -44,16 +46,18 @@ function App() {
                         navigate(location.pathname === '/'? '/treatmentCenter':location.pathname);
                     }
                     else { // 토큰 만료시 로그인 유지가 N 이면 로그인 페이지로 이동
+                        setHide(false);
                         navigate('/') // 로그인 페이지로 이동
                     }
                 }
                 //그 외
                 else{
+                    setHide(false);
                     navigate('/') // 로그인 페이지로 이동
                 }
             })
             .catch(()=> {
-                localStorage.setItem('loginStatus','N');
+                setHide(false);
                 navigate('/') // 로그인 페이지로 이동
             })
     }
@@ -66,8 +70,8 @@ function App() {
         <AlertStore>
             <TitleStore>
                 <Routes>
-                        <Route exact path={'/'} element={<Login setTokenInterval={setTokenInterval}/>}/>
-                            <Route element={<Layouts interval={tokenInterval}/>}>
+                        <Route exact path={'/'} element={hide || <Login setTokenInterval={setTokenInterval} />}/>
+                            <Route element={<Layouts interval={tokenInterval} setHide={setHide}/>}>
                                 <Route exact path={'/treatmentCenter'} element={<TreatmentCenter/>}/>
                                 <Route exact path={'/item'} element={<Item/>}/>
                             </Route>

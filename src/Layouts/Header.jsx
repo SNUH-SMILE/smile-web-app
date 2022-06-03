@@ -4,16 +4,17 @@ import {TitleContext} from "../Providers/TitleContext";
 import AuthenticationApi from "../Apis/AuthenticationApi";
 import {useNavigate} from "react-router-dom";
 
-function Header({wrapper,interval}) {
+function Header({wrapper,interval, setHide}) {
     // 로그아웃시 로그인 페이지로 이동하기 위해 선언
     const navigate = useNavigate()
 
     // 로그아웃
     const handledLogOut = () =>{
-        AuthenticationApi.logOut().then(res => {
+        AuthenticationApi.logOut().then(() => {
             localStorage.setItem('Authorization', null);
             clearInterval(interval);
-            navigate('/')
+            setHide(false);
+            navigate('/');
         });
     }
 
