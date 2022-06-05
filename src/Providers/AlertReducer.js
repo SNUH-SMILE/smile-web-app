@@ -9,7 +9,6 @@ export const alertInitialState = {
 };
 
 export const alertReducer = (state = alertInitialState, action) => {
-    console.log('action',action)
     switch (action.type) {
         case SHOW_CONFIRM:
             return {

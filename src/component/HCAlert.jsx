@@ -2,7 +2,6 @@ import React from 'react';
 import {Alert, Modal} from "react-bootstrap";
 import styled from "styled-components";
 import useAlert from "../Utils/UseAlert";
-import {createPortal} from "react-dom";
 
 const AlertHeader = styled.div`
   display: flex;
@@ -41,7 +40,6 @@ const AlertConfirmBtn = styled.button`
 
 function HcAlert() {
     const {onConfirm, onCancel, close, alertState} = useAlert();
-    const modalElement = document.getElementById('modal');
 
     const component = alertState.show ? (
         <Modal className={'border-0'} show={true}>
@@ -66,7 +64,7 @@ function HcAlert() {
             </Alert>
         </Modal>
     ): null;
-    return createPortal(component, modalElement);
+    return component;
 }
 
 export default HcAlert;
