@@ -1,8 +1,10 @@
 import Login from "./Login";
 import AlertStore from "../../Providers/AlertContext";
 import {BrowserRouter} from "react-router-dom";
-import {fireEvent, render} from "@testing-library/react";
+import {fireEvent, render, waitFor} from "@testing-library/react";
 import HcAlert from "../../component/HCAlert";
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
 
 let container;
 
@@ -81,4 +83,97 @@ describe("Login Page",()=>{
         fireEvent.click(confirmButton);
         expect(alert).not.toBeInTheDocument();
     })
+
+    // 유효하지 않은 아이디로 로그인 요청을 했을 때
+    test('Login request is failed with invalid Id',  async () => {
+        const{ getByPlaceholderText, getByText } = render(
+            <AlertStore>
+                <BrowserRouter>
+                    <Login setTokenInterval={()=> null}/>
+                </BrowserRouter>
+                <HcAlert />
+            </AlertStore>
+            ,container)
+
+
+        // 아이디 Value 를 'Invalid Id' 로 변경
+        const id = getByPlaceholderText('Email');
+        id.value = 'Invalid Id'
+
+        // 패스워드 Value 를 'Password'  로 변경
+        const password = getByPlaceholderText('Password');
+        password.value = 'Password'
+
+        // Axios-mock-adaptor 사용 및 response 데이터 정의
+        const mockAxios = new MockAdapter(axios, {delayResponse: 1000})
+        mockAxios.onPost(process.env.REACT_APP_BASE_URL+'/api/userLogin')
+            .reply(200,
+                {code:'15',message:'사용자 정보가 존재하지 않습니다', result: null}
+                ,{'Content-Type': 'application/json'})
+
+        // 로그인 버튼 클릭
+        const loginButton = getByText('로그인');
+        fireEvent.click(loginButton);
+
+        // Api 호출이 완료될때 까지 기다려야 해서 WaitFor 작성
+        // WaitFor 의 경우 기본 Timeout 값이 1000ms 따라서 MockAdapter 의 delayResponse 값을 1000 이상으로 설정시 Test 가 실패함
+        await waitFor(() =>{
+            // "사용자 정보가 존재하지 않습니다" 문구가 화면에 출력되었는지 체크
+            const alert = getByText('사용자 정보가 존재하지 않습니다');
+            expect(alert).toBeInTheDocument();
+
+            // Alert 확인 버튼 클릭 후 "사용자 정보가 존재하지 않습니다" 문구가 화면에서 사라졌는지 체크
+            const confirmButton = getByText('확인');
+            fireEvent.click(confirmButton);
+            expect(alert).not.toBeInTheDocument();
+        })
+    })
+
+    // 유효하지 않은 패스워드로 로그인 요청을 했을 때
+    test('Login request is failed with invalid Password',  async () => {
+        const{ getByPlaceholderText, getByText } = render(
+            <AlertStore>
+                <BrowserRouter>
+                    <Login setTokenInterval={()=> null}/>
+                </BrowserRouter>
+                <HcAlert />
+            </AlertStore>
+            ,container)
+
+
+        // 아이디 Value 에 'ID' 삽입
+        const id = getByPlaceholderText('Email');
+        id.value = 'ID'
+
+        // 패스워드 Value 에 'Invalid Password' 삽입
+        const password = getByPlaceholderText('Password');
+        password.value = 'Invalid Password'
+
+        // Axios-mock-adaptor 사용 및 response 데이터 정의
+        const mockAxios = new MockAdapter(axios, {delayResponse: 1000})
+        mockAxios.onPost(process.env.REACT_APP_BASE_URL+'/api/userLogin')
+            .reply(200,
+                {code:'10',message:'비밀번호가 일치하지 않습니다', result: null}
+                ,{'Content-Type': 'application/json'})
+
+
+        // 로그인 버튼 클릭
+        const loginButton = getByText('로그인');
+        fireEvent.click(loginButton);
+
+        // Api 호출이 완료될때 까지 기다려야 해서 WaitFor 작성
+        // WaitFor 의 경우 기본 Timeout 값이 1000ms 따라서 MockAdapter 의 delayResponse 값을 1000 이상으로 설정시 Test 가 실패함
+        await waitFor(() =>{
+            // "비밀번호가 일치하지 않습니다" 문구가 화면에 출력되었는지 체크
+            const alert = getByText('비밀번호가 일치하지 않습니다');
+            expect(alert).toBeInTheDocument();
+
+            // Alert 확인 버튼 클릭 후 "비밀번호가 일치하지 않습니다" 문구가 화면에서 사라졌는지 체크
+            const confirmButton = getByText('확인');
+            fireEvent.click(confirmButton);
+            expect(alert).not.toBeInTheDocument();
+        })
+
+    })
+
 })
