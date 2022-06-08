@@ -305,7 +305,7 @@ function CommonCode() {
     }
     // 검색 Input Enter 이벤트 && Select Change 이벤트
     const handledOnSearch = (e,primaryKey) => {
-        if(!selectComCd.current){
+        if(primaryKey==='detailCd' && !selectComCd.current){
             alert('상위 공통코드를 선택해주세요.');
         }
         else if(e.target.tagName === 'INPUT'){
