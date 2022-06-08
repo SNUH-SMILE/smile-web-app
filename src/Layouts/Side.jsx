@@ -6,7 +6,9 @@ const menu = [
     {
         parent: '공통관리',
         child: [
+            {name: '공통코드', url: '/comCd'},
             {name: '생활치료센터', url: '/treatmentCenter'},
+            {name: '사용자관리', url: '/user'},
             {name: '측정항목관리', url: '/item'},
         ]
     }

@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {CgChevronLeft, CgChevronRight} from "react-icons/cg";
+import {BsX} from "react-icons/bs";
 import {useTable, useSortBy, usePagination} from "react-table";
 import PropTypes from "prop-types";
+import commonCode from "../Apis/CommonCode";
 
 /**
  * https://karthikraja555.medium.com/server-side-pagination-in-react-table-a4311b730d19
@@ -42,8 +44,7 @@ import PropTypes from "prop-types";
  */
 
 
-function ReactTable({ tableHeader, tableBody, sorted, pagination, trOnclick }) {
-
+function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited, pagination, trOnclick, deleteRow ,targetSelectData, primaryKey }) {
     // Table Header
     const columns = React.useMemo(() => tableHeader, [tableHeader])
 
@@ -78,9 +79,11 @@ function ReactTable({ tableHeader, tableBody, sorted, pagination, trOnclick }) {
         data,
         initialState: {pageIndex : 1, pageSize : 2}
     },sorted && useSortBy,pagination && usePagination)
+
+
     return (
         <>
-            <table {...getTableProps()} className="table table-striped table-hover text-expert table-fixed" style={{height:"80%"}}>
+            <table {...getTableProps()} className={customTableStyle ? customTableStyle : "table table-striped table-hover text-expert table-fixed"} style={{height:"80%"}}>
                 <thead>
                 {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
@@ -120,11 +123,239 @@ function ReactTable({ tableHeader, tableBody, sorted, pagination, trOnclick }) {
                         rows.map((row, i) => {
                             prepareRow(row)
                             return (
-                                <tr {...row.getRowProps()} onClick={()=>trOnclick(row.cells[0].value)}>
-                                    {row.cells.map(cell => {
-                                        return <td className={cell.column.styleClassName} {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                                    })}
-                                </tr>
+                                edited ?
+                                    row.original.header !== undefined && row.original.header.includes('C') ?
+                                        primaryKey === 'comCd'?
+                                        //    Comcd 신규 Row
+                                        <tr key={Object(row.original)[primaryKey]}>
+                                            <td className="cd1">
+                                                <button type="button" className="btn-delete" onClick={()=>deleteRow(row.original.header,primaryKey)}><BsX/>
+                                                </button>
+                                            </td>
+                                            <td className="cd2">
+                                                {/*<input type="text" className="form-control text-center"/>*/}
+                                            </td>
+                                            <td className="cd3">
+                                                <input type="text"
+                                                       className="form-control text-center"
+                                                       onChange={(e)=> row.cells[2].column.changeFunc(e,'comCdNm',Object(row.original)[primaryKey],primaryKey)}
+                                            />
+                                            </td>
+                                            <td className="cd4">
+                                                <select className="form-select"
+                                                        onChange={(e)=> row.cells[3].column.changeFunc(e,'comCdDiv',Object(row.original)[primaryKey],primaryKey)}
+                                                >
+                                                    <option value={''} >업무구분</option>
+                                                    {targetSelectData && targetSelectData.map(value =>
+                                                        <option value={value.detailCd}
+                                                                key={value.detailCd}
+                                                        >
+                                                            {value.detailCdNm}
+                                                        </option>
+                                                    )}
+                                                </select>
+                                            </td>
+                                            <td className="cd5">
+                                                <input className="form-check-input use-check"
+                                                       defaultChecked={true}
+                                                       onChange={(e)=>
+                                                           row.cells[4].column.changeFunc(e,'useYn',Object(row.original)[primaryKey],primaryKey)}
+                                                       type="checkbox"/>
+                                            </td>
+                                            <td className="cd6">
+                                                <input type="text" className="form-control"
+                                                       onChange={(e)=>
+                                                           row.cells[5].column.changeFunc(e,'remark',Object(row.original)[primaryKey],primaryKey)}
+                                                />
+                                            </td>
+                                        </tr>
+                                            :
+                                            //    ComcdDetail 신규 Row
+                                            <tr key={Object(row.original)['header']}>
+                                                <td className="cd1">
+                                                    <button type="button" className="btn-delete" onClick={()=>deleteRow(row.original.header,primaryKey)}>
+                                                        <BsX/>
+                                                    </button>
+                                                </td>
+                                                <td className="cd2">
+                                                    <input type="text"
+                                                           className="form-control text-center"
+                                                           onChange={(e)=> row.cells[1].column.changeFunc(e,'detailCd',Object(row.original)[primaryKey],primaryKey)}
+                                                    />
+                                                </td>
+                                                <td className="cd3">
+                                                    <input type="text"
+                                                           className="form-control text-center"
+                                                           onChange={(e)=> row.cells[2].column.changeFunc(e,'detailCdNm',Object(row.original)[primaryKey],primaryKey)}
+                                                    />
+                                                </td>
+                                                <td className="cd4">
+                                                    <input type="checkbox"
+                                                           defaultChecked={true}
+                                                           className="form-check-input use-check"
+                                                           onChange={(e)=> row.cells[3].column.changeFunc(e,'useYn',Object(row.original)[primaryKey],primaryKey)}
+                                                    />
+                                                </td>
+                                                <td className="cd5">
+                                                    <input type="text"
+                                                           className="form-control text-center"
+                                                           onChange={(e)=> row.cells[4].column.changeFunc(e,'property1',Object(row.original)[primaryKey],primaryKey)}
+                                                    />
+                                                </td>
+                                                <td className="cd6">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control text-center"
+                                                        onChange={(e)=> row.cells[5].column.changeFunc(e,'property2',Object(row.original)[primaryKey],primaryKey)}
+                                                    />
+                                                </td>
+                                                <td className="cd7">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control text-center"
+                                                        onChange={(e)=> row.cells[6].column.changeFunc(e,'property3',Object(row.original)[primaryKey],primaryKey)}
+                                                    />
+                                                </td>
+                                                <td className="cd8">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control text-center"
+                                                        onChange={(e)=> row.cells[7].column.changeFunc(e,'property4',Object(row.original)[primaryKey],primaryKey)}
+                                                    />
+                                                </td>
+                                                <td className="cd9">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control text-center"
+                                                        onChange={(e)=> row.cells[8].column.changeFunc(e,'property5',Object(row.original)[primaryKey],primaryKey)}
+                                                    />
+                                                </td>
+                                                <td className="cd10">
+                                                    <input type="text"
+                                                           className="form-control"
+                                                           onChange={(e)=> row.cells[9].column.changeFunc(e,'remark',Object(row.original)[primaryKey],primaryKey)}
+                                                    />
+                                                </td>
+                                            </tr>
+                                    :<tr {...row.getRowProps()} onClick={trOnclick ? ()=>trOnclick(Object(row.values)[primaryKey]) : null}>
+                                        {row.cells.map(cell => {
+                                            return (
+                                                row.original.active ?
+                                                    <td className={cell.column.styleClassName + ' checked-active'} {...cell.getCellProps()}>
+                                                        {/* checkbox 일 때*/}
+                                                        { cell.column.editElement==='checkBox' &&
+                                                        <input className={"form-check-input checkbox-active "+cell.column.styleClassNameForBody}
+                                                               type="checkbox"
+                                                               name={cell.column.id}
+                                                               defaultChecked={cell.value === 'Y' || row.original.active}
+                                                               onClick={cell.column.clickFunc ?
+                                                                   (e)=>cell.column.clickFunc(e,Object(row.original)[primaryKey],primaryKey)
+                                                                   :null
+                                                               }
+                                                               onChange={cell.column.changeFunc ?
+                                                                   (e) =>
+                                                                       cell.column.changeFunc(e,cell.column.id,Object(row.original)[primaryKey],primaryKey)
+                                                                   : null
+                                                               }
+
+                                                        />
+                                                        }
+
+                                                        {/* text 일 때*/}
+                                                        { cell.column.editElement==='text' &&
+                                                        <>
+                                                            <div className={'checked-text ' + cell.column.styleClassNameForBody}>{cell.render('Cell')}</div>
+                                                            <div className={'checked-contents '}>
+                                                                <input type="text"
+                                                                       className={'form-control ' + cell.column.styleClassNameForBody}
+                                                                       name={cell.column.id}
+                                                                       defaultValue={cell.value}
+                                                                       onChange={(e)=>
+                                                                           cell.column.changeFunc(e,cell.column.id,Object(row.original)[primaryKey],primaryKey)}
+                                                                           // cell.column.changeFunc(e,cell.column.id,row.original.comCd,row.original.comCd)}
+                                                                />
+                                                            </div>
+                                                        </>
+                                                        }
+
+                                                        {/* select 일 때*/}
+                                                        { cell.column.editElement==='select' &&
+                                                        <select className="form-select"
+                                                        onChange={(e)=>cell.column.changeFunc(e,cell.column.id,Object(row.original)[primaryKey],primaryKey)}
+                                                        >
+                                                            <option value={''}>업무구분</option>
+                                                            {targetSelectData && targetSelectData.map(value =>
+                                                                <option value={value.detailCd}
+                                                                        key={value.detailCd}
+                                                                >
+                                                                    {value.detailCdNm}
+                                                                </option>
+                                                            )}
+                                                        </select>
+                                                        }
+
+                                                        { cell.column.editElement === undefined &&
+                                                            <>{cell.render('Cell')}</>
+                                                        }
+                                                    </td>
+                                                :<td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                    {/* checkbox 일 때*/}
+                                                    { cell.column.editElement==='checkBox' &&
+                                                        <input className={"form-check-input checkbox-active "+cell.column.styleClassNameForBody}
+                                                               type="checkbox"
+                                                               name={cell.column.id}
+                                                               defaultChecked={cell.value === 'Y'}
+                                                               onClick={cell.column.clickFunc ?
+                                                                   (e)=>cell.column.clickFunc(e,Object(row.original)[primaryKey],primaryKey)
+                                                                   :null
+                                                               }
+                                                               disabled={cell.column.styleClassNameForBody && true}
+                                                        />
+                                                    }
+
+                                                    {/* text 일 때*/}
+                                                    { cell.column.editElement==='text' &&
+                                                        <>
+                                                            <div className={'checked-text ' + cell.column.styleClassNameForBody}>{cell.render('Cell')}</div>
+                                                            <div className={'checked-contents '}>
+                                                                <input type="text"
+                                                                       className={'form-control ' + cell.column.styleClassNameForBody}
+                                                                       defaultValue={cell.value}
+                                                                       name={cell.column.id}
+                                                                       onChange={(e)=>
+                                                                           cell.column.changeFunc(e,cell.column.id,Object(row.original)[primaryKey],primaryKey)}
+                                                                />
+                                                            </div>
+                                                        </>
+                                                    }
+
+                                                    {/* select 일 때*/}
+                                                    { cell.column.editElement==='select' &&
+                                                    <select className="form-select" value={cell.value }  disabled>
+                                                        <option value={''}>업무구분</option>
+                                                        {targetSelectData && targetSelectData.map(value =>
+                                                            <option value={value.detailCd}
+                                                                    key={value.detailCd}
+                                                            >
+                                                                {value.detailCdNm}
+                                                            </option>
+                                                        )}
+                                                     </select>
+                                                     }
+                                                     { cell.column.editElement === undefined &&
+                                                        <>{cell.render('Cell')}</>
+                                                     }
+                                                </td>
+                                            )
+                                        })}
+                                    </tr>
+                                    :
+                                    <tr {...row.getRowProps()} onClick={()=>trOnclick(row.cells[0].value)}>
+                                        {row.cells.map(cell => {
+                                            return <td className={cell.column.styleClassName} {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                        })}
+                                    </tr>
+
                             )
                         })
                 }
@@ -157,16 +388,28 @@ function ReactTable({ tableHeader, tableBody, sorted, pagination, trOnclick }) {
         </>
     )
 }
+
+// customTableStyle=null,tableHeader, tableBody, sorted, edited, pagination, trOnclick, deleteRow ,targetSelectData, primaryKey
 ReactTable.defaultProps={
+    customTableStyle:'',
     tableBody:[],
     sorted:false,
+    edited:false,
     pagination:false,
+    trOnclick:null,
+    deleteRow:null ,
+    targetSelectData:null,
+    primaryKey:''
 }
 ReactTable.propTypes = {
     tableHeader:PropTypes.array.isRequired,
     tableBody:PropTypes.array,
     sorted:PropTypes.bool,
+    edited:PropTypes.bool,
     pagination:PropTypes.bool,
     trOnclick:PropTypes.func,
+    deleteRow:PropTypes.func ,
+    targetSelectData:PropTypes.array,
+    primaryKey:PropTypes.string
 }
 export default ReactTable;

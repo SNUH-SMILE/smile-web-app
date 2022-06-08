@@ -8,6 +8,8 @@ import TitleStore from "./Providers/TitleContext";
 import TreatmentCenter from "./Pages/Common/TreatmentCenter";
 import TokenMethod from "./Apis/Token";
 import Item from "./Pages/Common/Item";
+import User from "./Pages/Common/User";
+import CommonCode from "./Pages/Common/CommonCode";
 
 function App() {
 
@@ -68,8 +70,10 @@ function App() {
             <Routes>
                 <Route exact path={'/'} element={hide || <Login setTokenInterval={setTokenInterval}/>}/>
                 <Route element={<Layouts interval={tokenInterval} setHide={setHide}/>}>
+                    <Route exact path={'/comCd'} element={<CommonCode/>}/>
                     <Route exact path={'/treatmentCenter'} element={<TreatmentCenter/>}/>
                     <Route exact path={'/item'} element={<Item/>}/>
+                    <Route exact path={'/user'} element={<User/>}/>
                 </Route>
                 <Route exact path={'*'} element={<Error404/>}/>
             </Routes>
