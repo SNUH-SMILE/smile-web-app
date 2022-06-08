@@ -350,9 +350,40 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                         })}
                                     </tr>
                                     :
-                                    <tr {...row.getRowProps()} onClick={()=>trOnclick(row.cells[0].value)}>
+                                    <tr {...row.getRowProps()} onClick={()=>trOnclick ? trOnclick(row.cells[0].value):null}>
                                         {row.cells.map(cell => {
-                                            return <td className={cell.column.styleClassName} {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                            // console.log(row.values);
+                                            if(cell.column.Header === '선택'){
+                                                if(cell.column.editElement === 'radio'){
+                                                    return (
+                                                        <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            <input
+                                                                className="form-check-input"
+                                                                type="radio"
+                                                                name="lcenter"
+                                                            />
+                                                        </td>
+                                                    )
+                                                }
+                                                else{
+                                                    return (
+                                                        <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            <input
+                                                                className="form-check-input"
+                                                                type="checkbox"
+                                                                onClick={(e)=>{
+                                                                    e.target.checked
+                                                                        ? cell.column.editEvent(row.values,'add')
+                                                                        : cell.column.editEvent(row.values,'except')
+                                                                }}
+                                                            />
+                                                        </td>
+                                                    )
+                                                }
+                                            }
+                                            else{
+                                                return <td className={cell.column.styleClassName} {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                            }
                                         })}
                                     </tr>
 
