@@ -43,8 +43,16 @@ function CommonCode() {
     /**
      * 공통 함수
      */
-    //edit 모드에서 값 변경시 comCdList 해당값을 찾아서 업데이트
-    const handledOnChange = (e,targetKey,comCdCode,primaryKey) => {
+    /**
+     * edit 모드에서 값 변경시 comCdList,comCdDetailList 중 해당값을 찾아서 업데이트 하는 함수
+     * @param e 타겟
+     * @param targetKey 변경된 데이터의 키 값
+     * @param comCdCode 공통코드 또는 세부코드 값
+     * @param primaryKey 공통코드 구분 인지 세부공통코드 인지 판별 하기 위해 (comCd || detailCd)
+     * @param crudHeader 세부공통코드의 경우 신규 생성시 세부코드가 '' 으로 설정이 되어있어서 1건이상을 생성하고
+     *                   값을 입력시 세부코드를 설정하지 않은 n건에 대해 세부코드가 동일하게 변경됨 따라서 신규일 경우 headerCode로 데이터 수정
+     */
+    const handledOnChange = (e,targetKey,comCdCode,primaryKey,crudHeader=null) => {
         if(primaryKey === 'comCd'){
             setComCdList(comCdList.map(value => {
                 if (value.comCd === comCdCode) {
@@ -60,7 +68,20 @@ function CommonCode() {
         }
         else if(primaryKey === 'detailCd'){
             setComCdDetailList(comCdDetailList.map(value => {
-                if (value.detailCd === comCdCode) {
+                // 신규 세부 공통코드일 경우 세부코드가 입력 가능해서
+                // 1건 이상일 경우 모든 신규건에 대해서 업데이트함
+                // 따라서 header 값을 기준으로 state 값 업데이트
+                if(crudHeader !== null){
+                    if (value.header === crudHeader) {
+                        if(targetKey === 'useYn'){
+                            return {...value,  [targetKey] : e.target.checked ? 'Y' : 'N'}
+                        }
+                        else{
+                            return {...value,  [targetKey] : e.target.value}
+                        }
+                    }
+                }
+                else if (value.detailCd === comCdCode) {
                     if(targetKey === 'useYn'){
                         return {...value,  [targetKey] : e.target.checked ? 'Y' : 'N'}
                     }
@@ -281,7 +302,6 @@ function CommonCode() {
     }
     // 공통코드 상세 신규 로우 추가
     const newDetailRow = () =>{
-        console.log(prevData);
         if(!selectComCd.current){
             alert('상위 공통코드를 선택해주세요.');
         }
@@ -310,6 +330,7 @@ function CommonCode() {
     }
     //공통코드 상세 저장
     const saveDetail = async () => {
+
         const data =comCdDetailList.filter(value => value.active === true).map(value => {
             return {...value, cudFlag : value.cudFlag || 'U'};
         });
@@ -357,6 +378,7 @@ function CommonCode() {
                 if(data.code === '00'){
                     alert(data.message);
                     setPrevData(prevData.filter(value => !Object.keys(value).includes('detailCd')))
+                    setComCdDetailList([]);
                     setComCdDetailList(data.result);
                     commonCode('CD001').then(response => setComCdDivSelectData(response.data.result));
                 }

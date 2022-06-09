@@ -185,61 +185,61 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                            className="form-control text-center"
                                                            autoFocus={true}
                                                            name={row.cells[1].column.id}
-                                                           onChange={(e)=> row.cells[1].column.changeFunc(e,'detailCd',Object(row.original)[primaryKey],primaryKey)}
+                                                           onChange={(e)=> row.cells[1].column.changeFunc(e,'detailCd',Object(row.original)[primaryKey],primaryKey,row.original.header)}
                                                     />
                                                 </td>
                                                 <td className="cd3">
                                                     <input type="text"
                                                            className="form-control text-center"
                                                            name={row.cells[2].column.id}
-                                                           onChange={(e)=> row.cells[2].column.changeFunc(e,'detailCdNm',Object(row.original)[primaryKey],primaryKey)}
+                                                           onChange={(e)=> row.cells[2].column.changeFunc(e,'detailCdNm',Object(row.original)[primaryKey],primaryKey,row.original.header)}
                                                     />
                                                 </td>
                                                 <td className="cd4">
                                                     <input type="checkbox"
                                                            defaultChecked={true}
                                                            className="form-check-input use-check"
-                                                           onChange={(e)=> row.cells[3].column.changeFunc(e,'useYn',Object(row.original)[primaryKey],primaryKey)}
+                                                           onChange={(e)=> row.cells[3].column.changeFunc(e,'useYn',Object(row.original)[primaryKey],primaryKey,row.original.header)}
                                                     />
                                                 </td>
                                                 <td className="cd5">
                                                     <input type="text"
                                                            className="form-control text-center"
-                                                           onChange={(e)=> row.cells[4].column.changeFunc(e,'property1',Object(row.original)[primaryKey],primaryKey)}
+                                                           onChange={(e)=> row.cells[4].column.changeFunc(e,'property1',Object(row.original)[primaryKey],primaryKey,row.original.header)}
                                                     />
                                                 </td>
                                                 <td className="cd6">
                                                     <input
                                                         type="text"
                                                         className="form-control text-center"
-                                                        onChange={(e)=> row.cells[5].column.changeFunc(e,'property2',Object(row.original)[primaryKey],primaryKey)}
+                                                        onChange={(e)=> row.cells[5].column.changeFunc(e,'property2',Object(row.original)[primaryKey],primaryKey,row.original.header)}
                                                     />
                                                 </td>
                                                 <td className="cd7">
                                                     <input
                                                         type="text"
                                                         className="form-control text-center"
-                                                        onChange={(e)=> row.cells[6].column.changeFunc(e,'property3',Object(row.original)[primaryKey],primaryKey)}
+                                                        onChange={(e)=> row.cells[6].column.changeFunc(e,'property3',Object(row.original)[primaryKey],primaryKey,row.original.header)}
                                                     />
                                                 </td>
                                                 <td className="cd8">
                                                     <input
                                                         type="text"
                                                         className="form-control text-center"
-                                                        onChange={(e)=> row.cells[7].column.changeFunc(e,'property4',Object(row.original)[primaryKey],primaryKey)}
+                                                        onChange={(e)=> row.cells[7].column.changeFunc(e,'property4',Object(row.original)[primaryKey],primaryKey,row.original.header)}
                                                     />
                                                 </td>
                                                 <td className="cd9">
                                                     <input
                                                         type="text"
                                                         className="form-control text-center"
-                                                        onChange={(e)=> row.cells[8].column.changeFunc(e,'property5',Object(row.original)[primaryKey],primaryKey)}
+                                                        onChange={(e)=> row.cells[8].column.changeFunc(e,'property5',Object(row.original)[primaryKey],primaryKey,row.original.header)}
                                                     />
                                                 </td>
                                                 <td className="cd10">
                                                     <input type="text"
                                                            className="form-control"
-                                                           onChange={(e)=> row.cells[9].column.changeFunc(e,'remark',Object(row.original)[primaryKey],primaryKey)}
+                                                           onChange={(e)=> row.cells[9].column.changeFunc(e,'remark',Object(row.original)[primaryKey],primaryKey,row.original.header)}
                                                     />
                                                 </td>
                                             </tr>
