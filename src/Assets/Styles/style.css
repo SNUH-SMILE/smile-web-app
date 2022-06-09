@@ -596,7 +596,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 /* lifecenterModal */
-#lifecenterModal .modal-dialog {max-width:1000px;}
+.lifecenterModal .modal-dialog {max-width:1000px;}
 
 /* lifecenterInsertModal */
 #lifecenterInsertModal .modal-dialog {max-width:1000px;}
@@ -1371,7 +1371,7 @@ main {padding:30px;}
 
 .flex_layout_2row .row1 > .col {height:100%;}
 .flex_layout_2row .row1 > .col > .card.indiv {height:100%;}
-.flex_layout_2row .row1 .table-fixed tbody {height:120px;}
+.flex_layout_2row .row1 .table-fixed tbody {height:220px;}
 
 .flex_layout_2row .row1 .table-fixed .cd1 {width:5%;}
 .flex_layout_2row .row1 .table-fixed .cd2 {width:10%;}
@@ -1384,7 +1384,7 @@ main {padding:30px;}
 
 
 .flex_layout_2row .row2 {
-    height:calc(100% - 279px);
+    height:calc(100% - 379px);
 }
 .flex_layout_2row .row2 > .col {height:100%;}
 .flex_layout_2row .row2 > .col > .card.indiv {height:100%;}

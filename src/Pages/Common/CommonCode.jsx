@@ -147,6 +147,23 @@ function CommonCode() {
             setComCdDetailList(comCdDetailList.filter(value => value.header !== exceptValue))
         }
     }
+    // 검색 Input Enter 이벤트 && Select Change 이벤트
+    const handledOnSearch = (e,primaryKey) => {
+        if(primaryKey==='detailCd' && !selectComCd.current){
+            alert('상위 공통코드를 선택해주세요.');
+        }
+        else if(e.target.tagName === 'INPUT'){
+            if (e.keyCode === 13) {
+                primaryKey === 'comCd' && getComCdList();
+                primaryKey === 'detailCd' && getComCdDetail(selectComCd.current);
+
+            }
+        }
+        else if(e.target.tagName === 'SELECT'){
+            primaryKey === 'comCd' && getComCdList();
+            primaryKey === 'detailCd' && getComCdDetail(selectComCd.current);
+        }
+    }
 
     /**
      *공통코드 구분 함수
@@ -166,9 +183,9 @@ function CommonCode() {
 
     // React-Table 공통코드 구분 Table Header
     const comCdTableColumn = [
-        {Header: ' ', accessor: 'header', styleClassName: 'cd1', editElement:'checkBox',clickFunc:toggleEditMode},
-        {Header: '구분코드', accessor: 'comCd', styleClassName: 'cd2', styleClassNameForBody:'text-center'},
-        {Header: '구분코드명', accessor: 'comCdNm', styleClassName: 'cd3', styleClassNameForBody:'text-center', editElement:'text', changeFunc:handledOnChange},
+        {Header: '선택', accessor: 'header', styleClassName: 'cd1', editElement:'checkBox',clickFunc:toggleEditMode},
+        {Header: '공통코드', accessor: 'comCd', styleClassName: 'cd2', styleClassNameForBody:'text-center'},
+        {Header: '공통코드명', accessor: 'comCdNm', styleClassName: 'cd3', styleClassNameForBody:'text-center', editElement:'text', changeFunc:handledOnChange},
         {Header: '업무구분', accessor: 'comCdDiv', styleClassName: 'cd4', editElement:'select', changeFunc:handledOnChange},
         {Header: '사용', accessor: 'useYn', styleClassName: 'cd5', styleClassNameForBody:'use-check', editElement:'checkBox',changeFunc:handledOnChange},
         {Header: '리마크', accessor: 'remark', styleClassName: 'cd6', styleClassNameForBody:'text-start', editElement:'text', changeFunc:handledOnChange},
@@ -183,7 +200,7 @@ function CommonCode() {
     const save = async () => {
 
         const data =comCdList.filter(value => value.active === true).map(value => {
-            return {...value, cudFlag : value.cudFlag || 'U', comCd : value.cudFlag === 'C' && ''};
+            return {...value, cudFlag : value.cudFlag || 'U', comCd : value.cudFlag === 'C' ? '' : value.comCd};
         });
         if(data.length <= 0){
             alert('신규 또는 수정건이 없습니다.');
@@ -191,11 +208,25 @@ function CommonCode() {
         }
         let state = data.every(value => {
             if(!value.comCdNm){
-                alert(`${value.comCd ?'['+ value.comCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 구분코드명이 공백입니다.`)
+                const comCdNmArr= document.querySelectorAll('tr.checked-active input[name="comCdNm"]')
+                for (const comCdNm of comCdNmArr) {
+                    if(comCdNm.value===''){
+                        comCdNm.focus();
+                        break;
+                    }
+                }
+                alert(`${value.comCd ?'['+ value.comCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 공통코드명이 누락되었습니다.`)
                 return false;
             }
             else if(!value.comCdDiv){
-                alert(`${value.comCd ?'['+ value.comCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 업무구분이 공백입니다.`)
+                const comCdDivArr= document.querySelectorAll('tr.checked-active select[name="comCdDiv"]')
+                for (const comCdDiv of comCdDivArr) {
+                    if(comCdDiv.value===''){
+                        comCdDiv.focus();
+                        break;
+                    }
+                }
+                alert(`${value.comCd ?'['+ value.comCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 업무구분을 선택하세요.`)
                 return false;
             }
             return true;
@@ -210,6 +241,9 @@ function CommonCode() {
                     setComCdList(data.result);
                     commonCode('CD001').then(response => setComCdDivSelectData(response.data.result));
                 }
+                else{
+                    alert(data.message);
+                }
             })
         }
     }
@@ -219,9 +253,9 @@ function CommonCode() {
      */
     // React-Table 공통코드 상세 Table Header
     const comCdDetailColumn = [
-        {Header: ' ', accessor: 'header', styleClassName: 'cd1', editElement:'checkBox',clickFunc:toggleEditMode},
-        {Header: '구분코드', accessor: 'detailCd', styleClassName: 'cd2', styleClassNameForBody:'text-center',changeFunc:handledOnChange},
-        {Header: '구분코드명', accessor: 'detailCdNm', styleClassName: 'cd3', styleClassNameForBody:'text-center', editElement:'text', changeFunc:handledOnChange},
+        {Header: '선택', accessor: 'header', styleClassName: 'cd1', editElement:'checkBox',clickFunc:toggleEditMode},
+        {Header: '세부코드', accessor: 'detailCd', styleClassName: 'cd2', styleClassNameForBody:'text-center',changeFunc:handledOnChange},
+        {Header: '세부코드명', accessor: 'detailCdNm', styleClassName: 'cd3', styleClassNameForBody:'text-center', editElement:'text', changeFunc:handledOnChange},
         {Header: '사용', accessor: 'useYn', styleClassName: 'cd4', styleClassNameForBody:'use-check', editElement:'checkBox', changeFunc:handledOnChange},
         {Header: '속성1', accessor: 'property1', styleClassName: 'cd5', editElement:'text', changeFunc:handledOnChange},
         {Header: '속성2', accessor: 'property2', styleClassName: 'cd6', editElement:'text', changeFunc:handledOnChange},
@@ -247,6 +281,7 @@ function CommonCode() {
     }
     // 공통코드 상세 신규 로우 추가
     const newDetailRow = () =>{
+        console.log(prevData);
         if(!selectComCd.current){
             alert('상위 공통코드를 선택해주세요.');
         }
@@ -281,11 +316,36 @@ function CommonCode() {
 
         let state = data.every(value => {
             if(!value.detailCd){
-                alert(`${value.detailCd ?'['+ value.detailCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 구분코드가 공백입니다.`)
+                const detailCdArr= document.querySelectorAll('tr.checked-active input[name="detailCd"]')
+                for (const detailCd of detailCdArr) {
+                    if(detailCd.value===''){
+                        detailCd.focus();
+                        break;
+                    }
+                }
+                alert(`${value.detailCd ?'['+ value.detailCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 세부코드가 누락되었습니다.`)
                 return false;
             }
+            else{
+                const detailCdArr= document.querySelectorAll('tr.checked-active input[name="detailCd"]')
+                for (const detailCd of detailCdArr) {
+                    if(comCdDetailList.filter(value1 => value1.detailCd === detailCd.value).length > 1){
+                        alert(`중복된 세부코드가 존재합니다.-${value.detailCd ?'['+ value.detailCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }`) ;
+                        detailCd.focus();
+                        return false;
+                    }
+                }
+            }
+
             if(!value.detailCdNm){
-                alert(`${value.detailCd ?'['+ value.detailCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 구분코드명이 공백입니다.`)
+                const detailCdNmArr= document.querySelectorAll('tr.checked-active input[name="detailCdNm"]')
+                for (const detailCdNm of detailCdNmArr) {
+                    if(detailCdNm.value===''){
+                        detailCdNm.focus();
+                        break;
+                    }
+                }
+                alert(`${value.detailCd ?'['+ value.detailCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 세부코드명이 누락되었습니다.`)
                 return false;
             }
             return true;
@@ -300,26 +360,13 @@ function CommonCode() {
                     setComCdDetailList(data.result);
                     commonCode('CD001').then(response => setComCdDivSelectData(response.data.result));
                 }
+                else{
+                    alert(data.message);
+                }
             })
         }
     }
-    // 검색 Input Enter 이벤트 && Select Change 이벤트
-    const handledOnSearch = (e,primaryKey) => {
-        if(primaryKey==='detailCd' && !selectComCd.current){
-            alert('상위 공통코드를 선택해주세요.');
-        }
-        else if(e.target.tagName === 'INPUT'){
-            if (e.keyCode === 13) {
-                primaryKey === 'comCd' && getComCdList();
-                primaryKey === 'detailCd' && getComCdDetail(selectComCd.current);
 
-            }
-        }
-        else if(e.target.tagName === 'SELECT'){
-            primaryKey === 'comCd' && getComCdList();
-            primaryKey === 'detailCd' && getComCdDetail(selectComCd.current);
-        }
-    }
     return (
         <main className="flex_layout_2row">
             <div className="row row1">

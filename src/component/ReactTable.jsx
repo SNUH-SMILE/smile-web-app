@@ -83,7 +83,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
 
     return (
         <>
-            <table {...getTableProps()} className={customTableStyle ? customTableStyle : "table table-striped table-hover text-expert table-fixed"} style={{height:"80%"}}>
+            <table {...getTableProps()} className={customTableStyle ? customTableStyle : "table table-striped table-hover text-expert table-fixed"} style={{height:"99%"}}>
                 <thead>
                 {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
@@ -127,7 +127,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                     row.original.header !== undefined && row.original.header.includes('C') ?
                                         primaryKey === 'comCd'?
                                         //    Comcd 신규 Row
-                                        <tr key={Object(row.original)[primaryKey]}>
+                                        <tr key={Object(row.original)[primaryKey]} className={'checked-active'}>
                                             <td className="cd1">
                                                 <button type="button" className="btn-delete" onClick={()=>deleteRow(row.original.header,primaryKey)}><BsX/>
                                                 </button>
@@ -138,11 +138,14 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                             <td className="cd3">
                                                 <input type="text"
                                                        className="form-control text-center"
+                                                       autoFocus={true}
+                                                       name={'comCdNm'}
                                                        onChange={(e)=> row.cells[2].column.changeFunc(e,'comCdNm',Object(row.original)[primaryKey],primaryKey)}
                                             />
                                             </td>
                                             <td className="cd4">
                                                 <select className="form-select"
+                                                        name={'comCdDiv'}
                                                         onChange={(e)=> row.cells[3].column.changeFunc(e,'comCdDiv',Object(row.original)[primaryKey],primaryKey)}
                                                 >
                                                     <option value={''} >업무구분</option>
@@ -171,7 +174,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                         </tr>
                                             :
                                             //    ComcdDetail 신규 Row
-                                            <tr key={Object(row.original)['header']}>
+                                            <tr key={Object(row.original)['header']} className={'checked-active'}>
                                                 <td className="cd1">
                                                     <button type="button" className="btn-delete" onClick={()=>deleteRow(row.original.header,primaryKey)}>
                                                         <BsX/>
@@ -180,12 +183,15 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                 <td className="cd2">
                                                     <input type="text"
                                                            className="form-control text-center"
+                                                           autoFocus={true}
+                                                           name={row.cells[1].column.id}
                                                            onChange={(e)=> row.cells[1].column.changeFunc(e,'detailCd',Object(row.original)[primaryKey],primaryKey)}
                                                     />
                                                 </td>
                                                 <td className="cd3">
                                                     <input type="text"
                                                            className="form-control text-center"
+                                                           name={row.cells[2].column.id}
                                                            onChange={(e)=> row.cells[2].column.changeFunc(e,'detailCdNm',Object(row.original)[primaryKey],primaryKey)}
                                                     />
                                                 </td>
@@ -281,7 +287,9 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                         {/* select 일 때*/}
                                                         { cell.column.editElement==='select' &&
                                                         <select className="form-select"
-                                                        onChange={(e)=>cell.column.changeFunc(e,cell.column.id,Object(row.original)[primaryKey],primaryKey)}
+                                                                name={cell.column.id}
+                                                                onChange={(e)=>
+                                                                    cell.column.changeFunc(e,cell.column.id,Object(row.original)[primaryKey],primaryKey)}
                                                         >
                                                             <option value={''}>업무구분</option>
                                                             {targetSelectData && targetSelectData.map(value =>
@@ -331,7 +339,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
 
                                                     {/* select 일 때*/}
                                                     { cell.column.editElement==='select' &&
-                                                    <select className="form-select" value={cell.value }  disabled>
+                                                    <select className="form-select" name={cell.column.id} value={cell.value } disabled>
                                                         <option value={''}>업무구분</option>
                                                         {targetSelectData && targetSelectData.map(value =>
                                                             <option value={value.detailCd}
