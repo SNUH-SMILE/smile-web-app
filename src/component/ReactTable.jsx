@@ -399,7 +399,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                                 className="form-check-input"
                                                                 name="userCenters"
                                                                 type="radio"
-                                                                defaultChecked={cell.value === 'Y'}
+                                                                checked={cell.value === 'Y'}
                                                                 onChange={cell.column.editEvent
                                                                     ? ()=>{cell.column.editEvent(cell.row.values.centerId)}
                                                                     : null
@@ -414,9 +414,8 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                             <input
                                                                 className="form-check-input"
                                                                 type="checkbox"
-                                                                value={cell.row.values.delYn}
-                                                                defaultChecked={cell.row.values.delYn}
-                                                                onClick ={cell.column.editEvent
+                                                                checked={cell.row.values.delYn||false}
+                                                                onChange={cell.column.editEvent
                                                                     ? ()=>{cell.column.editEvent(cell.row.values.centerId)}
                                                                     : null
                                                                 }

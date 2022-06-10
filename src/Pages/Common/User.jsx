@@ -24,6 +24,10 @@ function User() {
     const {confirm, alert} = useAlert();
 
     UseSetPageTitle('사용자 관리');
+    useEffect(()=>{
+        selectUserList('data');
+    },[])
+
     /**
      * 생활치료센터 모달
      */
@@ -50,7 +54,7 @@ function User() {
                     setSearchCenter({
                         'centerId': data[0].centerId,
                         'centerNm': data[0].centerNm
-                    });
+                    })
                 }
             } else if (treatmentCenterModalObject.headerElement === 'checkbox') {
                 if (!data || data.length === 0) {
@@ -93,6 +97,14 @@ function User() {
      * 사용자 페이지
      */
 
+    /**
+     * 검색 정보
+     */
+    const userSearchId = useRef();
+    const userSearchNm = useRef();
+    /**
+     * 상세 정보
+     */
     const userId = useRef();
     const userPw = useRef();
     const userNm = useRef();
@@ -114,6 +126,7 @@ function User() {
     // 생활치료센터 검색조건
     const [searchCenter, setSearchCenter] = useState({'centerId':'', 'centerNm':''});
 
+
     // 선택 사용자 생활치료센터 메인여부 변경시 State 값 업데이트
     const changeMainYn = (centerId) => {
         setUserTreatmentCenterList(
@@ -125,13 +138,11 @@ function User() {
     }
     // 선택 사용자 생활치료센터 선택 체크박스 체크 또는 체크해제시 State 값 업데이트
     const changeDelYn = (centerId) => {
-        console.log('centerId',centerId);
-        console.log('deleteTreatmentCenter');
         setUserTreatmentCenterList(
             userTreatmentCenterList.map((value,idx) => {
 
                 if(value.centerId === centerId){
-                    return {...value, delYn: true}
+                    return {...value, delYn: !value.delYn}
                 }
                 else{
                     return value;
@@ -148,23 +159,32 @@ function User() {
         )
     }
 
-    const x = () => {
-        console.log(userTreatmentCenterList);
+    // 선택 사용자 생활치료센터 리스트 전체선택
+    const allCheck = () => {
+        setUserTreatmentCenterList(userTreatmentCenterList.map(value => {
+            return {...value, delYn : !value.delYn}
+        }))
     }
     // 선택 사용자 생활치료센터 테이블 헤더
     const userTreatmentCenterTableColumn = [
-        {Header: <TreatmentCenterHeaderCheckBox className="form-check-input" type="checkbox"/>, accessor: 'delYn', styleClassName:'cid ', editElement:'checkbox', editEvent:changeDelYn},
+        {Header: <TreatmentCenterHeaderCheckBox className="form-check-input" type="checkbox" onClick={allCheck}/>, accessor: 'delYn', styleClassName:'cid ', editElement:'checkbox', editEvent:changeDelYn},
         {Header: '센터ID', accessor: 'centerId',styleClassName:'cname'},
         {Header: '센터명', accessor: 'centerNm'},
         {Header: '메인여부', accessor: 'mainYn', styleClassName:'cname',editElement:'radio',editEvent:changeMainYn},
     ]
 
 
-    const userApi = new UserApi();
+    const userApi = new UserApi(
+        userId,
+        userPw,
+        userNm,
+        remark,
+        userTreatmentCenterList,
+        userSearchId,
+        userSearchNm,
+        searchCenter
+    );
 
-    useEffect(()=>{
-        selectUserList('data');
-    },[])
 
     // 사용자 리스트 요청
     const selectUserList = () => {
@@ -188,6 +208,69 @@ function User() {
         });
     }
 
+    const save = async () => {
+        if(!userPw.current.value){
+            userPw.current.focus()
+            alert('패스워드가 공백입니다.')
+        }
+        else if(!userNm.current.value){
+            userNm.current.focus()
+            alert('사용자명이 공백입니다.')
+        }
+        else if(userTreatmentCenterList.length <= 0){
+            alert('생활치료센터를 선택해주세요')
+        }
+        else if(userTreatmentCenterList.filter(value => value.mainYn === 'Y').length <= 0){
+            alert('생활치료센터 메인여부를 선택해주세요')
+        }
+        else {
+            const confirmSate = await confirm(userId.current.value
+                ? '['+ userId.current.value + '] 를 수정하시겠습니까?'
+                :'['+ userNm.current.value + '] 를 생성하시겠습니까?')
+            confirmSate && userApi.save().then(({data}) => {
+                if(data.code==='00'){
+                    setUserList(data.result.userVOList);
+                    userId.current.value = data.result.userVO.userId;
+                    userPw.current.value = data.result.userVO.password;
+                    userNm.current.value = data.result.userVO.userNm;
+                    remark.current.value = data.result.userVO.remark;
+                    setUserTreatmentCenterList(data.result.userVO.userTreatmentCenterVOList);
+                    alert(data.message);
+                }
+                else{
+                    alert(data.message);
+                }
+            });
+        }
+    }
+
+    const deleteUser = async () =>{
+       const confirmSate = await confirm('['+ userId.current.value + '] 를 삭제하시겠습니까?')
+        confirmSate && userApi.delete().then(({data})=>{
+            if(data.code==='00'){
+                alert(data.message)
+                setUserList(data.result);
+                clear();
+            }
+            else{
+                alert(data.message)
+            }
+        })
+    }
+    const clear = () =>{
+        userId.current.value = '';
+        userPw.current.value = '';
+        userNm.current.value = '';
+        remark.current.value = '';
+        setUserTreatmentCenterList([]);
+    }
+
+    const handledSearch = (e) =>{
+        if (e.keyCode === 13) {
+            selectUserList();
+        }
+    }
+
     return (
         <>
             <main className="flex_layout_2col">
@@ -202,21 +285,24 @@ function User() {
                                                 <div className="tbl_title">사용자 리스트</div>
                                                 <div className="me-3 d-flex">
                                                     <span className="stit">사용자ID</span>
-                                                    <input className="form-control w80" type="text" defaultValue=""/>
+                                                    <input className="form-control w80" type="text"
+                                                           ref={userSearchId} defaultValue="" onKeyUp={handledSearch}/>
                                                 </div>
                                                 <div className="me-3 d-flex">
                                                     <span className="stit">사용자명</span>
-                                                    <input className="form-control w120" type="text" defaultValue=""/>
+                                                    <input className="form-control w120" type="text"
+                                                           ref={userSearchNm} defaultValue="" onKeyUp={handledSearch}/>
                                                 </div>
                                                 <div className="me-1 d-flex">
                                                     <span className="stit">생활치료센터</span>
                                                     <input className="form-control search w200" type="text"
                                                            value={searchCenter.centerNm}
                                                            onClick={()=> handleTreatmentCenterModalOpen('radio')}
+                                                           onChange={()=>selectUserList()}
                                                            readOnly/>
                                                 </div>
                                                 <div className="ms-auto btn_wrap">
-                                                    <button type="button" className="btn btn-gray" onClick={x}>검색</button>
+                                                    <button type="button" className="btn btn-gray" onClick={selectUserList}>검색</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -239,9 +325,9 @@ function User() {
                                                 <div className="tbl_title nobar">상세정보</div>
                                                 <div className="ms-auto">
                                                     <div className="btn_wrap d-flex">
-                                                        <button type="button" className="btn btn-wgray" >삭제</button>
-                                                        <button type="button" className="btn btn-white btn-new">신규</button>
-                                                        <button type="button" className="btn btn-ccolor">저장</button>
+                                                        <button type="button" className="btn btn-wgray" onClick={deleteUser}>삭제</button>
+                                                        <button type="button" className="btn btn-white btn-new" onClick={clear}>신규</button>
+                                                        <button type="button" className="btn btn-ccolor" onClick={save}>저장</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -275,7 +361,8 @@ function User() {
                                                 <tr>
                                                     <th>리마크</th>
                                                     <td className="umark">
-                                                        <textarea className="form-control h100" ref={remark} maxLength="100"/>
+                                                        <textarea className="form-control h100" ref={remark}
+                                                                  defaultValue={''} maxLength="100"/>
                                                     </td>
                                                 </tr>
                                                 </tbody>
