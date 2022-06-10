@@ -39,9 +39,9 @@ class TreatmentCenterApi {
             const response = await AuthorizationAxios.post(
                                                   process.env.REACT_APP_BASE_URL + '/api/treatmentCenter/list',
                                                       JSON.stringify({
-                                                          centerId:this.treatmentCenterSearchId.current.value,
-                                                          centerNm:this.treatmentCenterSearchNm.current.value,
-                                                          hospitalNm: this.treatmentCenterSearchHospitalNm.current.value
+                                                          centerId:this.treatmentCenterSearchId?this.treatmentCenterSearchId.current.value:'',
+                                                          centerNm:this.treatmentCenterSearchNm?this.treatmentCenterSearchNm.current.value:'',
+                                                          hospitalNm: this.treatmentCenterSearchHospitalNm?this.treatmentCenterSearchHospitalNm.current.value:''
                                                       }),
                                                {headers: {'Content-Type': "application/json"}}
             );

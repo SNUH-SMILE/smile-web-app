@@ -360,7 +360,6 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                     :
                                     <tr {...row.getRowProps()} onClick={()=>trOnclick ? trOnclick(row.cells[0].value):null}>
                                         {row.cells.map(cell => {
-                                            // console.log(row.values);
                                             if(cell.column.Header === '선택'){
                                                 if(cell.column.editElement === 'radio'){
                                                     return (
@@ -390,7 +389,41 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                 }
                                             }
                                             else{
-                                                return <td className={cell.column.styleClassName} {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                                if(cell.column.editElement === 'radio'){
+                                                    return (
+                                                        <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            <input
+                                                                className="form-check-input"
+                                                                name="userCenters"
+                                                                type="radio"
+                                                                defaultChecked={cell.value === 'Y'}
+                                                                onChange={cell.column.editEvent
+                                                                    ? ()=>{cell.column.editEvent(cell.row.values.centerId)}
+                                                                    : null
+                                                                }
+                                                            />
+                                                        </td>
+                                                    )
+                                                }
+                                                else if(cell.column.editElement === 'checkbox'){
+                                                    return (
+                                                        <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            <input
+                                                                className="form-check-input"
+                                                                type="checkbox"
+                                                                value={cell.row.values.delYn}
+                                                                defaultChecked={cell.row.values.delYn}
+                                                                onClick ={cell.column.editEvent
+                                                                    ? ()=>{cell.column.editEvent(cell.row.values.centerId)}
+                                                                    : null
+                                                                }
+                                                            />
+                                                        </td>
+                                                    )
+                                                }
+                                                else {
+                                                    return <td className={cell.column.styleClassName} {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                                }
                                             }
                                         })}
                                     </tr>
