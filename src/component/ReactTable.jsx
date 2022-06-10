@@ -368,6 +368,9 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                                 className="form-check-input"
                                                                 type="radio"
                                                                 name="lcenter"
+                                                                onClick={(e) => {
+                                                                    cell.column.editEvent(row.values, 'select');
+                                                                }}
                                                             />
                                                         </td>
                                                     )

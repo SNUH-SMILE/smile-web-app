@@ -3,17 +3,30 @@ import {Modal} from "react-bootstrap";
 import TreatmentCenterApi from "../Apis/TreatmentCenterApi";
 import ReactTable from "./ReactTable";
 function TreatmentCenterModal({treatmentCenterModalObject,handleClose}) {
-    const[selectedData,setSelectedData] = useState([]);
-    const makeSelectedData = (data,mode) =>{
-        if(mode === 'add'){
-            setSelectedData(
-                [...selectedData,data]
-            )
+    // 선택 값 초기화
+    useEffect(() => {
+        if (treatmentCenterModalObject.show) {
+            setSelectedData([]);
         }
-        if(mode === 'except'){
+    }, [treatmentCenterModalObject.show]);
+
+    const [selectedData, setSelectedData] = useState([]);
+    const makeSelectedData = (data,mode) => {
+        if (mode === 'add') {
+            // CheckBox
+            setSelectedData(
+                [...selectedData, data]
+            );
+        } else if (mode === 'except') {
+            // CheckBox
             setSelectedData(
                 selectedData.filter(value => value.centerId !== data.centerId)
-            )
+            );
+        } else if (mode === 'select') {
+            // Radio
+            setSelectedData(
+                [data]
+            );
         }
     }
     const comCdDetailColumn = [
@@ -29,13 +42,14 @@ function TreatmentCenterModal({treatmentCenterModalObject,handleClose}) {
         {Header: '병원명', accessor: 'hospitalNm'   }
     ]
     const treatmentCenterApi = new TreatmentCenterApi();
-    const [treatmentCenterList,setTreatmentCenterList] = useState([]);
+    const [treatmentCenterList, setTreatmentCenterList] = useState([]);
     useEffect(()=>{
-        treatmentCenterApi.select().then(({data}) =>setTreatmentCenterList(data.result));
+        treatmentCenterApi.select().then(({data}) => setTreatmentCenterList(data.result));
     },[])
+
     return (
         <Modal show={treatmentCenterModalObject.show}
-               onHide={handleClose}
+               onHide={() => handleClose('cancel')}
                className={'lifecenterModal'}
                dialogClassName={'modal-dialog-centered modal-dialog-scrollable'}
         >
@@ -51,7 +65,13 @@ function TreatmentCenterModal({treatmentCenterModalObject,handleClose}) {
                 <button
                     type="button"
                     className="btn btn-pr4"
-                    onClick={()=>console.log(selectedData)}
+                    hidden={treatmentCenterModalObject.headerElement !== 'radio'}
+                    onClick={ () => handleClose('init') }
+                >초기화</button>
+                <button
+                    type="button"
+                    className="btn btn-pr4"
+                    onClick={ () => handleClose('confirm', selectedData) }
                 >선택</button>
             </Modal.Footer>
         </Modal>

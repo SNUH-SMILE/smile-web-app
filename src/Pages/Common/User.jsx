@@ -5,6 +5,7 @@ import commonCode from "../../Apis/CommonCode";
 import UserApi from "../../Apis/UserApi";
 import ReactTable from "../../component/ReactTable";
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
+import useAlert from "../../Utils/UseAlert";
 
 const CardInDivH40 = styled.div`
   height: 40% !important;
@@ -20,28 +21,72 @@ const TreatmentCenterHeaderCheckBox = styled.input`
 `
 function User() {
 
+    const {confirm, alert} = useAlert();
+
     UseSetPageTitle('사용자 관리');
     /**
      * 생활치료센터 모달
      */
-    const [treatmentCenterModalObject,setTreatmentCenterModalObject]= useState({
-        show:false,
-        headerElement:'radio',
-        confirmEvent:null
-    })
-    const handleTreatmentCenterModalClose = () =>{
+    const [treatmentCenterModalObject, setTreatmentCenterModalObject] = useState({
+        show: false,
+        headerElement: 'radio',
+        confirmEvent: null
+    });
+
+    const handleTreatmentCenterModalClose = (closeType, data) => {
+        if (closeType !== 'cancel') {
+            if (treatmentCenterModalObject.headerElement === 'radio') {
+                if (closeType === 'init') {
+                    setSearchCenter({
+                        'centerId':'',
+                        'centerNm':''
+                    });
+                } else {
+                    if (!data || data.length === 0) {
+                        alert('생활치료센터를 선택하세요.');
+                        return;
+                    }
+
+                    setSearchCenter({
+                        'centerId': data[0].centerId,
+                        'centerNm': data[0].centerNm
+                    });
+                }
+            } else if (treatmentCenterModalObject.headerElement === 'checkbox') {
+                if (!data || data.length === 0) {
+                    alert('생활치료센터를 선택하세요.');
+                    return;
+                }
+
+                data.forEach((val) => {
+                    if (userTreatmentCenterList.filter(x => x.centerId === val.centerId).length === 0) {
+                        setUserTreatmentCenterList((userTreatmentCenterList) => [
+                            ...userTreatmentCenterList,
+                            {
+                                centerId: val.centerId,
+                                centerNm: val.centerNm,
+                                mainYn:'N'
+                            }
+                        ]);
+                    }
+                });
+            }
+        }
+
+        // 모달 닫기
         setTreatmentCenterModalObject({
             ...treatmentCenterModalObject,
-            show:false
-        })
-    }
+            show: false
+        });
+    };
+
     const handleTreatmentCenterModalOpen = (mode) => {
         setTreatmentCenterModalObject({
-            show:true,
+            show: true,
             headerElement: mode,
-            confirmEvent:null
+            confirmEvent: null
         })
-    }
+    };
 
 
     /**
@@ -65,6 +110,9 @@ function User() {
 
     // 선택 사용자 생활치료센터 리스트
     const [ userTreatmentCenterList, setUserTreatmentCenterList ] = useState([])
+
+    // 생활치료센터 검색조건
+    const [searchCenter, setSearchCenter] = useState({'centerId':'', 'centerNm':''});
 
     // 선택 사용자 생활치료센터 메인여부 변경시 State 값 업데이트
     const changeMainYn = (centerId) => {
@@ -162,8 +210,9 @@ function User() {
                                                 </div>
                                                 <div className="me-1 d-flex">
                                                     <span className="stit">생활치료센터</span>
-                                                    <input className="form-control search w120" type="text"
-                                                            onClick={()=> handleTreatmentCenterModalOpen('radio')}
+                                                    <input className="form-control search w200" type="text"
+                                                           value={searchCenter.centerNm}
+                                                           onClick={()=> handleTreatmentCenterModalOpen('radio')}
                                                            readOnly/>
                                                 </div>
                                                 <div className="ms-auto btn_wrap">
