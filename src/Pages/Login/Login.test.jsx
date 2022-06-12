@@ -1,10 +1,15 @@
 import Login from "./Login";
 import AlertStore from "../../Providers/AlertContext";
-import {BrowserRouter} from "react-router-dom";
-import {fireEvent, render, waitFor} from "@testing-library/react";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {renderHook} from "@testing-library/react-hooks";
 import HcAlert from "../../component/HCAlert";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import TreatmentCenter from "../Common/TreatmentCenter";
+import TitleStore from "../../Providers/TitleContext";
+import Layouts from "../../Layouts/Layouts";
+import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 
 let container;
 
@@ -175,5 +180,50 @@ describe("Login Page",()=>{
         })
 
     })
+    test('Login Success',async ()=>{
 
+
+
+        const{debug, getByPlaceholderText, getByText } = render(
+            <AlertStore>
+                <TitleStore>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route exact path={'/'} element={<Login setTokenInterval={()=> null}/>}/>
+                            <Route element={<Layouts interval={0} setHide={()=> null}/>}>
+                                <Route exact path={'/treatmentCenter'} element={<TreatmentCenter/>}/>
+                            </Route>
+                        </Routes>
+                    </BrowserRouter>
+                </TitleStore>
+                <HcAlert />
+            </AlertStore>
+            ,container)
+        // 아이디 Value 를 'Invalid Id' 로 변경
+        const id = getByPlaceholderText('Email');
+        id.value = 'Invalid Id'
+
+        // 패스워드 Value 를 'Password'  로 변경
+        const password = getByPlaceholderText('Password');
+        password.value = 'Password'
+
+        // Axios-mock-adaptor 사용 및 response 데이터 정의
+        const mockAxios = new MockAdapter(axios, {delayResponse: 1000})
+        mockAxios.onPost(process.env.REACT_APP_BASE_URL+'/api/userLogin')
+            .reply(200,
+                {code:'00',message:'로그인 성공', result: null}
+                ,{'Content-Type': 'application/json'})
+
+        // 로그인 버튼 클릭
+        const loginButton = getByText('로그인');
+        fireEvent.click(loginButton);
+        renderHook(() => UseSetPageTitle())
+        // /treatmentCenter(생활치료센터)로 이동하였는지 체크
+        await waitFor(()=>{
+            expect(screen.getByRole('link',{current:'page'})).toHaveTextContent('생활치료센터') // 사이드메뉴에 생활치료센터 메뉴가 active 표시가 되었는지 체크
+            expect(screen.getByRole('pageTitle')).toHaveTextContent('생활치료센터 관리'); //헤더에 생황치료센터 관리 글자가 표시되었는지 체크
+            expect(screen.getByText('생활치료센터 리스트')).toBeInTheDocument(); // 화면에 생황치료센터 리스트 글자가 표시되었는지 체크
+            debug()
+        })
+    })
 })

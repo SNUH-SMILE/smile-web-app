@@ -33,7 +33,7 @@ function Header({wrapper,interval, setHide}) {
     return (
         <nav className="page-head">
             <button type="button" id="menu-toggle" onClick={handledSideBar}/>
-            <h2 className="page-title">{title}</h2>
+            <h2 className="page-title" role={'pageTitle'}>{title}</h2>
             <button className="logout" onClick={handledLogOut}>
                 <span>로그아웃</span>
                 <i/>
