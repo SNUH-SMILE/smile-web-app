@@ -34,8 +34,8 @@ function TreatmentCenter() {
     const treatmentCenterTableColumn = [
         {Header: '치료센터ID', accessor: 'centerId', styleClassName: 'cid'},
         {Header: '치료센터명', accessor: 'centerNm', styleClassName: 'cname'},
-        {Header: '위치', accessor: 'centerLocation', styleClassName: 'caddr text-start'},
         {Header: '병원명', accessor: 'hospitalNm', styleClassName: 'hname'},
+        {Header: '위치', accessor: 'centerLocation', styleClassName: 'caddr text-start'},
     ]
 
     // 생활치료센터 리스트 관리
