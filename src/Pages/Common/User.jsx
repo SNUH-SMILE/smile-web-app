@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState} from 'react';
 import styled from "styled-components";
 import TreatmentCenterModal from "../../component/TreatmentCenterModal";
 import commonCode from "../../Apis/CommonCode";
@@ -126,6 +126,11 @@ function User() {
     // 생활치료센터 검색조건
     const [searchCenter, setSearchCenter] = useState({'centerId':'', 'centerNm':''});
 
+    useEffect(()=>{
+        selectUserList();
+    },[searchCenter])
+
+    const treatmentCenterHeaderCB = useRef();
 
     // 선택 사용자 생활치료센터 메인여부 변경시 State 값 업데이트
     const changeMainYn = (centerId) => {
@@ -136,11 +141,22 @@ function User() {
             )
         )
     }
+
+    useEffect(()=>{
+        if(userTreatmentCenterList.length === 0){
+            treatmentCenterHeaderCB.current.checked = false;
+        }
+        else if(userTreatmentCenterList.length === userTreatmentCenterList.filter(value => value.delYn).length){
+            treatmentCenterHeaderCB.current.checked = true;
+        }
+        else{
+            treatmentCenterHeaderCB.current.checked = false;
+        }
+    },[userTreatmentCenterList])
     // 선택 사용자 생활치료센터 선택 체크박스 체크 또는 체크해제시 State 값 업데이트
     const changeDelYn = (centerId) => {
         setUserTreatmentCenterList(
-            userTreatmentCenterList.map((value,idx) => {
-
+            userTreatmentCenterList.map((value) => {
                 if(value.centerId === centerId){
                     return {...value, delYn: !value.delYn}
                 }
@@ -154,20 +170,28 @@ function User() {
 
     // 선택 사용자 생활치료센터 메인여부 변경시 State 값 업데이트
     const deleteTreatmentCenter = () => {
-        setUserTreatmentCenterList(
-            userTreatmentCenterList.filter(value => !value.delYn)
-        )
+        if(userTreatmentCenterList.filter(value => value.delYn).length < 1){
+            alert('선택된 생활치료 센터가 없습니다.');
+        }
+        else{
+            setUserTreatmentCenterList(
+                userTreatmentCenterList.filter(value => !value.delYn)
+            )
+            treatmentCenterHeaderCB.current.checked = false;
+        }
     }
 
     // 선택 사용자 생활치료센터 리스트 전체선택
     const allCheck = () => {
         setUserTreatmentCenterList(userTreatmentCenterList.map(value => {
-            return {...value, delYn : !value.delYn}
+            return {...value, delYn : treatmentCenterHeaderCB.current.checked}
         }))
     }
+
+
     // 선택 사용자 생활치료센터 테이블 헤더
     const userTreatmentCenterTableColumn = [
-        {Header: <TreatmentCenterHeaderCheckBox className="form-check-input" type="checkbox" onClick={allCheck}/>, accessor: 'delYn', styleClassName:'cid ', editElement:'checkbox', editEvent:changeDelYn},
+        {Header: <TreatmentCenterHeaderCheckBox ref={treatmentCenterHeaderCB} className="form-check-input" type="checkbox" onClick={allCheck}/>, accessor: 'delYn', styleClassName:'cid ', editElement:'checkbox', editEvent:changeDelYn},
         {Header: '센터ID', accessor: 'centerId',styleClassName:'cname'},
         {Header: '센터명', accessor: 'centerNm'},
         {Header: '메인여부', accessor: 'mainYn', styleClassName:'cname',editElement:'radio',editEvent:changeMainYn},
