@@ -444,7 +444,7 @@ function CommonCode() {
 
                                     <ReactTable
                                         key={'comCd'}
-                                        customTableStyle={"data-table table table-striped table-hover table-new table-fixed"}
+                                        customTableStyle={"data-table table table-striped table-hover table-new table-fixed text-expert"}
                                         tableHeader={comCdTableColumn}
                                         tableBody={comCdList}
                                         edited
@@ -492,7 +492,7 @@ function CommonCode() {
                                 <div className="table-body height100">
                                     <ReactTable
                                         key={'comCdDetail'}
-                                        customTableStyle={"data-table table table-striped table-hover table-new2 table-fixed"}
+                                        customTableStyle={"data-table table table-striped table-hover table-new2 table-fixed "}
                                         tableHeader={comCdDetailColumn}
                                         tableBody={comCdDetailList}
                                         edited
