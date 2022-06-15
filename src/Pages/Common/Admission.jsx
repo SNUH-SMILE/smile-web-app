@@ -141,7 +141,6 @@ function Admission() {
                     if(data.code === '00'){
                         alert(data.message)
                         handledCloseAdmissionSaveModal()
-                        // setPaginationAndAdmissionTableDat(data);
                         setPaginationObj((prevState)=>({...prevState,
                             prevPaginationExists:data.result.admissionListResponseByCenterVO.paginationInfoVO.prevPaginationExists,
                             nextPaginationExists:data.result.admissionListResponseByCenterVO.paginationInfoVO.nextPaginationExists,

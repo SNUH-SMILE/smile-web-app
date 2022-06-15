@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import commonCode from "../Apis/CommonCode";
+import {convertDate} from "../Utils/common";
 
-function convertDate(date) {
-
-    return date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')
-}
+// function convertDate(date) {
+//
+//     return date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')
+// }
 
 function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
 
@@ -13,15 +14,14 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
     const patientId = useRef();
     const patientNm = useRef();
     const birthDate = useRef();
-    const [sex,setSex] = useState('');
+    const [sex,setSex] = useState(admissionSaveModalObj.data.sex);
     const cellPhone = useRef();
     const admissionDate = useRef();
     const dschgeSchdldDate = useRef();
     const personCharge = useRef();
     const centerId = useRef();
     const room = useRef();
-    //?.value.replaceAll('-',''),
-    //?.value === '남자' ? 'M' : 'W' ,
+
     const saveData = {
          admissionId :admissionId,
          patientId :patientId,
@@ -35,6 +35,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
          centerId :centerId,
          room :room,
     }
+
     const [rooms, setRooms] = useState([])
     function getRoom(centerId) {
         commonCode('CD005').then(({data}) => {
