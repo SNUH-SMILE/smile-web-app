@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, { useRef } from "react";
 import {CgChevronLeft, CgChevronRight} from "react-icons/cg";
 import {BsX} from "react-icons/bs";
 import {useTable, useSortBy, usePagination} from "react-table";
 import PropTypes from "prop-types";
-import commonCode from "../Apis/CommonCode";
+import styled from "styled-components";
 
 /**
  * https://karthikraja555.medium.com/server-side-pagination-in-react-table-a4311b730d19
@@ -43,7 +43,12 @@ import commonCode from "../Apis/CommonCode";
  * `
  */
 
-
+const RedSpan = styled.span`
+  color:red;
+`
+const BlueSpan = styled.span`
+  color:blue;
+`
 function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited, pagination, trOnclick, deleteRow ,targetSelectData, primaryKey }) {
     // Table Header
     const columns = React.useMemo(() => tableHeader, [tableHeader])
@@ -78,8 +83,16 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
         columns,
         data,
         initialState: {pageIndex : 1, pageSize : 2}
+    // },sorted && useSortBy,pagination && usePagination)
     },sorted && useSortBy,pagination && usePagination)
+    const hilighter = useRef(undefined)
 
+    const highlighter = (e) =>{
+        hilighter.current !== undefined && hilighter.current.classList.remove('active');
+        hilighter.current=e.currentTarget;
+        hilighter.current.classList.add('active');
+
+    }
 
     return (
         <>
@@ -89,17 +102,33 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map(column => (
                             // 정렬
-                            <th className={column.styleClassName} {...column.getHeaderProps(sorted&&column.getSortByToggleProps())}>
+                            <th className={column.styleClassName} {...column.getHeaderProps()}>
                                 {column.render('Header')}
                                 {/* 정렬 UI */}
-                                {sorted&&<span>
-                                {column.isSorted
-                                    ? column.isSortedDesc
-                                        ? ' 🔽'
-                                        : ' 🔼'
-                                    : ' 🔽🔼'
+                                {sorted&&column.sortedYn&&
+                                <span>
+                                    {column.orderDiv === '' &&
+                                        <button className="sort"
+                                                onClick={column.sortedEvent ? ()=>column.sortedEvent(column.id,'Asc') : null}
+                                        />
+                                    }
+                                    {column.orderDiv === 'Asc' && column.id === column.orderBy &&
+                                    <button className="sort up"
+                                            onClick={column.sortedEvent ? ()=>column.sortedEvent(column.id,'Desc') : null}
+                                    />
+                                    }
+                                    {column.orderDiv === 'Desc' && column.id === column.orderBy &&
+                                    <button className="sort down"
+                                            onClick={column.sortedEvent ? ()=>column.sortedEvent('','') : null}
+                                    />
+                                    }
+                                    {column.orderDiv !== '' && column.id !== column.orderBy &&
+                                    <button className="sort"
+                                            onClick={column.sortedEvent ? ()=>column.sortedEvent(column.id,'Asc') : null}
+                                    />
+                                    }
+                                </span>
                                 }
-                            </span>}
                             </th>
                         ))}
                     </tr>
@@ -243,7 +272,10 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                     />
                                                 </td>
                                             </tr>
-                                    :<tr {...row.getRowProps()} onClick={trOnclick ? ()=>trOnclick(Object(row.values)[primaryKey]) : null}>
+                                    :<tr {...row.getRowProps()} onClick={trOnclick ? (e)=> {
+                                            trOnclick(Object(row.values)[primaryKey]);
+                                            highlighter(e);
+                                        } : (e)=>highlighter(e)}>
                                         {row.cells.map(cell => {
                                             return (
                                                 row.original.active ?
@@ -358,7 +390,11 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                         })}
                                     </tr>
                                     :
-                                    <tr {...row.getRowProps()} onClick={()=>trOnclick ? trOnclick(row.cells[0].value):null}>
+                                    <tr {...row.getRowProps()} onClick={trOnclick ? (e)=>
+                                    {
+                                        trOnclick(row.cells[0].value,row.original);
+                                        highlighter(e);
+                                    }: (e)=>highlighter(e)}>
                                         {row.cells.map(cell => {
                                             if(cell.column.Header === '선택'){
                                                 if(cell.column.editElement === 'radio'){
@@ -423,6 +459,97 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                         </td>
                                                     )
                                                 }
+                                                else if(cell.column.editElement === 'AdmissionButton'){
+                                                    return (
+                                                        <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            {/*<button type="button" className={cell.value === '1'? "btn btn-exit" : "btn btn-exit-done"} onClick={row.original}>{cell.value === '1' ? '재원중' : '퇴실'}</button>*/}
+                                                            <button type="button"
+                                                                    className={cell.value === '1'? "btn btn-exit" : "btn btn-exit-done"}
+                                                                    onClick={cell.column.editEvent && cell.value === '1'
+                                                                        ?  ()=>cell.column.editEvent(row.original.admissionId)
+                                                                        :null
+                                                                    }
+                                                            >
+                                                                {cell.value === '1' ? '재원중' : '퇴실'}
+                                                            </button>
+                                                        </td>
+                                                    )
+                                                }
+                                                else if(cell.column.id === 'bp'){
+                                                    return (
+                                                        <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            {row.original.dbpRiskGb  === 'H'
+                                                                ? <RedSpan>{ row.original.dbpResult }</RedSpan>
+
+                                                                :row.original.dbpRiskGb  === 'L'?
+                                                                    <BlueSpan>{ row.original.dbpResult }</BlueSpan>
+                                                                    :<span >{ row.original.dbpResult }</span>
+                                                            }
+                                                            {(row.original.dbpResult || row.original.sbpResult) && <span> / </span>}
+                                                            {row.original.sbpRiskGb  === 'H'
+                                                          ? <RedSpan>{ row.original.sbpResult }</RedSpan>
+
+                                                            :row.original.sbpRiskGb  === 'L'?
+                                                                <BlueSpan>{ row.original.sbpResult }</BlueSpan>
+                                                            :<span >{ row.original.sbpResult }</span>
+                                                            }
+                                                        </td>
+                                                    )
+                                                }
+                                                else if(cell.column.id === 'prResult'){
+                                                    return (row.original.prRiskGb === 'H'
+                                                        ? <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            <RedSpan>{cell.render('Cell')}</RedSpan>
+                                                         </td>
+                                                        :row.original.prRiskGb  === 'L'?
+                                                            <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                                <BlueSpan>{cell.render('Cell')}</BlueSpan>
+                                                            </td>
+                                                            :<td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                                <span >{cell.render('Cell')}</span>
+                                                            </td>)
+                                                }
+                                                else if(cell.column.id === 'btResult'){
+                                                    return (row.original.btRiskGb === 'H'
+                                                        ? <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            <RedSpan>{cell.render('Cell')}</RedSpan>
+                                                        </td>
+                                                        :row.original.btRiskGb  === 'L'?
+                                                            <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                                <BlueSpan>{cell.render('Cell')}</BlueSpan>
+                                                            </td>
+                                                            :<td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                                <span >{cell.render('Cell')}</span>
+                                                            </td>)
+                                                }
+                                                else if(cell.column.id === 'spResult'){
+                                                    return (row.original.spRiskGb  === 'H'
+                                                        ? <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            <RedSpan>{cell.render('Cell')}</RedSpan>
+                                                        </td>
+                                                        :row.original.spRiskGb  === 'L'?
+                                                            <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                               <BlueSpan>{cell.render('Cell')}</BlueSpan>
+                                                            </td>
+                                                                :<td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                                    <span >{cell.render('Cell')}</span>
+                                                                </td>
+                                                    )
+                                                }
+                                                else if(cell.column.id === 'rrResult'){
+                                                    return (row.original.rrRiskGb  === 'H'
+                                                            ? <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                                <RedSpan>{cell.render('Cell')}</RedSpan>
+                                                            </td>
+                                                            :row.original.rrRiskGb  === 'L'?
+                                                                <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                                    <BlueSpan>{cell.render('Cell')}</BlueSpan>
+                                                                </td>
+                                                                :<td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                                    <span >{cell.render('Cell')}</span>
+                                                                </td>
+                                                    )
+                                                }
                                                 else {
                                                     return <td className={cell.column.styleClassName} {...cell.getCellProps()}>{cell.render('Cell')}</td>
                                                 }
@@ -436,27 +563,29 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                 </tbody>
             </table>
             {/*        Pagination*/}
-            {pagination && <nav className="mt-4">
-                <ul className="pagination">
-                    <li className="page-item">
-                        <a className="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true"><CgChevronLeft/></span>
-                        </a>
-                    </li>
-                    <li className="page-item active" aria-current="page">
-                        <a className="page-link" href="#">1</a>
-                    </li>
-                    <li className="page-item"><a className="page-link" href="#">2</a></li>
-                    <li className="page-item"><a className="page-link" href="#">3</a></li>
-                    <li className="page-item"><a className="page-link" href="#">4</a></li>
-                    <li className="page-item"><a className="page-link" href="#">5</a></li>
-                    <li className="page-item">
-                        <a className="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true"><CgChevronRight/></span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>}
+            {pagination &&
+                <nav className="mt-4">
+                    <ul className="pagination">
+                        <li className="page-item">
+                            <a className="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true"><CgChevronLeft/></span>
+                            </a>
+                        </li>
+                        <li className="page-item active" aria-current="page">
+                            <a className="page-link" href="#">1</a>
+                        </li>
+                        <li className="page-item"><a className="page-link" href="#">2</a></li>
+                        <li className="page-item"><a className="page-link" href="#">3</a></li>
+                        <li className="page-item"><a className="page-link" href="#">4</a></li>
+                        <li className="page-item"><a className="page-link" href="#">5</a></li>
+                        <li className="page-item">
+                            <a className="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true"><CgChevronRight/></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            }
 
             {/*        Pagination*/}
         </>

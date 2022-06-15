@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import SMILELogo from '../Assets/Images/main_logo.png';
 import {NavLink, useLocation} from "react-router-dom";
 
@@ -10,6 +10,7 @@ const menu = [
             {name: '생활치료센터', url: '/treatmentCenter'},
             {name: '사용자관리', url: '/user'},
             {name: '측정항목관리', url: '/item'},
+            {name: '생활치료센터 환자 현황', url: '/treatmentCenterPatient'},
         ]
     }
 

@@ -484,10 +484,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .table-striped>tbody>tr td a.link:hover {color:var(--primary-color4);}
 .table-striped>tbody>tr td:first-child {
-    border-radius:10px 0 0 10px;
+    /*border-radius:10px 0 0 10px;*/
 }
 .table-striped>tbody>tr td:last-child {
-    border-radius:0 10px 10px 0;
+    /*border-radius:0 10px 10px 0;*/
 }
 .table-striped>thead th {
     white-space:nowrap;
@@ -499,16 +499,20 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .table .form-control {display:inline-block;}
 .table .form-select {display:inline-block;}
-
 /* 데이터 테이블 스타일 */
-.text-expert tr.active {position:relative;}
-.text-expert tr.active:after {
-    display:block; content:"";
-    position:absolute; top:0; left:0; right:0; bottom:0;
+.text-expert tr.active {
+    position:relative;
     border:solid 1px var(--primary-color3);
-    border-radius:10px;
-    visibility:inherit;
+    /*border-top-left-radius:10px;*/
 }
+
+/*.text-expert tr.active:after {*/
+/*    display:block; content:"";*/
+/*    position:absolute; top:0; left:0; right:0; bottom:0;*/
+/*    border:solid 1px var(--primary-color3);*/
+/*    border-radius:10px;*/
+/*    visibility:inherit;*/
+/*}*/
 .text-expert tr.active > * {
     --bs-table-accent-bg: var(--bs-table-hover-bg) !important;
 }
@@ -554,7 +558,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-color: #3b78ab;
     border-radius: 6px;
 }
-
+.page-link:disabled:hover{
+    pointer-events: none;
+}
 
 
 /* Modal */
@@ -615,7 +621,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .lifecenterModal .modal-dialog {max-width:1000px;}
 
 /* lifecenterInsertModal */
-#lifecenterInsertModal .modal-dialog {max-width:1000px;}
+.lifecenterInsertModal .modal-dialog {max-width:1000px;}
 
 /* selfIsolationInsertModal */
 #selfIsolationInsertModal .modal-dialog {max-width:1000px;}
@@ -1517,6 +1523,7 @@ main {padding:30px;}
     height: 12px;
     margin-left: 4px;
     background:url("../Images/ic_sort03.png") no-repeat center;
+    border: none;
 }
 .sort.up {
     background:url("../Images/ic_sort01.png") no-repeat center;

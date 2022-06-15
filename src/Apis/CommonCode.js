@@ -18,4 +18,13 @@ async function commonCode(comCd) {
     }
 }
 
-export default commonCode;
+export async function getLonginUserInfo () {
+    try{
+        const response = await AuthorizationAxios.get(process.env.REACT_APP_BASE_URL + '/api/user/info/token',);
+        return response;
+    }catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+export default commonCode ;
