@@ -218,7 +218,7 @@ function Admission() {
         {Header: '위치', accessor: 'roomNm', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '격리일수', accessor: 'qantnDay', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '혈압', accessor: 'bp', vital:true,},
-        {Header: '맥박', accessor: 'prResult', vital:true,a:'prRiskGb'},
+        {Header: '맥박', accessor: 'prResult', vital:true,},
         {Header: '체온', accessor: 'btResult', vital:true},
         {Header: '호흡', accessor: 'rrResult', vital:true},
         {Header: '산소포화도', accessor: 'spResult', vital:true},
