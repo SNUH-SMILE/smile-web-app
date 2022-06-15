@@ -14,7 +14,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
     const patientId = useRef();
     const patientNm = useRef();
     const birthDate = useRef();
-    const [sex,setSex] = useState(admissionSaveModalObj.data.sex);
+    const [sex,setSex] = useState();
     const cellPhone = useRef();
     const admissionDate = useRef();
     const dschgeSchdldDate = useRef();
@@ -46,6 +46,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
         if(centerList.length> 0){
             getRoom(centerList[0].centerId)
         }
+        setSex(admissionSaveModalObj.data.sex);
     },[admissionSaveModalObj])
     return (
         <Modal show={admissionSaveModalObj.show}
