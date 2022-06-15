@@ -5,49 +5,11 @@ import {useTable, useSortBy, usePagination} from "react-table";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-/**
- * https://karthikraja555.medium.com/server-side-pagination-in-react-table-a4311b730d19
- *   const columns = [{Header:'1',accessor:'A'},{Header:'2',accessor:'B'}]
- *   return (
- *     <Styles>
- *       <ReactTable tableHeader={columns} />
- *     </Styles>
- *   )
- *   const Styles = styled.div`
- *   padding: 1rem;
- *
- *   table {
- *     border-spacing: 0;
- *     border: 1px solid black;
- *
- *     tr {
- *       :last-child {
- *         td {
- *           border-bottom: 0;
- *         }
- *       }
- *     }
- *
- *     th,
- *     td {
- *       margin: 0;
- *       padding: 0.5rem;
- *       border-bottom: 1px solid black;
- *       border-right: 1px solid black;
- *
- *       :last-child {
- *         border-right: 0;
- *       }
- *     }
- *   }
- * `
- */
-
 const RedSpan = styled.span`
-  color:red;
+  color:#ff2020;
 `
 const BlueSpan = styled.span`
-  color:blue;
+  color:#2094ff;
 `
 function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited, pagination, trOnclick, deleteRow ,targetSelectData, primaryKey }) {
     // Table Header
@@ -470,7 +432,8 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                                         :null
                                                                     }
                                                             >
-                                                                {cell.value === '1' ? '재원중' : '퇴실'}
+                                                                {cell.column.editElementType !== 'Isolation'? cell.value === '1' ? '재원중' :'퇴실': null}
+                                                                {cell.column.editElementType === 'Isolation'? cell.value === '1' ? '격리중' :'격리해제': null}
                                                             </button>
                                                         </td>
                                                     )

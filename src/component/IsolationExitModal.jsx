@@ -1,10 +1,17 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Modal} from "react-bootstrap";
+import getToday from "../Utils/common";
 
-function IsolationExitModal(props) {
+function IsolationExitModal({isolationExitModalObj, handledClose}) {
+    const todayInput = useRef()
+    useEffect(()=>{
+        if(isolationExitModalObj.show){
+            todayInput.current.value= getToday();
+        }
+    },[isolationExitModalObj.show])
     return (
-        <Modal show={false}
-            // onHide={() => handledClose()}
+        <Modal show={isolationExitModalObj.show}
+            onHide={() => handledClose()}
                className={'selfIsolationExitModal'}
                dialogClassName={'modal-dialog modal-dialog-centered modal-dialog-scrollable'}
         >
@@ -18,26 +25,30 @@ function IsolationExitModal(props) {
                         <tr>
                             <th>입소내역ID</th>
                             <td>
-                                <input className="form-control w-100" type="text" value="" readOnly/>
+                                <input className="form-control w-100" type="text"
+                                       defaultValue={isolationExitModalObj.data.admissionId} readOnly
+                                />
                             </td>
                         </tr>
                         <tr>
                             <th>환자ID</th>
                             <td>
-                                <input className="form-control w-100" type="text" value="P000000001" readOnly/>
+                                <input className="form-control w-100" type="text"
+                                       defaultValue={isolationExitModalObj.data.patientId} readOnly/>
                             </td>
                         </tr>
                         <tr>
                             <th>이름</th>
                             <td>
-                                <input className="form-control w-100" type="text" value="홍길동" readOnly/>
+                                <input className="form-control w-100" type="text"
+                                       defaultValue={isolationExitModalObj.data.patientNm} readOnly/>
                             </td>
                         </tr>
                         <tr>
                             <th>퇴소일자</th>
                             <td>
                                 {/*오늘날짜 기본 셋팅*/}
-                                <input className="form-control w-100 date" type="date" value="2022-04-30" required/>
+                                <input className="form-control w-100 date" type="date" defaultValue="" ref={todayInput} required/>
                             </td>
                         </tr>
                         </tbody>
@@ -45,10 +56,10 @@ function IsolationExitModal(props) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <button type="button" className="btn btn-pr4">퇴소</button>
+                <button type="button" className="btn btn-pr4">격리해제</button>
             </Modal.Footer>
         </Modal>
     );
 }
 
-export default IsolationExitModal;
+export default React.memo(IsolationExitModal);
