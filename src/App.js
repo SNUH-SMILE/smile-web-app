@@ -26,6 +26,11 @@ function App() {
 
     // // 토큰 상태 및 RememberYn 체크
     const checkedTokenAndRememberMe = () => {
+        if(localStorage.getItem('Authorization') === 'null'){
+            setHide(false);
+            navigate('/') // 로그인 페이지로 이동
+            return;
+        }
         TokenMethod.Status()
             .then(({data}) => {
                 const {tokenStatus, rememberYn} = data;
