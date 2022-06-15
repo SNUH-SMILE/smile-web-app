@@ -90,7 +90,7 @@ class AdmissionApi {
                 {headers: {'Content-Type': "application/json"}});
             return response;
         }catch (e) {
-            console.log(`AdmissionApi Update`);
+            console.log(`AdmissionApi create`);
             return false;
         }
     }
@@ -151,7 +151,7 @@ class AdmissionApi {
                 {headers: {'Content-Type': "application/json"}});
             return response;
         }catch (e) {
-            console.log(`AdmissionApi Update`);
+            console.log(`AdmissionApi discharge`);
             return false;
         }
     }
