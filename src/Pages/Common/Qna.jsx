@@ -161,6 +161,7 @@ function Qna(props) {
                                                     <input className="form-control w160" type="text"
                                                            ref={searchText}
                                                            disabled={searchGb.current&&searchGb.current.value === ''}
+                                                           defaultValue={''}
                                                            onKeyUp={(e)=>handledSearchRequirement(e)}/>
                                                 </div>
                                                 <div className="ms-auto">
