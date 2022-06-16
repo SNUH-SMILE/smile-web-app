@@ -150,8 +150,7 @@ function Qna(props) {
                                                     </select>
                                                 </div>
                                                 <div className="me-3 d-flex" >
-                                                    <select className="form-select" ref={searchGb} defaultValue={''} onChange={(e)=>handledSearchRequirement(e)}>
-                                                        <option value={''}>전체</option>
+                                                    <select className="form-select" ref={searchGb} defaultValue={'patientId'} onChange={(e)=>handledSearchRequirement(e)}>
                                                         <option value={'patientId'}>환자ID</option>
                                                         <option value={'patientNm'}>환자명</option>
                                                         <option value={'questionContent'}>문의내역</option>
@@ -160,7 +159,6 @@ function Qna(props) {
                                                 <div className="me-1 d-flex">
                                                     <input className="form-control w160" type="text"
                                                            ref={searchText}
-                                                           disabled={searchGb.current&&searchGb.current.value === ''}
                                                            defaultValue={''}
                                                            onKeyUp={(e)=>handledSearchRequirement(e)}/>
                                                 </div>
