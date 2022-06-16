@@ -27,7 +27,7 @@ function Isolation(props) {
     useEffect(()=>{
         getIsolationList();
     },[sortedOrder,paginationObj.currentPageNo])
-    const setPaginationAndAdmissionTableDat = (data) =>{
+    const setPaginationAndAdmissionTableData = (data) =>{
         setPaginationObj((prevState)=>({...prevState,
             prevPaginationExists:data.result.paginationInfoVO.prevPaginationExists,
             nextPaginationExists:data.result.paginationInfoVO.nextPaginationExists,
@@ -39,7 +39,7 @@ function Isolation(props) {
     }
     // 자가격리자 리스트 조회
     const getIsolationList = () =>{
-        isolationApi.select().then(({data}) => setPaginationAndAdmissionTableDat(data));
+        isolationApi.select().then(({data}) => setPaginationAndAdmissionTableData(data));
     }
     // 정렬 검색 이벤트
     const handledSearchWithSort = (orderBy, orderDir) =>{
@@ -149,6 +149,26 @@ function Isolation(props) {
     const handledIsolationExitModal = (admissionId) =>{
         isolationApi.detail(admissionId).then(({data}) => setIsolationExitModalObj({show: true, data: {...data.result}}))
     }
+    const discharge = useCallback(async (admissionId, dischargeDate, patientNm) => {
+        if(dischargeDate===''){
+            alert('격리해제일이 공백입니다.')
+        }
+        else{
+            const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`)
+            if(confirmState) {
+                isolationApi.discharge(admissionId, dischargeDate).then(({data}) => {
+                    if(data.code==='00'){
+                        alert(data.message)
+                        handledCloseIsolationExitModal()
+                        setPaginationAndAdmissionTableData(data);
+                    }
+                    else{
+                        alert(data.message)
+                    }
+                });
+            }
+        }
+    },[])
     // 격리해제 모달 닫기
     const handledCloseIsolationExitModal = useCallback(() =>{
         setIsolationExitModalObj({show: false, data: {}})
@@ -233,7 +253,7 @@ function Isolation(props) {
             </>
             <>
                 {/* 퇴소 모달*/}
-                <IsolationExitModal isolationExitModalObj={isolationExitModalObj} handledClose={handledCloseIsolationExitModal}/>
+                <IsolationExitModal isolationExitModalObj={isolationExitModalObj} handledClose={handledCloseIsolationExitModal} discharge={discharge}/>
             </>
         </>
     );

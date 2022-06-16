@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {Modal} from "react-bootstrap";
 import getToday from "../Utils/common";
 
-function IsolationExitModal({isolationExitModalObj, handledClose}) {
+function IsolationExitModal({isolationExitModalObj, handledClose, discharge}) {
     const todayInput = useRef()
     useEffect(()=>{
         if(isolationExitModalObj.show){
@@ -56,7 +56,7 @@ function IsolationExitModal({isolationExitModalObj, handledClose}) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <button type="button" className="btn btn-pr4">격리해제</button>
+                <button type="button" className="btn btn-pr4" onClick={()=>discharge(isolationExitModalObj.data.admissionId,todayInput.current.value,isolationExitModalObj.data.patientNm)}>격리해제</button>
             </Modal.Footer>
         </Modal>
     );

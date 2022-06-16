@@ -48,7 +48,7 @@ class IsolationApi {
         }
     }
 
-    //생활치료센터 입소자 상세정보 업데이트
+    //자가격리자 신규생성
     async create (saveData){
         try{
             const response = await AuthorizationAxios.put(process.env.REACT_APP_BASE_URL + '/api/admission/quarantine/save',
@@ -78,7 +78,7 @@ class IsolationApi {
         }
     }
 
-    //생활치료센터 입소자 상세정보 업데이트
+    //자가격리자 상세정보 업데이트
     async update (saveData){
         try{
             const response = await AuthorizationAxios.patch(process.env.REACT_APP_BASE_URL + '/api/admission/quarantine/save',
@@ -106,6 +106,32 @@ class IsolationApi {
             return response;
         }catch (e) {
             console.log(`Isolation Update`);
+            return false;
+        }
+    }
+
+
+    //자가격리자 격리해제 처리
+    async discharge (admissionId,dischargeDate){
+        try{
+            const response = await AuthorizationAxios.patch(process.env.REACT_APP_BASE_URL + '/api/admission/quarantine/discharge',
+                JSON.stringify({
+                    admissionListSearchByQuarantineVO:{
+                        patientId: this.searchPatientId.current.value,
+                        patientNm: this.searchPatientNm.current.value,
+                        currentPageNo: this.currentPageNo,
+                        recordCountPerPage: this.recordCountPerPage,
+                        pageSize: this.pageSize,
+                        orderBy: this.sortedOrderBy,
+                        orderDir: this.sortedOrderDir,
+                    },
+                    admissionId:admissionId,
+                    dschgeDate:dischargeDate.replaceAll('-',''),
+                }),
+                {headers: {'Content-Type': "application/json"}});
+            return response;
+        }catch (e) {
+            console.log(`AdmissionApi discharge`);
             return false;
         }
     }
