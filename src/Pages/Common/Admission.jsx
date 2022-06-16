@@ -87,7 +87,7 @@ function Admission() {
     }
     const discharge = useCallback(async (admissionId, dischargeDate, patientNm) => {
         if(dischargeDate===''){
-            alert('')
+            alert('퇴소일이 공백입니다.')
         }
         else{
             const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`)
