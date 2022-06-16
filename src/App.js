@@ -12,6 +12,7 @@ import User from "./Pages/Common/User";
 import CommonCode from "./Pages/Common/CommonCode";
 import Admission from "./Pages/Common/Admission";
 import Isolation from "./Pages/Common/Isolation";
+import Qna from "./Pages/Common/Qna";
 
 function App() {
 
@@ -83,6 +84,7 @@ function App() {
                     <Route exact path={'/user'} element={<User/>}/>
                     <Route exact path={'/treatmentCenterPatient'} element={<Admission/>}/>
                     <Route exact path={'/isolationPatient'} element={<Isolation/>}/>
+                    <Route exact path={'/qna'} element={<Qna/>}/>
                 </Route>
                 <Route exact path={'*'} element={<Error404/>}/>
             </Routes>

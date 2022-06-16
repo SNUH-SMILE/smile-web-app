@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import {CgChevronLeft, CgChevronRight} from "react-icons/cg";
-import {BsX} from "react-icons/bs";
+import {BsCheckLg, BsX} from "react-icons/bs";
 import {useTable, useSortBy, usePagination} from "react-table";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -511,6 +511,13 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                                 :<td className={cell.column.styleClassName} {...cell.getCellProps()}>
                                                                     <span >{cell.render('Cell')}</span>
                                                                 </td>
+                                                    )
+                                                }
+                                                else if(cell.column.id === 'replyYn'){
+                                                    return (
+                                                        <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            {cell.value === 'Y' ? <BsCheckLg color={'green'}/> : null}
+                                                        </td>
                                                     )
                                                 }
                                                 else {

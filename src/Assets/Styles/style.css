@@ -627,7 +627,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .selfIsolationInsertModal .modal-dialog {max-width:1000px;}
 
 /* QnaReplyInsertModal */
-#QnaReplyInsertModal .modal-dialog {max-width:1000px;}
+.QnaReplyInsertModal .modal-dialog {max-width:1000px;}
 
 /* VSdetailViewModal */
 /* #VSdetailViewModal .modal-dialog {max-width:1500px;} */
@@ -1476,6 +1476,12 @@ main {padding:30px;}
 .table-fixed .caddr {}
 .table-fixed .hname {width:20%;}
 
+.table-Qna .dt {width: 12%;}
+.table-Qna .type {width: 10%;}
+.table-Qna .content {width: 56%;}
+.table-Qna .pNm {width: 8%;}
+.table-Qna .rNm {width: 8%;}
+.table-Qna .rYn {width: 6%;}
 
 
 
