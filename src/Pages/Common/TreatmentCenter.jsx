@@ -166,6 +166,7 @@ function TreatmentCenter() {
                                             <div className="me-3 d-flex">
                                                 <span className="stit">치료센터ID</span>
                                                 <input className="form-control w80"
+                                                       data-testid={'centerId'}
                                                        type="text"
                                                        maxLength="4"
                                                        ref={treatmentCenterSearchId}
@@ -240,6 +241,7 @@ function TreatmentCenter() {
                                                 <td className="cid">
                                                     <input className="form-control w-100" type="text"
                                                            maxLength="4"
+                                                           data-testid={'detailId'}
                                                            ref={centerId}
                                                            readOnly/>
                                                 </td>
@@ -247,7 +249,9 @@ function TreatmentCenter() {
                                             <tr>
                                                 <th>생활치료센터 명</th>
                                                 <td className="cname">
-                                                    <input className="form-control w-100" type="text" maxLength="100"
+                                                    <input className="form-control w-100" type="text"
+                                                           data-testid={'detailNm'}
+                                                           maxLength="100"
                                                            ref={centerNm}/>
                                                 </td>
                                             </tr>
@@ -255,7 +259,7 @@ function TreatmentCenter() {
                                                 <th>생활치료센터 위치</th>
                                                 <td className="caddr">
                                                     <textarea className="form-control w-100 h60" maxLength="500"
-                                                              ref={centerLocation}/>
+                                                              data-testid={'detailLocation'} ref={centerLocation}/>
                                                 </td>
                                             </tr>
                                             <tr>
