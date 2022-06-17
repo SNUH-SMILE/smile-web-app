@@ -441,20 +441,22 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                 else if(cell.column.id === 'bp'){
                                                     return (
                                                         <td className={cell.column.styleClassName} {...cell.getCellProps()}>
-                                                            {row.original.dbpRiskGb  === 'H'
-                                                                ? <RedSpan>{ row.original.dbpResult }</RedSpan>
-
-                                                                :row.original.dbpRiskGb  === 'L'?
-                                                                    <BlueSpan>{ row.original.dbpResult }</BlueSpan>
-                                                                    :<span >{ row.original.dbpResult }</span>
-                                                            }
-                                                            {(row.original.dbpResult || row.original.sbpResult) && <span> / </span>}
+                                                            {/* SBP */}
                                                             {row.original.sbpRiskGb  === 'H'
                                                           ? <RedSpan>{ row.original.sbpResult }</RedSpan>
 
                                                             :row.original.sbpRiskGb  === 'L'?
                                                                 <BlueSpan>{ row.original.sbpResult }</BlueSpan>
                                                             :<span >{ row.original.sbpResult }</span>
+                                                            }
+                                                            {(row.original.dbpResult || row.original.sbpResult) && <span> / </span>}
+                                                            {/* DBP */}
+                                                            {row.original.dbpRiskGb  === 'H'
+                                                                ? <RedSpan>{ row.original.dbpResult }</RedSpan>
+
+                                                                :row.original.dbpRiskGb  === 'L'?
+                                                                    <BlueSpan>{ row.original.dbpResult }</BlueSpan>
+                                                                    :<span >{ row.original.dbpResult }</span>
                                                             }
                                                         </td>
                                                     )

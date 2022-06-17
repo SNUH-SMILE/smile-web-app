@@ -92,7 +92,7 @@ function Login({setTokenInterval}) {
                                 <div className="form-input email">
                                     <input type="text"
                                            className="form-control"
-                                           placeholder="Email"
+                                           placeholder="ID"
                                            ref={idInput}
                                     />
                                 </div>

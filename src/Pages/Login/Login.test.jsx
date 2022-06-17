@@ -38,7 +38,7 @@ describe("Login Page",()=>{
             ,container)
 
         // 아이디 Input의 Value 가 '' 인지 체크
-        const id = getByPlaceholderText('Email');
+        const id = getByPlaceholderText('ID');
         expect(id.value).toBe('');
 
         // 로그인 버튼클릭
@@ -68,7 +68,7 @@ describe("Login Page",()=>{
             ,container)
 
         // 아이디가 공백인지 먼저 체크하기 때문에 아이디 Value 에 test 삽입
-        const id = getByPlaceholderText('Email');
+        const id = getByPlaceholderText('ID');
         id.value = 'test'
 
         // 패스워드 Input의 Value 가 '' 인지 체크
@@ -102,7 +102,7 @@ describe("Login Page",()=>{
 
 
         // 아이디 Value 를 'Invalid Id' 로 변경
-        const id = getByPlaceholderText('Email');
+        const id = getByPlaceholderText('ID');
         id.value = 'Invalid Id'
 
         // 패스워드 Value 를 'Password'  로 변경
@@ -147,7 +147,7 @@ describe("Login Page",()=>{
 
 
         // 아이디 Value 에 'ID' 삽입
-        const id = getByPlaceholderText('Email');
+        const id = getByPlaceholderText('ID');
         id.value = 'ID'
 
         // 패스워드 Value 에 'Invalid Password' 삽입
@@ -200,7 +200,7 @@ describe("Login Page",()=>{
             </AlertStore>
             ,container)
         // 아이디 Value 를 'Invalid Id' 로 변경
-        const id = getByPlaceholderText('Email');
+        const id = getByPlaceholderText('ID');
         id.value = 'Invalid Id'
 
         // 패스워드 Value 를 'Password'  로 변경
