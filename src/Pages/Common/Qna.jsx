@@ -57,7 +57,7 @@ function Qna(props) {
     // QNA React-Table Table Header
     const qnaTableColumn = [
         {Header: '등록일', accessor: 'regDt', styleClassName: 'dt'},
-        {Header: '문의유형', accessor: 'questionType', styleClassName: 'type'},
+        {Header: '문의유형', accessor: 'questionTypeNm', styleClassName: 'type'},
         {Header: '문의내역', accessor: 'questionContent', styleClassName: 'content text-start'},
         {Header: '환자명', accessor: 'patientNm', styleClassName: 'pNm'},
         {Header: '답변자', accessor: 'replyNm', styleClassName: 'rNm'},
