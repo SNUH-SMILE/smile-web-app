@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from "styled-components";
-import {Link} from "react-router-dom";
 
 const Card = styled.div`
   &:hover {
-    width: 144.5px;
+    width: 100%;
     margin-top: 2px;
     border: ${props => '3px solid ' + props.color + '!important' || '#666'};
   }
