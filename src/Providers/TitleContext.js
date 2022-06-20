@@ -7,9 +7,16 @@ export const TitleContext = createContext({});
  */
 const TitleStore = ({children}) => {
     const [ title, setTitle ] = useState('');
-
+    const [ mode, setMode ] = useState('');
+    const [ dashBoardData, setDashBoardData ] = useState({})
+    const [ dashBoardFunc, setDashBoardFunc ] = useState(null)
     return(
-        <TitleContext.Provider value={{title, setTitle}}>
+        <TitleContext.Provider value={{
+            title, setTitle,
+            mode, setMode,
+            dashBoardData, setDashBoardData,
+            dashBoardFunc, setDashBoardFunc
+            }}>
             {children}
         </TitleContext.Provider>
     )

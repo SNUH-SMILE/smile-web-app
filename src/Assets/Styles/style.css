@@ -203,7 +203,8 @@
     display:inline-block; width:16px; height:16px;
     border:0; outline-style:none; font-size:0; color:transparent;
     position:absolute; top:50%; transform:translateY(-50%); left:30px;
-    transition: all ease 0.25s;
+    transition: all ease 0s;
+    /*transition: all ease 0.25s;*/
     background:url("../Images/ic_menu_open.png") no-repeat center;
     z-index:10;
     cursor:pointer;
@@ -892,8 +893,8 @@ main {padding:30px;}
 .page-head.dashboard_head #menu-toggle {
     top: 30px;
 }
-.page-head.dashboard_head a.logout {top:14.5%;}
-.page-head.dashboard_head a.logout {
+.page-head.dashboard_head button.logout {top:14.5%;}
+.page-head.dashboard_head button.logout {
     top: 30px;
 }
 .dashboard_head .current .today {
@@ -1175,7 +1176,7 @@ main {padding:30px;}
 }
 
 
-.dashboard {margin-top:-90px;}
+.dashboard {margin-top:-90px;transition: 0.125s}
 .dashboard > .row {
     margin-right: calc(-.2 * var(--bs-gutter-x));
     margin-left: calc(-.2 * var(--bs-gutter-x));
@@ -1194,7 +1195,6 @@ main {padding:30px;}
 }
 .card.icard .card-header {
     padding: 5px 8px 4px;
-    background-color: #438ef3;
 }
 .card.icard .card-header.room1 {background-color:#438ef3;}
 .card.icard .card-header.room2 {background-color:#6de09c;}
@@ -1218,7 +1218,7 @@ main {padding:30px;}
 .card.icard .pinfo .bts span {
     display:inline-block; margin:0 2px;
     width:8px; height:8px; border-radius:4px; overflow:hidden;
-    background:#999;
+    /*background:#999;*/
 }
 .card.icard .pinfo .bts span.basic {background:#999;}
 .card.icard .pinfo .bts span.taste {background:#3ed06f;}

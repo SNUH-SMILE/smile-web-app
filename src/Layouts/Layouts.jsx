@@ -41,7 +41,7 @@ function Layouts({interval,setHide}) {
         <LayoutBody>
             <div className="d-flex wrapper" ref={wrapper}>
                 <Side/>
-                <div id="page-content-wrapper">
+                <div id="page-content-wrapper" style={ {maxHeight:'100vh',overflowY:'auto', transition:'5s'} }>
                     <Header wrapper={wrapper} interval={interval} setHide={setHide}/>
                     <Outlet/>
                 </div>

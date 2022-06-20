@@ -13,6 +13,8 @@ const menu = [
             {name: '생활치료센터 환자 현황', url: '/treatmentCenterPatient'},
             {name: '자가격리자 환자 현황', url: '/isolationPatient'},
             {name: '문의사항', url: '/qna'},
+            {name: '생활치료센터 대시보드', url: '/dashboard/center'},
+            {name: '자택격리환자 대시보드', url: '/dashboard/quarantine'},
         ]
     }
 
@@ -63,4 +65,4 @@ function Side() {
     );
 }
 
-export default Side;
+export default React.memo(Side);

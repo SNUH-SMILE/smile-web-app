@@ -13,6 +13,9 @@ import CommonCode from "./Pages/Common/CommonCode";
 import Admission from "./Pages/Common/Admission";
 import Isolation from "./Pages/Common/Isolation";
 import Qna from "./Pages/Common/Qna";
+import CenterAdmissionBoard from "./Pages/Dashboard/CenterAdmissionBoard";
+import QuarantinePatientDashboard from "./Pages/Dashboard/QuarantinePatientDashboard";
+import AdmissionDetail from "./Pages/Dashboard/AdmissionDetail";
 
 function App() {
 
@@ -85,6 +88,9 @@ function App() {
                     <Route exact path={'/treatmentCenterPatient'} element={<Admission/>}/>
                     <Route exact path={'/isolationPatient'} element={<Isolation/>}/>
                     <Route exact path={'/qna'} element={<Qna/>}/>
+                    <Route exact path={'/dashboard/center'} element={<CenterAdmissionBoard/>}/>
+                    <Route exact path={'/dashboard/quarantine'} element={<QuarantinePatientDashboard/>}/>
+                    <Route exact path={'/admission/detail'} element={<AdmissionDetail/>}/>
                 </Route>
                 <Route exact path={'*'} element={<Error404/>}/>
             </Routes>
