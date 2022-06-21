@@ -21,7 +21,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
     const personCharge = useRef();
     const centerId = useRef();
     const room = useRef();
-
+    const [a,setA] = useState('')
     const saveData = {
          admissionId :admissionId,
          patientId :patientId,
@@ -40,8 +40,13 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
     function getRoom(centerId) {
         commonCode('CD005').then(({data}) => {
             setRooms(data.result.filter(value => value.property1 === centerId))
-        })
+        }).finally(setA(admissionSaveModalObj.data.room))
     }
+
+    const onChangeA = (e) =>{
+        setA(e.target.value)
+    }
+
     useEffect(()=>{
         if(centerList.length> 0){
             getRoom(centerList[0].centerId)
@@ -169,7 +174,9 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                                 onChange={(e)=>getRoom(e.target.value)}
                                                 defaultValue={centerList.length>0&&centerList[0].centerId}
                                         >
+                                            <option value={''}>선택</option>
                                             {
+
                                                 centerList.map(value =>
                                                     <option key={value.centerId} value={value.centerId}>
                                                         {value.centerNm}
@@ -182,13 +189,17 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                 <tr>
                                     <th>위치</th>
                                     <td>
-                                        <select className={'form-select'} ref={room}>
+                                        <select className={'form-select'} ref={room}
+                                                value={a}
+                                                onChange={(e)=>onChangeA(e)}
+                                        >
+                                            <option value={''}>선택</option>
                                             {
                                                 rooms.map(value =>
-                                                    <option key={value.detailCd} value={value.detailCd}>
+                                                    <option key={value.detailCd} value={value.detailCd} >
                                                         {value.detailCdNm}
                                                     </option>
-                                                )
+                                                 )
                                             }
                                         </select>
                                     </td>

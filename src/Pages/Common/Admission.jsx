@@ -195,10 +195,14 @@ function Admission() {
     }
     // 저장 모달 열기 (admissionId 로 api 요청 하려고 인자로 받음)
     const handledAdmissionSaveModal = (admissionId) =>{
-        if(admissionId === ''){
+        if(admissionId === '신규'){
             setAdmissionSaveModalObj({show: true, data:{},confirmFunc: create})
         }
         else{
+            if(!admissionId){
+                alert('입소자를 선택해주세요');
+                return;
+            }
             admissionApi.detail(admissionId).then(({data}) => {
                 setAdmissionSaveModalObj({show: true, data: {...data.result}, confirmFunc: update})
             })
@@ -273,7 +277,7 @@ function Admission() {
                                                 <div className="btn_wrap d-flex">
                                                     <button type="button" className="btn btn-gray" onClick={(e)=>handledOnSearch(e)}>검색</button>
                                                     <button type="button" className="btn btn-white"
-                                                            onClick={()=>handledAdmissionSaveModal('')}>신규
+                                                            onClick={()=>handledAdmissionSaveModal('신규')}>신규
                                                     </button>
                                                     <button type="button" className="btn btn-ccolor"
                                                             onClick={()=>handledAdmissionSaveModal(selectedAdmissionId.current)}>수정

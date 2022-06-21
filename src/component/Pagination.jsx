@@ -29,12 +29,13 @@ function Pagination({paginationObj, totalPageCount,handledList}) {
         setActiveNum(num)
     }
     const handledPrev = () =>{
-        const num = Math.floor(((currentPageNo/10)-1)*10);
+        const num = firstPageNoOnPageList-10;
         handledList(prevValue=>({...prevValue, currentPageNo: num}))
         setActiveNum(num)
     }
     const handledNext = () =>{
-        const num = Math.floor(((currentPageNo/10)+1)*10);
+        const num = firstPageNoOnPageList+10;
+        console.log(num);
         handledList(prevValue=>({...prevValue, currentPageNo: num}))
         setActiveNum(num)
     }
