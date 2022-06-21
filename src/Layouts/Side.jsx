@@ -2,6 +2,18 @@ import React from 'react';
 import SMILELogo from '../Assets/Images/main_logo.png';
 import {NavLink, useLocation} from "react-router-dom";
 
+const onClickParent = (e) =>{
+    if(e.currentTarget.ariaExpanded === 'false'){
+        e.currentTarget.ariaExpanded = 'true'
+        e.currentTarget.nextElementSibling.classList.add('show')
+    }
+    else{
+        e.currentTarget.ariaExpanded = 'false'
+        e.currentTarget.nextElementSibling.classList.remove('show')
+    }
+
+}
+
 const menu = [
     {
         parent: '공통관리',
@@ -17,6 +29,7 @@ const menu = [
             {name: '자택격리환자 대시보드', url: '/dashboard/quarantine'},
         ]
     }
+
 
 ]
 function Side() {
@@ -34,7 +47,8 @@ function Side() {
                             <li className="py-1" key={menu.parent}>
                                 <a className="nav-link sidebar-link" data-bs-toggle="collapse" href={"#collapse"+idx}
                                    role="button"
-                                   aria-controls="collapse1"
+                                   onClick={(e)=>onClickParent(e,"#collapse"+idx)}
+                                   aria-controls={"collapse" + idx}
                                    aria-expanded={current ? 'true' : 'false'}
 
                                 >
