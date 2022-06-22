@@ -135,7 +135,7 @@ function Qna(props) {
                                                     <span className="stit">센터</span>
                                                     <select className="form-select" ref={centerId} defaultValue={''} onChange={(e)=>handledSearchRequirement(e)}>
                                                         <option value={''}>전체</option>
-                                                        {userTreatmentCenter.map(value =>
+                                                        {userTreatmentCenter&&userTreatmentCenter.map(value =>
                                                             <option key={value.centerId} value={value.centerId}>
                                                                 {value.centerNm }
                                                             </option>

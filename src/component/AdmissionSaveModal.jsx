@@ -172,12 +172,12 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                         <select className={'form-select'}
                                                 ref={centerId}
                                                 onChange={(e)=>getRoom(e.target.value)}
-                                                defaultValue={centerList.length>0&&centerList[0].centerId}
+                                                defaultValue={centerList&&centerList.length>0&&centerList[0].centerId}
                                         >
                                             <option value={''}>선택</option>
                                             {
 
-                                                centerList.map(value =>
+                                                centerList&&centerList.map(value =>
                                                     <option key={value.centerId} value={value.centerId}>
                                                         {value.centerNm}
                                                     </option>

@@ -245,6 +245,7 @@ function Admission() {
                                                         ref={searchAdmissionCenter}
                                                         onChange={selectAdmissionListByCenter}
                                                 >
+                                                    <option value={''}>선택</option>
                                                     {
                                                         loginUserTreatmentCenterList&&
                                                         loginUserTreatmentCenterList.map(value =>
