@@ -57,9 +57,11 @@ function Admission() {
             .then(({data}) => setLoginUserTreatmentCenterList(data.result.userTreatmentCenterVOList))
             .catch(e=>console.log('ERROR getLonginUserInfo'))
             .then(()=>{
-                admissionApi.select().then(({data}) => {
-                    setPaginationAndAdmissionTableDat(data);
-                })
+                if(searchAdmissionCenter.current.value){
+                    admissionApi.select().then(({data}) => {
+                        setPaginationAndAdmissionTableDat(data);
+                    })
+                }
             })
     }
 
