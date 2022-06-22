@@ -19,6 +19,7 @@ function Login({setTokenInterval}) {
     const idInput = useRef();  //ID
     const passInput = useRef();  //Pass
     const rememberYnChecked = useRef();  //Remember Me
+    const loginBtn = useRef();  //Remember Me
 
     const handledLoginWithEnter = (e) => {
         if(e.keyCode===13){
@@ -101,7 +102,7 @@ function Login({setTokenInterval}) {
                                     <input type="password"
                                            className="form-control"
                                            placeholder="Password"
-                                           onKeyUp={(e)=>handledLoginWithEnter(e)}
+                                           onKeyDown={(e)=>handledLoginWithEnter(e)}
                                            ref={passInput}
                                     />
                                 </div>
@@ -115,7 +116,7 @@ function Login({setTokenInterval}) {
                                     </label>
                                 </div>
                                 <div className="mt-5 mb-5">
-                                    <button type="button" className="btn btn-block" onClick={handledLogin}>로그인</button>
+                                    <button type="button" className="btn btn-block" ref={loginBtn} onClick={handledLogin}>로그인</button>
                                 </div>
                             </form>
                         </div>
