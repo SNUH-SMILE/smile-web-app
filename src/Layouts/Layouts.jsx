@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import {Outlet} from "react-router-dom";
 import Side from "./Side";
 import Header from "./Header";
@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.min';
 import '../Assets/Styles/style.css';
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import {TitleContext} from "../Providers/TitleContext";
 
 const LayoutBody = styled.div`
   background: #f5f5f5;
@@ -36,12 +37,12 @@ function Layouts({interval,setHide}) {
     window.onresize = function () {
         resize();
     };
-
+    const{mode}=useContext(TitleContext)
     return (
         <LayoutBody>
             <div className="d-flex wrapper" ref={wrapper}>
                 <Side/>
-                <div id="page-content-wrapper" style={ {maxHeight:'100vh',overflowY:'auto', transition:'5s'} }>
+                <div id="page-content-wrapper" style={ mode ==='Center' || mode ==='Quarantine' ? {maxHeight:'100vh',overflowY:'auto', transition:'5s'}: null }>
                     <Header wrapper={wrapper} interval={interval} setHide={setHide}/>
                     <Outlet/>
                 </div>

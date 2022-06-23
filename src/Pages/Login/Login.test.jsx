@@ -184,7 +184,7 @@ describe("Login Page",()=>{
 
 
 
-        const{debug, getByPlaceholderText, getByText } = render(
+        const{ getByPlaceholderText, getByText } = render(
             <AlertStore>
                 <TitleStore>
                     <BrowserRouter>
@@ -223,7 +223,6 @@ describe("Login Page",()=>{
             expect(screen.getByRole('link',{current:'page'})).toHaveTextContent('생활치료센터') // 사이드메뉴에 생활치료센터 메뉴가 active 표시가 되었는지 체크
             expect(screen.getByRole('pageTitle')).toHaveTextContent('생활치료센터 관리'); //헤더에 생황치료센터 관리 글자가 표시되었는지 체크
             expect(screen.getByText('생활치료센터 리스트')).toBeInTheDocument(); // 화면에 생황치료센터 리스트 글자가 표시되었는지 체크
-            debug()
         })
     })
 })
