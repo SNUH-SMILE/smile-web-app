@@ -6,6 +6,7 @@ import TitleStore from "../../Providers/TitleContext";
 import {BrowserRouter} from "react-router-dom";
 import HcAlert from "../../component/HCAlert";
 import Item from "./Item";
+import userEvent from "@testing-library/user-event";
 
 let container;
 
@@ -758,5 +759,94 @@ describe('Item page', ()=>{
         })
     })
 
+    // 참고치From 최대 최소값 Validation
+    test('Item RefFrom Validation',async ()=>{
+        const {getByRole,getByText} = render(
+            <AlertStore>
+                <TitleStore>
+                    <BrowserRouter>
+                        <Item/>
+                    </BrowserRouter>
+                </TitleStore>
+                <HcAlert/>
+            </AlertStore>
+            , container)
+
+        await waitFor(() => {
+            expect(getByText("I0001")).toBeInTheDocument();
+            expect(getByText("체온")).toBeInTheDocument();
+            expect(getByText("℃")).toBeInTheDocument();
+            expect(getByText("35")).toBeInTheDocument();
+            expect(getByText("38")).toBeInTheDocument();
+        })
+
+        const detailItemRF = getByRole('detailItemRF');
+
+        userEvent.type(detailItemRF,'32800')
+        expect(detailItemRF.value).toBe('3280')
+
+        detailItemRF.value = ''
+        expect(detailItemRF.value).toBe('')
+
+        userEvent.type(detailItemRF,'-32800')
+        expect(detailItemRF.value).toBe('-3280')
+
+        detailItemRF.value = ''
+        expect(detailItemRF.value).toBe('')
+
+        userEvent.type(detailItemRF,'-32767')
+        expect(detailItemRF.value).toBe('-32767')
+
+        detailItemRF.value = ''
+        expect(detailItemRF.value).toBe('')
+
+        userEvent.type(detailItemRF,'32766')
+        expect(detailItemRF.value).toBe('32766')
+    })
+
+    // 참고치To 최대 최소값 Validation
+    test('Item RefTo Validation',async ()=>{
+        const {getByRole,getByText} = render(
+            <AlertStore>
+                <TitleStore>
+                    <BrowserRouter>
+                        <Item/>
+                    </BrowserRouter>
+                </TitleStore>
+                <HcAlert/>
+            </AlertStore>
+            , container)
+
+        await waitFor(() => {
+            expect(getByText("I0001")).toBeInTheDocument();
+            expect(getByText("체온")).toBeInTheDocument();
+            expect(getByText("℃")).toBeInTheDocument();
+            expect(getByText("35")).toBeInTheDocument();
+            expect(getByText("38")).toBeInTheDocument();
+        })
+
+        const detailItemRT = getByRole('detailItemRT');
+
+        userEvent.type(detailItemRT,'32800')
+        expect(detailItemRT.value).toBe('3280')
+
+        detailItemRT.value = ''
+        expect(detailItemRT.value).toBe('')
+
+        userEvent.type(detailItemRT,'-32800')
+        expect(detailItemRT.value).toBe('-3280')
+
+        detailItemRT.value = ''
+        expect(detailItemRT.value).toBe('')
+
+        userEvent.type(detailItemRT,'-32767')
+        expect(detailItemRT.value).toBe('-32767')
+
+        detailItemRT.value = ''
+        expect(detailItemRT.value).toBe('')
+
+        userEvent.type(detailItemRT,'32766')
+        expect(detailItemRT.value).toBe('32766')
+    })
 
 })
