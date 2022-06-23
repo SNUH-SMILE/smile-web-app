@@ -71,6 +71,7 @@ function TreatmentCenterModal({treatmentCenterModalObject,handleClose}) {
                 <button
                     type="button"
                     className="btn btn-pr4"
+                    role={'selectButton'}
                     onClick={ () => handleClose('confirm', selectedData) }
                 >선택</button>
             </Modal.Footer>

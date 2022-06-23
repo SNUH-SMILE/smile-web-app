@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState} from 'react';
 import styled from "styled-components";
 import TreatmentCenterModal from "../../component/TreatmentCenterModal";
-import commonCode from "../../Apis/CommonCode";
 import UserApi from "../../Apis/UserApi";
 import ReactTable from "../../component/ReactTable";
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
@@ -24,10 +23,6 @@ function User() {
     const {confirm, alert} = useAlert();
 
     UseSetPageTitle('사용자 관리');
-    useEffect(()=>{
-        selectUserList('data');
-    },[])
-
     /**
      * 생활치료센터 모달
      */
@@ -191,7 +186,7 @@ function User() {
 
     // 선택 사용자 생활치료센터 테이블 헤더
     const userTreatmentCenterTableColumn = [
-        {Header: <TreatmentCenterHeaderCheckBox ref={treatmentCenterHeaderCB} className="form-check-input" type="checkbox" onClick={allCheck}/>, accessor: 'delYn', styleClassName:'cid ', editElement:'checkbox', editEvent:changeDelYn},
+        {Header: <TreatmentCenterHeaderCheckBox role="allCheck" ref={treatmentCenterHeaderCB} className="form-check-input" type="checkbox" onClick={allCheck}/>, accessor: 'delYn', styleClassName:'cid ', editElement:'checkbox', editEvent:changeDelYn},
         {Header: '센터ID', accessor: 'centerId',styleClassName:'cname'},
         {Header: '센터명', accessor: 'centerNm'},
         {Header: '메인여부', accessor: 'mainYn', styleClassName:'cname',editElement:'radio',editEvent:changeMainYn},
@@ -349,7 +344,7 @@ function User() {
                                                 <div className="tbl_title nobar">상세정보</div>
                                                 <div className="ms-auto">
                                                     <div className="btn_wrap d-flex">
-                                                        <button type="button" className="btn btn-wgray" onClick={deleteUser}>삭제</button>
+                                                        <button type="button" className="btn btn-wgray" role={'deleteUserButton'} onClick={deleteUser}>삭제</button>
                                                         <button type="button" className="btn btn-white btn-new" onClick={clear}>신규</button>
                                                         <button type="button" className="btn btn-ccolor" onClick={save}>저장</button>
                                                     </div>
@@ -362,14 +357,14 @@ function User() {
                                                 <tr>
                                                     <th>사용자ID</th>
                                                     <td className="uid">
-                                                        <input className="form-control w-100" type="text"
+                                                        <input className="form-control w-100" type="text" role={'detailUserID'}
                                                                ref={userId} defaultValue={''} readOnly/>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th>비밀번호</th>
                                                     <td>
-                                                        <input className="form-control w-100" type="text"
+                                                        <input className="form-control w-100" type="text" role={'detailUserPW'}
                                                                maxLength="20" ref={userPw}
                                                                defaultValue={''}/>
                                                     </td>
@@ -377,7 +372,7 @@ function User() {
                                                 <tr>
                                                     <th>사용자명</th>
                                                     <td className="uname">
-                                                        <input className="form-control w-100" type="text"
+                                                        <input className="form-control w-100" type="text" role={'detailUserNM'}
                                                                maxLength="500" ref={userNm}
                                                                defaultValue={''}/>
                                                     </td>
@@ -385,7 +380,7 @@ function User() {
                                                 <tr>
                                                     <th>리마크</th>
                                                     <td className="umark">
-                                                        <textarea className="form-control h100" ref={remark}
+                                                        <textarea className="form-control h100" ref={remark} role={'detailUserRM'}
                                                                   defaultValue={''} maxLength="100"/>
                                                     </td>
                                                 </tr>
@@ -404,8 +399,8 @@ function User() {
                                             <div className="d-flex">
                                                 <div className="tbl_title nobar">생활치료센터 리스트</div>
                                                 <div className="ms-auto">
-                                                    <div className="btn_wrap d-flex">
-                                                        <button type="button" className="btn btn-wgray" onClick={deleteTreatmentCenter}>삭제</button>
+                                                    <div className="btn_wrap d-flex" >
+                                                        <button type="button" className="btn btn-wgray" role={'deleteTreatmentCenter'} onClick={deleteTreatmentCenter}>삭제</button>
                                                         <button type="button"
                                                                 className="btn btn-ccolor"
                                                                 onClick={()=> handleTreatmentCenterModalOpen('checkbox')}
@@ -416,7 +411,7 @@ function User() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="table-body h400 p-0">
+                                        <div className="table-body h400 p-0" role={'userCenterList'}>
                                             <ReactTable tableHeader={userTreatmentCenterTableColumn} tableBody={userTreatmentCenterList} />
                                         </div>
                                     </div>
