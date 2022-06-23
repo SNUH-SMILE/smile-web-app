@@ -46,6 +46,9 @@ function AdmissionDetail() {
                         setNoticeList(data.result);
                         setNoticeText('');
                     }
+                    else {
+                        alert(data.message);
+                    }
                 });
             }
         }
