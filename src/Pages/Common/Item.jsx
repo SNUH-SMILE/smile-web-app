@@ -247,6 +247,7 @@ function Item() {
                                                        type="text"
                                                        defaultValue={''}
                                                        maxLength="5"
+                                                       role={'searchItemId'}
                                                        ref={searchItemId}
                                                        onKeyUp={ (e) => handledOnSearch(e) }
                                                 />
@@ -306,6 +307,7 @@ function Item() {
                                                     <input className="form-control w-100"
                                                            type="text"
                                                            defaultValue={''}
+                                                           role={'detailItemID'}
                                                            ref={itemId}
                                                            readOnly
                                                     />
@@ -317,6 +319,7 @@ function Item() {
                                                     <input className="form-control w-100"
                                                            type="text"
                                                            defaultValue={''}
+                                                           role={'detailItemNM'}
                                                            maxLength="50"
                                                            ref={itemNm}
                                                     />
@@ -328,6 +331,7 @@ function Item() {
                                                     <input className="form-control w-100"
                                                            type="text"
                                                            defaultValue={''}
+                                                           role={'detailItemUnit'}
                                                            maxLength="20"
                                                            ref={unit}
                                                     />
@@ -340,6 +344,7 @@ function Item() {
                                                            name="refFrom"
                                                            type="text"
                                                            ref={refFrom}
+                                                           role={'detailItemRF'}
                                                            value={val.refFrom}
                                                            onChange={ (e) => handleChange(e)}
                                                     />
@@ -352,6 +357,7 @@ function Item() {
                                                            name="refTo"
                                                            type="text"
                                                            ref={refTo}
+                                                           role={'detailItemRT'}
                                                            value={val.refTo}
                                                            onChange={ (e) => handleChange(e)}
                                                     />
