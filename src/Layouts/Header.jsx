@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from "prop-types";
 import {TitleContext} from "../Providers/TitleContext";
 import AuthenticationApi from "../Apis/AuthenticationApi";
@@ -48,11 +48,14 @@ const DashboardHeader = ({handledSideBar, title, handledLogOut, mode, data, dash
     // const updateScroll = () => {
     //     setScrollPosition(document.querySelector('#page-content-wrapper').scrollTop);
     // }
-
+    const [selectCenter,setSelectCenter] = useState('');
     useEffect(()=>{
         // document.querySelector('#page-content-wrapper').addEventListener('scroll', updateScroll);
         if(mode==='Center'){
-            getLonginUserInfo().then(({data}) => setCenters(data.result.userTreatmentCenterVOList));
+            getLonginUserInfo().then(({data}) => {
+                setCenters(data.result.userTreatmentCenterVOList)
+                setSelectCenter(data.mainCenterId);
+            })
         }
     },[])
     return (
@@ -70,14 +73,24 @@ const DashboardHeader = ({handledSideBar, title, handledLogOut, mode, data, dash
                     {mode==='Center' &&
                         <>
                             <span className="dash"/>
+                            {centers.length>0?
                             <select className="form-select w-auto d-inline bg-none"
                                     style={{minWidth:'112px'}}
-                                    onChange={(e)=>dashBoardFunc(e)}>
+                                    value={centers[0].centerId}
+                                    onChange={(e)=>dashBoardFunc(e)}
+                            >
                                 <BlackOption value={''}>선택</BlackOption>
-                                {centers&&centers.map(value => {
+                                {centers.map(value => {
                                     return (<BlackOption key={value.centerId} value={value.centerId}>{value.centerNm}</BlackOption>)
                                 })}
                             </select>
+                                :<select className="form-select w-auto d-inline bg-none"
+                                         style={{minWidth:'112px'}}
+                                         onChange={(e)=>dashBoardFunc(e)}
+                                >
+                                    <BlackOption value={''}>선택</BlackOption>
+                                </select>
+                            }
                         </>
                     }
                 </div>
