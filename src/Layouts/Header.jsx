@@ -48,13 +48,11 @@ const DashboardHeader = ({handledSideBar, title, handledLogOut, mode, data, dash
     // const updateScroll = () => {
     //     setScrollPosition(document.querySelector('#page-content-wrapper').scrollTop);
     // }
-    const [selectCenter,setSelectCenter] = useState('');
     useEffect(()=>{
         // document.querySelector('#page-content-wrapper').addEventListener('scroll', updateScroll);
         if(mode==='Center'){
             getLonginUserInfo().then(({data}) => {
                 setCenters(data.result.userTreatmentCenterVOList)
-                setSelectCenter(data.mainCenterId);
             })
         }
     },[])
