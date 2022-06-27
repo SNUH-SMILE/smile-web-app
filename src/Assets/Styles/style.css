@@ -1537,3 +1537,12 @@ main {padding:30px;}
 .sort.down {
     background:url("../Images/ic_sort02.png") no-repeat center;
 }
+
+.modal-xlg{
+    max-width:1600px;
+}
+
+.apexcharts-tooltip {
+    background: #ffffff;
+    color: black;
+}

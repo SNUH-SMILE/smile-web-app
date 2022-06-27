@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 import AdmissionDetailApi from "../../Apis/AdmissionDetailApi";
 import {TitleContext} from "../../Providers/TitleContext";
@@ -9,14 +9,33 @@ function AdmissionDetail() {
     UseSetPageTitle('환자상세','Detail')
 
     const{alert,confirm} = useAlert();
-    const {setDashBoardData} = useContext(TitleContext);
+    const {setDashBoardData,setDashBoardFunc} = useContext(TitleContext);
     const admissionDetailApi=new AdmissionDetailApi(localStorage.getItem('admissionId'));
     const [noticeList,setNoticeList] = useState([])
     useEffect(()=>{
         admissionDetailApi.select().then(({data}) => {
-            console.log(data);
             setDashBoardData(data.result.headerVO);
             setNoticeList(data.result.noticeVOList);
+        });
+        setDashBoardFunc(()=>getVitalChartData);
+    },[])
+
+    const getVitalChartData = useCallback((
+        setHeader,
+        setBtResultList,
+        setSbpResultList,
+        setDbpResultList,
+        setRrResultList,
+        setSpo2ResultList,
+        setPrResultList  )=>{
+        admissionDetailApi.getVitalData('').then(({data}) => {
+            setHeader(data.result.headerVO)
+            setBtResultList(data.result.btResultList)
+            setSbpResultList(data.result.sbpResultList)
+            setDbpResultList(data.result.dbpResultList)
+            setRrResultList(data.result.rrResultList)
+            setSpo2ResultList(data.result.spo2ResultList)
+            setPrResultList(data.result.prResultList)
         });
     },[])
 
@@ -127,31 +146,9 @@ function AdmissionDetail() {
                             <button type="button" className="ms-auto btn-close"/>
                         </div>
                         <ul className="scrollbar">
-                        {/*
-                           <li>
-                                <div className="msg">
-                                    금일 문진작성이 진해되지 않았습니다.
-                                    문진을 작성해주세요. 금일 문진작성이
-                                    진해되지 않았습니다.
-                                </div>
-                                <div className="from d-flex">
-                                    <span>관리자</span>
-                                    <span className="ms-auto">2021-12-07 00:00:00</span>
-                                </div>
-                            </li>
-                            */}
                             {noticeList.map(value => {
                                 return(
                                     <NoticeCard data={value} key={value.noticeSeq}/>
-                                    // <li key={value.noticeSeq} tabIndex={-1}>
-                                    //     <div className="msg">
-                                    //         {value.notice}
-                                    //     </div>
-                                    //     <div className="from d-flex">
-                                    //         <span>{value.regNm}</span>
-                                    //         <span className="ms-auto">{value.regDt}</span>
-                                    //     </div>
-                                    // </li>
                                 )
                             })}
                         </ul>

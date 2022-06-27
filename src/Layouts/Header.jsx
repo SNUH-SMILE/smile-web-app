@@ -29,6 +29,17 @@ const MH83Li = styled.li`
   min-height: 83px;
 `
 
+const HealthSignal = styled.span`
+  display: inline-block;
+  margin: 0 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: ${props => props.value === 'Y' ? props.color : '#999'}!important;
+`
+
+
 const CommonHeader = ({handledSideBar, title, handledLogOut}) => {
     return (
         <nav className="page-head">
@@ -123,7 +134,7 @@ const DashboardHeader = ({handledSideBar, title, handledLogOut, mode, data, dash
     )
 }
 
-const DetailHeader = ({title,handledSideBar,handledLogOut,dashBoardData})=>{
+const DetailHeader = ({title,handledSideBar,handledLogOut,dashBoardData, dashBoardFunc})=>{
     const [show, setShow] = useState(false);
     const showVitalsignModal = ()=>{
         setShow(true)
@@ -146,8 +157,10 @@ const DetailHeader = ({title,handledSideBar,handledLogOut,dashBoardData})=>{
                     <div className="col col-4 d-flex flex-column justify-content-start">
                         <div className="current-head">
                             <div className="bts2 is-tooltip d-flex">
-                                <span className="taste" title="미각"/>
-                                <span className="smell" title="후각"/>
+                                {/*<HealthSignal value={dashBoardData ?'N':dashBoardData.healthSignalVO.signal1Yn} color={'#3ed06f'}/>*/}
+                                <HealthSignal value={dashBoardData.healthSignalVO?.signal1Yn} color={'#3ed06f'}/>
+                                {/*<HealthSignal value={dashBoardData ?'N':dashBoardData.healthSignalVO.signal2Yn} color={'#d03e3e'}/>*/}
+                                <HealthSignal value={dashBoardData.healthSignalVO?.signal2Yn} color={'#d03e3e'}/>
                             </div>
                             <h2 className="me-3">{dashBoardData.patientNm}</h2>
                             <span>{dashBoardData.dispNameDetailInfo}</span>
@@ -344,7 +357,7 @@ const DetailHeader = ({title,handledSideBar,handledLogOut,dashBoardData})=>{
                 </div>
             </div>
         </nav>
-            <VitalsignModal show={show} handledClose={hideVitalsignModal}/>
+            <VitalsignModal show={show} handledClose={hideVitalsignModal} dashBoardFunc={dashBoardFunc}/>
         </>
     )
 }
@@ -378,7 +391,7 @@ function Header({wrapper, interval, setHide}) {
     return (
         mode === 'Detail' ?
             <DetailHeader handledSideBar={handledSideBar} title={title} handledLogOut={handledLogOut}
-                          dashBoardData={dashBoardData}/>
+                          dashBoardData={dashBoardData} dashBoardFunc={dashBoardFunc}/>
             :
         mode !== 'Center' && mode !== 'Quarantine' ?
             // 공통

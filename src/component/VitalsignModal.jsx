@@ -3,208 +3,226 @@ import {Modal} from "react-bootstrap";
 import Chart from "react-apexcharts"
 import ApexCharts from 'apexcharts';
 import styled from "styled-components";
+
 const VitalButton = styled.button`
   height: 35px;
-  background: ${props => props.show ?'#005580' : 'gray'};
+  background: ${props => props.show ? '#005580' : 'gray'};
   color: white;
   margin-right: 5px;
 `
 const VitalSpan = styled.span`
   font-size: 12px;
 `
-const vitalChart = {
+const HealthSignal = styled.span`
+  display: inline-block;
+  margin: 0 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: ${props => props.value === 'Y' ? props.color : '#999'} !important;
+`
+let ko = require("apexcharts/dist/locales/ko.json");
 
-    series: [
-        {
-            name: "수축기",
-            type: "line",
-            data: [118, 119, 121, 117, 118, 119, 122, 118, 119, 121, 117],
-        },
-        {
-            name: "이완기",
-            type: "line",
-            data: [75, 76, 80, 77, 77, 75, 71, 75, 76, 80, 77]
-        },
-        {
-            name: "심박수",
-            type: "line",
-            data: [34, 44, 54, 21, 12, 43, 33, 23, 66, 66, 58]
-        },
-        {
-            name: "호흡수",
-            type: "line",
-            data: [44, 24, 34, 81, 22, 63, 31, 13, 16, 56, 38]
-        },
-        {
-            name: "체온",
-            type: "line",
-            data: [74, 84, 94, 71, 82, 93, 73, 83, 96, 76, 88]
-        },
-        {
-            name: "산소포화도",
-            type: "line",
-            data: [44, 55, 41, 67, 22, 43, 44, 55, 41, 67, 22],
-        },
-    ],
-    options : {
-        chart: {
-            id:'vitalChart',
-            height: 550,
-            type: "line",
-            toolbar: {
-                show: false
+
+function VitalsignModal({show, handledClose, dashBoardFunc}) {
+
+    const [btResultList, setBtResultList] = useState([])
+    const [sbpResultList, setSbpResultList] = useState([])
+    const [dbpResultList, setDbpResultList] = useState([])
+    const [rrResultList, setRrResultList] = useState([])
+    const [spo2ResultList, setSpo2ResultList] = useState([])
+    const [prResultList, setPrResultList] = useState([])
+    const [header, setHeader] = useState({})
+    const vitalChart = {
+        series: [
+            {
+                name: "수축기",
+                type: "line",
+                data: sbpResultList
             },
-            animations: {
-                enabled: false
-            }
-        },
-        colors: ["#9CBAE3", "#646464", "#E73323", "#F4C243", "#A1CE63", "#67359A",],
-        dataLabels: {
-            enabled: false,
-            //     enabledOnSeries: [0, 1, 2, 3, 4],
-            //     style:{
-            //         colors: ["#9CBAE3", "#646464", "#E73323", "#F4C243", "#A1CE63", "#67359A",],
-            //     },
-            //     background: {
-            //         enabled: true,
-            //         foreColor: '#fff',
-            //         borderRadius: 2,
-            //         padding: 4,
-            //         opacity: 0.9,
-            //         borderWidth: 1,
-            //         borderColor: '#fff'
-            //     },
-        },
-        stroke: {
-            width: 3,
-            curve: "straight",
-        },
-        title: {
-            text: '',
-            align: 'left'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                borderRadius: 10
+            {
+                name: "이완기",
+                type: "line",
+                data: dbpResultList
             },
-        },
-        fill: {
-            //opacity: [0.85, 0.25, 1],
-            gradient: {
-                inverseColors: false,
-                shade: "light",
-                type: "vertical",
-                opacityFrom: 0.85,
-                opacityTo: 0.55,
-                stops: [0, 100, 100, 100],
+            {
+                name: "심박수",
+                type: "line",
+                data: prResultList
             },
-        },
-        xaxis: {
-            categories: ["3/25", "3/26", "3/27", "3/28", "3/29", "3/30", "4/1", "4/2", "4/3", "4/4", "4/5"],
-            title: {
-                text: "",
+            {
+                name: "호흡수",
+                type: "line",
+                data: rrResultList,
             },
-            //type: 'datetime'
-        },
-        yaxis: {
-            title: {
-                text: "",
+            {
+                name: "체온",
+                type: "line",
+                data: btResultList
             },
-            min: 0,
-            max: 150,
-        },
-        legend: {
-            show: false,
-            position: "top",
-            // horizontalAlign: "middle",
-            // floating: true,
-            offsetY: -0,
-            offsetX: -5,
+            {
+                name: "산소포화도",
+                type: "line",
+                data: spo2ResultList
+            },
+        ],
+        options: {
+            chart: {
+                id: 'vitalChart',
+                height: 550,
+                type: "line",
+                toolbar: {
+                    show: true
+                },
+                animations: {
+                    enabled: false
+                },
+                locales: [ko],
+                defaultLocale: 'ko'
+            },
+            colors: ["#9CBAE3", "#646464", "#E73323", "#F4C243", "#A1CE63", "#67359A",],
             markers: {
-                width: 5,
-                height: 0,
+                size: 0,
+                hover: {
+                    size: 3
+                }
             },
-            formatter: function(seriesName, opts, idx) {
-                var a = () => {
-                    console.log('aaa')
-                }
-                console.log(seriesName)
-                console.log(opts)
-                console.log(idx)
-                if(opts.seriesIndex === 0){
-                    return (
-                        "<div class='d-flex'>"
-                        +"<div class='d-flex'>"
-                        +"<button class='btn btn-sm p-0' style='height: 30px; background-color:#005580; color:white'>"
-                        +'전체선택'
-                        +"</button>"
-                        + "</div>"
-                        +"<div class='d-flex ms-3'>"
-                        +"<button class='btn btn-sm p-0' style='height: 30px; background-color:#005580; color:white'>"
-                        +"혈압"
-                        +"</button>"
-                        + "<div class='d-flex flex-column ms-1' style='height: 32px;'>"
-                        +"<span><span style=' min-width: 5px; min-height: 5px; color:" +opts.w.config.colors[0]+"'>■</span>이완기</span>"
-                        +"<span class='mt-1'><span style=' min-width: 5px; min-height: 5px; color:" +opts.w.config.colors[1]+"'>■</span>수축기</span>"
-                        + "</div>"
-                        + "</div>"
-                        + "</div>"
-                    )
-                }
-                else if( opts.seriesIndex === 1 ){
-                    return null;
-
-                }
-                else if (opts.seriesIndex !== 1){
-                    return (
-                        `
-                            <div class='d-flex'>
-                                <button class='btn btn-sm p-0' style='height: 30px; background-color:#005580; color:white'
-                                onclick="${a}">
-                                    ${seriesName}
-                                </button>
-                                <div class='d-flex align-items-center ms-1'  style='height: 32px;'>
-                                    <span style=' min-width: 5px; min-height: 5px; color:${opts.w.config.colors[opts.seriesIndex]}'>■</span>
-                                </div>
-                            </div>
-                            `
-                        // " <div class='d-flex'>"
-                        // +"<button class='btn btn-sm p-0' style='height: 30px; background-color:#005580; color:white' ">"
-                        // + seriesName
-                        // +"</button>"
-                        // + "<div class='d-flex align-items-center ms-1'  style='height: 32px;'>"
-                        // +"<span style=' min-width: 5px; min-height: 5px; color:" +opts.w.config.colors[opts.seriesIndex]+"'>■</span>"
-                        // + "</div>"
-                        // + "</div>"
-                    )
-                }
-                // +"<i class='bi bi-square-fill'></i>"
-
+            tooltip: {
+                enabled: true,
+                enabledOnSeries: undefined,
+                shared: true,
+                followCursor: false,
+                intersect: false,
+                inverseOrder: false,
+                x: {
+                    show: true,
+                    formatter: function (value) {
+                        const xTitleDate = new Date(value);
+                        const xTitleDateMonth = xTitleDate.getMonth() + 1 > 9 ? (xTitleDate.getMonth() + 1).toString() : '0' + (xTitleDate.getMonth() + 1).toString()
+                        const xTitleDateDay = xTitleDate.getDate() > 9 ? xTitleDate.getDate().toString() : '0' + xTitleDate.getDate().toString()
+                        const xTitleDateHour = xTitleDate.getHours() > 9 ? xTitleDate.getHours().toString() : '0' + xTitleDate.getHours().toString()
+                        const xTitleDateMinute = xTitleDate.getMinutes() > 9 ? xTitleDate.getMinutes().toString() : '0' + xTitleDate.getMinutes().toString()
+                        const xTitle = xTitleDateMonth + '/' + xTitleDateDay + ' ' + xTitleDateHour + ':' + xTitleDateMinute;
+                        return (xTitle);
+                    }
+                },
+                fillSeriesColor: false,
+                theme: false,
+                style: {
+                    fontSize: '12px',
+                    fontFamily: undefined,
+                },
+                background: {
+                    enabled: true,
+                    foreColor: '#fff'
+                },
+                onDatasetHover: {
+                    highlightDataSeries: true,
+                },
             },
-            onItemClick:{
-                // toggleDataSeries:false,
+            dataLabels: {
+                enabled: false,
+                enabledOnSeries: [0, 1, 2, 3, 4],
+                style: {
+                    colors: ["#9CBAE3", "#646464", "#E73323", "#F4C243", "#A1CE63", "#67359A",],
+                },
+                background: {
+                    enabled: true,
+                    foreColor: '#fff',
+                    borderRadius: 2,
+                    padding: 4,
+                    opacity: 0.9,
+                    borderWidth: 1,
+                    borderColor: '#fff'
+                },
             },
-            onItemHover:{
-                highlightDataSeries:false
+            stroke: {
+                width: 3,
+                curve: "straight",
+            },
+            title: {
+                text: '',
+                align: 'left'
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    borderRadius: 10
+                },
+            },
+            fill: {
+                //opacity: [0.85, 0.25, 1],
+                gradient: {
+                    inverseColors: false,
+                    shade: "light",
+                    type: "vertical",
+                    opacityFrom: 0.85,
+                    opacityTo: 0.55,
+                    stops: [0, 100, 100, 100],
+                },
+            },
+            xaxis: {
+                title: {
+                    text: "측정시간",
+                },
+                min: new Date('2022-06-26T23:55').getTime(),
+                max: new Date('2022-06-28T00:00').getTime(),
+                type: 'datetime',
+                tooltip: {
+                    enabled: false
+                },
+                labels: {
+                    datetimeUTC: false
+                }
+            },
+            yaxis: {
+                title: {
+                    text: "",
+                },
+                min: 0,
+                max: 150,
+                tickAmount: 5,
+                tooltip: {
+                    enabled: false
+                }
+            },
+            legend: {
+                show: false,
+                position: "top",
+                offsetY: -0,
+                offsetX: -5,
+                markers: {
+                    width: 5,
+                    height: 0,
+                },
+                onItemHover: {
+                    highlightDataSeries: false
+                }
             }
         }
     }
-}
-function VitalsignModal({show, handledClose}) {
 
-
-    const [vitalAllButton,setVitalAllButton] = useState(true)
-    const [vitalButton,setVitalButton] = useState({
-        bp:true,  //혈압
-        pr:true,  // 심박수
-        rr:true,  // 호흡
-        bt:true,  // 체온
-        sp:true,  // 산소포화도
+    const [vitalAllButton, setVitalAllButton] = useState(true)
+    const [vitalButton, setVitalButton] = useState({
+        bp: true,  //혈압
+        pr: true,  // 심박수
+        rr: true,  // 호흡
+        bt: true,  // 체온
+        sp: true,  // 산소포화도
     });
-    useEffect(()=>{
-        if(show){
-            if(vitalAllButton){
+    useEffect(() => {
+        if (show) {
+            dashBoardFunc && dashBoardFunc(
+                setHeader,
+                setBtResultList,
+                setSbpResultList,
+                setDbpResultList,
+                setRrResultList,
+                setSpo2ResultList,
+                setPrResultList,
+            );
+            if (vitalAllButton) {
                 ApexCharts.exec('vitalChart', 'showSeries', '이완기')
                 ApexCharts.exec('vitalChart', 'showSeries', '수축기')
                 ApexCharts.exec('vitalChart', 'showSeries', '심박수')
@@ -212,39 +230,36 @@ function VitalsignModal({show, handledClose}) {
                 ApexCharts.exec('vitalChart', 'showSeries', '산소포화도')
                 ApexCharts.exec('vitalChart', 'showSeries', '체온')
             }
-        }
-        else{
+        } else {
             setVitalAllButton(true);
             setVitalButton({
-                bp:true,  //혈압
-                pr:true,  // 심박수
-                rr:true,  // 호흡
-                bt:true,  // 체온
-                sp:true,  // 산소포화도
+                bp: true,  //혈압
+                pr: true,  // 심박수
+                rr: true,  // 호흡
+                bt: true,  // 체온
+                sp: true,  // 산소포화도
             })
         }
 
-    },[show])
-
-    useEffect(()=>{
-        if(Object.keys(vitalButton).every(value => vitalButton[value])){
+    }, [show])
+    useEffect(() => {
+        if (Object.keys(vitalButton).every(value => vitalButton[value])) {
             setVitalAllButton(true);
-        }
-        else{
+        } else {
             setVitalAllButton(false);
         }
-    },[vitalButton])
+    }, [vitalButton])
+
     function allSeries() {
-        setVitalAllButton((prevState)=>{
-            if(!prevState){
+        setVitalAllButton((prevState) => {
+            if (!prevState) {
                 ApexCharts.exec('vitalChart', 'showSeries', '이완기')
                 ApexCharts.exec('vitalChart', 'showSeries', '수축기')
                 ApexCharts.exec('vitalChart', 'showSeries', '심박수')
                 ApexCharts.exec('vitalChart', 'showSeries', '호흡수')
                 ApexCharts.exec('vitalChart', 'showSeries', '산소포화도')
                 ApexCharts.exec('vitalChart', 'showSeries', '체온')
-            }
-            else{
+            } else {
                 ApexCharts.exec('vitalChart', 'hideSeries', '이완기')
                 ApexCharts.exec('vitalChart', 'hideSeries', '수축기')
                 ApexCharts.exec('vitalChart', 'hideSeries', '심박수')
@@ -254,100 +269,101 @@ function VitalsignModal({show, handledClose}) {
             }
             return !prevState
         })
-        setVitalButton(()=>({
-            bp:!vitalAllButton,  //혈압
-            pr:!vitalAllButton,  // 심박수
-            rr:!vitalAllButton,  // 호흡
-            bt:!vitalAllButton,  // 체온
-            sp:!vitalAllButton,  // 산소포화도
+        setVitalButton(() => ({
+            bp: !vitalAllButton,  //혈압
+            pr: !vitalAllButton,  // 심박수
+            rr: !vitalAllButton,  // 호흡
+            bt: !vitalAllButton,  // 체온
+            sp: !vitalAllButton,  // 산소포화도
         }))
     }
-    function toggleSeries(e,seriesName) {
+
+    function toggleSeries(e, seriesName) {
         const {name} = e.currentTarget
-        setVitalButton((prevValue)=>({
+        setVitalButton((prevValue) => ({
             ...prevValue,
-            [name]:!prevValue[name]
+            [name]: !prevValue[name]
         }))
-        if(seriesName==='혈압'){
+        if (seriesName === '혈압') {
             ApexCharts.exec('vitalChart', 'toggleSeries', '이완기')
             ApexCharts.exec('vitalChart', 'toggleSeries', '수축기')
-        }
-        else{
+        } else {
             ApexCharts.exec('vitalChart', 'toggleSeries', seriesName)
         }
 
     }
+
     return (
         <Modal show={show}
-            onHide={handledClose}
+               onHide={handledClose}
                className={'VSdetailViewModal'}
-               dialogClassName={'modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg'}
+               dialogClassName={'modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xlg'}
         >
             <Modal.Header closeButton>
                 <div className="d-flex">
                     <div className="bts2 d-flex">
-                        <span className="taste" title="미각"></span>
-                        <span className="smell" title="후각"></span>
+                        <HealthSignal value={header.healthSignalVO?.signal1Yn} color={'#3ed06f'}/>
+                        <HealthSignal value={header.healthSignalVO?.signal2Yn} color={'#d03e3e'}/>
                     </div>
-                    <h5 className="modal-title is-bar" id="VSdetailViewModal">홍길동/1호실</h5>
+                    <h5 className="modal-title is-bar" id="VSdetailViewModal">{header.patientNm}/{header.roomNm}</h5>
                 </div>
                 <div className="me-4 d-flex">
                     <span className="dtit">생년월일</span>
-                    <strong className="dcon">1988-12-05 (33M)</strong>
+                    <strong className="dcon">{header.dispBirthDateInfo }</strong>
                 </div>
                 <div className="me-4 d-flex">
                     <span className="dtit">환자번호</span>
-                    <strong className="dcon">P99999999</strong>
+                    <strong className="dcon">{header.patientId }</strong>
                 </div>
                 <div className="me-4 d-flex">
                     <span className="dtit">연락처</span>
-                    <strong className="dcon">01055556666</strong>
+                    <strong className="dcon">{header.cellPhone }</strong>
                 </div>
             </Modal.Header>
             <Modal.Body>
                 <div className="card inchart">
                     <div className='d-flex justify-content-around'>
                         <VitalButton className='btn btn-sm p-1' name='all' show={vitalAllButton}
-                                onClick={allSeries}>
+                                     onClick={allSeries}>
                             전체
                         </VitalButton>
                         <div className={'d-flex'}>
                             <VitalButton className='btn btn-sm p-1' name='bp' show={vitalButton.bp}
-                                         onClick={(e)=>toggleSeries(e,'혈압')}>
+                                         onClick={(e) => toggleSeries(e, '혈압')}>
                                 혈압
                             </VitalButton>
                             <div className={'d-flex flex-column'}>
-                                <VitalSpan><span style={{color:"#9CBAE3"}}>■</span>수축기</VitalSpan>
-                                <VitalSpan><span style={{color:"#646464"}}>■</span>이완기</VitalSpan>
+                                <VitalSpan><span style={{color: "#9CBAE3"}}>■</span>수축기</VitalSpan>
+                                <VitalSpan><span style={{color: "#646464"}}>■</span>이완기</VitalSpan>
                             </div>
                         </div>
                         <div>
                             <VitalButton className='btn btn-sm p-1' name='pr' show={vitalButton.pr}
-                                         onClick={(e)=>toggleSeries(e,'심박수')}>
+                                         onClick={(e) => toggleSeries(e, '심박수')}>
                                 심박수
                             </VitalButton>
-                            <VitalSpan style={{color:"#E73323" }}>■</VitalSpan>
+                            <VitalSpan style={{color: "#E73323"}}>■</VitalSpan>
                         </div>
                         <div>
                             <VitalButton className='btn btn-sm p-1' name='rr' show={vitalButton.rr}
-                                         onClick={(e)=>toggleSeries(e,'호흡수')}>
+                                         onClick={(e) => toggleSeries(e, '호흡수')}>
                                 호흡수
                             </VitalButton>
-                            <VitalSpan style={{color:"#F4C243"}}>■</VitalSpan>
+                            <VitalSpan style={{color: "#F4C243"}}>■</VitalSpan>
                         </div>
                         <div>
                             <VitalButton className='btn btn-sm p-1' name='bt' show={vitalButton.bt}
-                                         onClick={(e)=>toggleSeries(e,'체온')}>
+                                         onClick={(e) => toggleSeries(e, '체온')}>
                                 체온
                             </VitalButton>
-                            <VitalSpan style={{color:"#A1CE63"}}>■</VitalSpan>
+                            <VitalSpan style={{color: "#A1CE63"}}>■</VitalSpan>
                         </div>
                         <div>
                             <VitalButton className='btn btn-sm p-1' name='sp' show={vitalButton.sp}
-                                         onClick={(e)=>toggleSeries(e,'산소포화도')}>
+                                         onClick={(e) => toggleSeries(e, '산소포화도')}>
                                 산소포화도
                             </VitalButton>
-                            <VitalSpan style={{color:"#67359A"}}>■</VitalSpan>
+                            <VitalSpan style={{color: "#67359A"}}>■</VitalSpan>
                         </div>
                     </div>
                     <Chart
@@ -355,6 +371,8 @@ function VitalsignModal({show, handledClose}) {
                         options={vitalChart.options}
                         series={vitalChart.series}
                         type="bar"
+                        height="500"
+                        // width="1600"
                         width="100%"
                     />
                 </div>
