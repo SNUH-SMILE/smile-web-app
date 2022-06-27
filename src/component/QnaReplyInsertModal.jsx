@@ -48,7 +48,10 @@ function QnaReplyInsertModal({qnaModalObj,handledClose,onSave,onDelete}) {
                             <tr>
                                 <th>답변내용</th>
                                 <td>
-                                    <textarea className="form-control h140" ref={replyContent} defaultValue={qnaModalObj.data.replyContent&&qnaModalObj.data.replyContent}/>
+                                    <textarea className="form-control h140" ref={replyContent}
+                                              defaultValue={qnaModalObj.data.replyContent&&qnaModalObj.data.replyContent}
+                                              role={'replyContent'}
+                                    />
                                 </td>
                             </tr>
                             </tbody>

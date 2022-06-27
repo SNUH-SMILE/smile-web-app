@@ -84,22 +84,27 @@ function Qna(props) {
 
     // Qna 답변 저장
     const saveQnaReplyContent = useCallback(async (questionSeq,replyContent) => {
-        const confirmStatus= await confirm('답변을 저장하시겠습니까?');
-        if(confirmStatus){
-            qnaApi.save(questionSeq,replyContent)
-                .then(({data}) => {
-                    if(data.code==='00'){
-                        alert(data.message)
-                        setPaginationAndQnaTableData(data)
-                    }
-                    else{
-                        alert(data.message)
-                    }
-                })
-                .finally(()=>handledCloseQnaModal());
+        if(replyContent.replaceAll(' ','').length===0){
+            alert('답변내용이 공백입니다.')
+        }
+        else {
+            const confirmStatus= await confirm('답변을 저장하시겠습니까?');
+            if(confirmStatus){
+                qnaApi.save(questionSeq,replyContent)
+                    .then(({data}) => {
+                        if(data.code==='00'){
+                            alert(data.message)
+                            setPaginationAndQnaTableData(data)
+                        }
+                        else{
+                            alert(data.message)
+                        }
+                    })
+                    .finally(()=>handledCloseQnaModal());
+            }
         }
     },[])
-
+    // Qna 답변삭제
     const deleteQnaReplyContent = useCallback(async (questionSeq) => {
         const confirmStatus= await confirm('답변을 삭제하시겠습니까?');
         if(confirmStatus){
@@ -158,6 +163,7 @@ function Qna(props) {
                                                 </div>
                                                 <div className="me-1 d-flex">
                                                     <input className="form-control w160" type="text"
+                                                           role={'searchInput'}
                                                            ref={searchText}
                                                            defaultValue={''}
                                                            onKeyUp={(e)=>handledSearchRequirement(e)}/>

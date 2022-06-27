@@ -34,7 +34,7 @@ class QnaApi {
         }
     }
 
-    //문의사항 리스트 조회
+    //문의사항 상세조회
     async detail(questionSeq) {
         try {
             const response = await AuthorizationAxios.get(

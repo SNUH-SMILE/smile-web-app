@@ -518,7 +518,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                 else if(cell.column.id === 'replyYn'){
                                                     return (
                                                         <td className={cell.column.styleClassName} {...cell.getCellProps()}>
-                                                            {cell.value === 'Y' ? <BsCheckLg color={'green'}/> : null}
+                                                            {cell.value === 'Y' ? <BsCheckLg color={'green'} role={'replyCheckIcon'}/> : null}
                                                         </td>
                                                     )
                                                 }
