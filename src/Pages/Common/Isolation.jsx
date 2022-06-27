@@ -27,6 +27,7 @@ function Isolation(props) {
     useEffect(()=>{
         getIsolationList();
     },[sortedOrder,paginationObj.currentPageNo])
+
     const setPaginationAndAdmissionTableData = (data) =>{
         setPaginationObj((prevState)=>({...prevState,
             prevPaginationExists:data.result.paginationInfoVO.prevPaginationExists,
@@ -37,39 +38,51 @@ function Isolation(props) {
         setTotalPageCount(data.result.paginationInfoVO.totalPageCount)
         setIsolationTableData(data.result.admissionByQuarantineVOList)
     }
+
     // 자가격리자 리스트 조회
     const getIsolationList = () =>{
         isolationApi.select().then(({data}) => setPaginationAndAdmissionTableData(data));
     }
+
     // 정렬 검색 이벤트
     const handledSearchWithSort = (orderBy, orderDir) =>{
         setSortedOrder(()=>({By:orderBy,Dir: orderDir}));
     }
+
     // 저장 모달
     const [isolationSaveModalObj,setIsolationSaveModalObj] = useState({show:false,data:{},confirmFunc:Function});
     const selectedIsolationId = useRef('');
     const getSelectedIsolationId = (patientId, {admissionId}) =>{
         selectedIsolationId.current = admissionId;
     }
-    // 신규생성
-    const create = async (saveData) => {
-        let nullList = Object.keys(saveData)
-            .filter(value => value!=='admissionId' && value !== 'patientId')
-            .filter(value=>value === 'sex' ? saveData[value] === '' :saveData[value].current.value==='');
+
+    const validationModalData = async (nullList,saveData)=>{
         if(nullList.length > 0){
             nullList[0] === 'patientNm' && alert('이름이 공백입니다.')
+            nullList[0] === 'birthDate' && alert('생일이 공백입니다.')
             nullList[0] === 'sex' && alert('성별을 선택해주세요.')
             nullList[0] === 'cellPhone' && alert('연락처가 공백입니다.')
             nullList[0] === 'admissionDate' && alert('시작일이 공백입니다.')
             nullList[0] === 'dschgeSchdldDate' && alert('종료예정일이 공백입니다.')
             nullList[0] === 'personCharge' && alert('담당자 공백입니다.')
             saveData[nullList[0]].current.focus();
+            return false;
         }
         else if(saveData['admissionDate'].current.value >= saveData['dschgeSchdldDate'].current.value){
             alert('종료 예정일은 시작일 이후이어야 합니다.')
             saveData['dschgeSchdldDate'].current.focus();
+            return false;
         }
-        else{
+        return true;
+    }
+
+    // 신규생성
+    const create = async (saveData) => {
+        let nullList = Object.keys(saveData)
+            .filter(value => value!=='admissionId' && value !== 'patientId')
+            .filter(value=>value === 'sex' ? saveData[value] === '' :saveData[value].current.value==='');
+        const validation = await validationModalData(nullList,saveData)
+        if(validation){
             let confirmStatus = await confirm(`${saveData['patientNm'].current.value}를 생성하시겠습니까?`)
             if(confirmStatus){
                 isolationApi.create(saveData).then(({data}) => {
@@ -80,10 +93,31 @@ function Isolation(props) {
                             prevPaginationExists:data.result.admissionListResponseByQuarantineVO.paginationInfoVO.prevPaginationExists,
                             nextPaginationExists:data.result.admissionListResponseByQuarantineVO.paginationInfoVO.nextPaginationExists,
                             firstPageNoOnPageList:data.result.admissionListResponseByQuarantineVO.paginationInfoVO.firstPageNoOnPageList,
-                            lastPageNoOnPageList :data.result.admissionListResponseByQuarantineVO.paginationInfoVO.lastPageNoOnPageList,
-                        }))
-                        setTotalPageCount(data.result.admissionListResponseByQuarantineVO.paginationInfoVO.totalPageCount)
+                            lastPageNoOnPageList :data.result.admissionListResponseByQuarantineVO.paginationInfoVO.lastPageNoOnPageList,}));
+
+                        setTotalPageCount(data.result.admissionListResponseByQuarantineVO.paginationInfoVO.totalPageCount);
                         setIsolationTableData(data.result.admissionListResponseByQuarantineVO.admissionByQuarantineVOList);
+                    }
+                    else{
+                        alert(data.message);
+                    }
+                });
+            }}}
+
+    // 수정
+    const update = async (saveData) => {
+        let nullList = Object.keys(saveData).filter(value=>value === 'sex' ? saveData[value] === '' :saveData[value].current.value==='');
+        const validation = await validationModalData(nullList,saveData)
+
+        if(validation){
+            let confirmStatus = await confirm(`${saveData['patientNm'].current.value}를 수정하시겠습니까?`)
+            if(confirmStatus){
+                isolationApi.update(saveData).then(({data}) => {
+                    if(data.code === '00'){
+                        alert(data.message)
+                        handledCloseIsolationSaveModal();
+                        setTotalPageCount(data.result.admissionListResponseByQuarantineVO .paginationInfoVO.totalPageCount);
+                        setIsolationTableData(data.result.admissionListResponseByQuarantineVO .admissionByQuarantineVOList);
                     }
                     else{
                         alert(data.message);
@@ -92,78 +126,50 @@ function Isolation(props) {
             }
         }
     }
-    // 수정
-    const update = async (saveData) => {
-        let nullList = Object.keys(saveData).filter(value=>value === 'sex' ? saveData[value] === '' :saveData[value].current.value==='');
-        if(nullList.length > 0){
-            nullList[0] === 'admissionId' && alert('입소내역ID가 공백입니다.')
-            nullList[0] === 'patientId' && alert('환자ID가 공백입니다.')
-            nullList[0] === 'patientNm' && alert('이름이 공백입니다.')
-            nullList[0] === 'sex' && alert('성별을 선택해주세요.')
-            nullList[0] === 'cellPhone' && alert('연락처가 공백입니다.')
-            nullList[0] === 'admissionDate' && alert('시작일이 공백입니다.')
-            nullList[0] === 'dschgeSchdldDate' && alert('종료예정일이 공백입니다.')
-            nullList[0] === 'personCharge' && alert('담당자 공백입니다.')
-            saveData[nullList[0]].current.focus();
-        }
-        else if(saveData['admissionDate'].current.value >= saveData['dschgeSchdldDate'].current.value){
-            alert('종료 예정일은 시작일 이후이어야 합니다.')
-            saveData['dschgeSchdldDate'].current.focus();
-        }
-        else{
-            let confirmStatus = await confirm(`${saveData['patientNm'].current.value}를 수정하시겠습니까?`)
-            if(confirmStatus){
-                isolationApi.update(saveData).then(({data}) => {
-                    if(data.code === '00'){
-                        alert(data.message)
-                        handledCloseIsolationSaveModal()
-                        setTotalPageCount(data.result.admissionSaveResponseByQuarantineVO.paginationInfoVO.totalPageCount)
-                        setIsolationTableData(data.result.admissionSaveResponseByQuarantineVO.admissionByQuarantineVOList);
-                    }
-                    else{
-                        alert(data.message)
-                    }
-                });
-            }
-        }
-    }
+
     // 저장 모달 열기 (admissionId 로 api 요청 하려고 인자로 받음)
-    const handledIsolationSaveModal = (admissionId) =>{
-        if(admissionId === ''){
+    const handledIsolationSaveModal = (admissionId,flag) =>{
+        if(flag === 'U' && admissionId ===''){
+            alert('자택격리자를 선택해주세요.');
+        }
+
+        else if(admissionId === ''){
             setIsolationSaveModalObj({show: true, data:{},confirmFunc: create})
         }
+
         else{
             isolationApi.detail(admissionId).then(({data}) => {
                 setIsolationSaveModalObj({show: true, data: {...data.result}, confirmFunc: update})
-            })
+            });
         }
     }
+
     // 저장 모달 닫기
     const handledCloseIsolationSaveModal = useCallback(() =>{
-        setIsolationSaveModalObj({show: false, data:{},confirmFunc:null})
-    },[])
+        setIsolationSaveModalObj({show: false, data:{},confirmFunc:null});
+    },[]);
 
-    // 격리해제 모달
+    // 격리해제 모달 ;
     const [isolationExitModalObj,setIsolationExitModalObj] = useState({show:false,data: {}});
     // 격리해제 모달 열기 (admissionId 로 api 요청 하려고 인자로 받음)
     const handledIsolationExitModal = (admissionId) =>{
         isolationApi.detail(admissionId).then(({data}) => setIsolationExitModalObj({show: true, data: {...data.result}}))
-    }
+    };
     const discharge = useCallback(async (admissionId, dischargeDate, patientNm) => {
         if(dischargeDate===''){
-            alert('격리해제일이 공백입니다.')
+            alert('격리해제일이 공백입니다.');
         }
         else{
-            const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`)
+            const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`);
             if(confirmState) {
                 isolationApi.discharge(admissionId, dischargeDate).then(({data}) => {
                     if(data.code==='00'){
-                        alert(data.message)
-                        handledCloseIsolationExitModal()
+                        alert(data.message);
+                        handledCloseIsolationExitModal();
                         setPaginationAndAdmissionTableData(data);
                     }
                     else{
-                        alert(data.message)
+                        alert(data.message);
                     }
                 });
             }
@@ -186,6 +192,7 @@ function Isolation(props) {
         {Header: '산소포화도', accessor: 'spResult', vital:true},
         {Header: '격리상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editElementType:'Isolation',editEvent:handledIsolationExitModal},
     ]
+
     // 검색 Input Enter 이벤트
     const handledOnSearch = (e) => {
         if (e.keyCode === 13 || e.target.tagName === 'BUTTON') {
@@ -223,10 +230,10 @@ function Isolation(props) {
                                                     <div className="btn_wrap d-flex">
                                                         <button type="button" className="btn btn-gray" onClick={handledOnSearch}>검색</button>
                                                         <button type="button" className="btn btn-white"
-                                                                onClick={()=>handledIsolationSaveModal('')}>신규
+                                                                onClick={()=>handledIsolationSaveModal('','C')}>신규
                                                         </button>
                                                         <button type="button" className="btn btn-ccolor"
-                                                                onClick={()=>handledIsolationSaveModal(selectedIsolationId.current)}>수정
+                                                                onClick={()=>handledIsolationSaveModal(selectedIsolationId.current,'U')}>수정
                                                         </button>
                                                     </div>
                                                 </div>

@@ -48,7 +48,9 @@ function IsolationExitModal({isolationExitModalObj, handledClose, discharge}) {
                             <th>퇴소일자</th>
                             <td>
                                 {/*오늘날짜 기본 셋팅*/}
-                                <input className="form-control w-100 date" type="date" defaultValue="" ref={todayInput} required/>
+                                <input className="form-control w-100 date" type="date"
+                                        role={'dischargeInput'}
+                                       defaultValue="" ref={todayInput} required/>
                             </td>
                         </tr>
                         </tbody>
@@ -56,7 +58,11 @@ function IsolationExitModal({isolationExitModalObj, handledClose, discharge}) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <button type="button" className="btn btn-pr4" onClick={()=>discharge(isolationExitModalObj.data.admissionId,todayInput.current.value,isolationExitModalObj.data.patientNm)}>격리해제</button>
+                <button type="button" className="btn btn-pr4"
+                        role={'modalDischargeButton'}
+                        onClick={()=>discharge(isolationExitModalObj.data.admissionId,todayInput.current.value,isolationExitModalObj.data.patientNm)}>
+                    격리해제
+                </button>
             </Modal.Footer>
         </Modal>
     );

@@ -13,6 +13,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
     const dschgeSchdldDate = useRef();
     const personCharge = useRef();
 
+    const [cellPhoneValue, setCellPhoneValue] = useState('')
     const saveData = {
         admissionId: admissionId,
         patientId: patientId,
@@ -23,6 +24,13 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
         admissionDate: admissionDate,
         dschgeSchdldDate: dschgeSchdldDate,
         personCharge: personCharge,
+    }
+
+    const handledCellphoneValue = (e)=>{
+        const pattern=/^[0-9]+$/;
+        if(pattern.test(e.target.value)){
+            setCellPhoneValue(e.target.value);
+        }
     }
 
     useEffect(()=>{
@@ -36,7 +44,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
         >
             <Modal.Header closeButton>
                 <h5 className="modal-title"
-                    id="selfIsolationInsertModal">{isolationSaveModalObj.admissionId === '' ? '자택격리자 등록' : '자택격리자 수정'}</h5>
+                    id="selfIsolationInsertModal">{isolationSaveModalObj.data.admissionId ? '자택격리자 수정' : '자택격리자 등록'}</h5>
             </Modal.Header>
             <Modal.Body>
                 <div className="row">
@@ -50,6 +58,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                         <input className="form-control w-100"
                                                type="text"
                                                ref={admissionId}
+                                               role={'admissionId'}
                                                defaultValue={isolationSaveModalObj.data.admissionId}
                                                readOnly/>
                                     </td>
@@ -60,6 +69,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                         <input className="form-control w-100"
                                                type="text"
                                                ref={patientId}
+                                               role={'patientId'}
                                                defaultValue={isolationSaveModalObj.data.patientId}
                                                readOnly/>
                                     </td>
@@ -70,6 +80,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                         <input className="form-control w-100"
                                                type="text"
                                                ref={patientNm}
+                                               role={'patientNm'}
                                                defaultValue={isolationSaveModalObj.data.patientNm}
                                                required/>
                                     </td>
@@ -79,6 +90,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                     <td>
                                         <input className="form-control w-100 date" type="date"
                                                ref={birthDate}
+                                               role={'birthDate'}
                                                defaultValue={isolationSaveModalObj.data.birthDate && convertDate(isolationSaveModalObj.data.birthDate)}
                                                required/>
                                     </td>
@@ -88,6 +100,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                     <td>
                                         <div className="form-check form-check-inline">
                                             <input className="form-check-input" type="radio" name="gender" id="gender1"
+                                                   role={'sexM'}
                                                    defaultChecked={isolationSaveModalObj.data.sex === 'M'}
                                                    onClick={() => setSex('M')}
 
@@ -96,6 +109,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                         </div>
                                         <div className="form-check form-check-inline">
                                             <input className="form-check-input" type="radio" name="gender" id="gender2"
+                                                   role={'sexF'}
                                                    onClick={() => setSex('F')}
                                                    defaultChecked={isolationSaveModalObj.data.sex === 'F'}/>
                                             <label className="form-check-label" htmlFor="gender2">여자</label>
@@ -106,7 +120,10 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                     <th>연락처</th>
                                     <td>
                                         <input className="form-control w-100" type="text" ref={cellPhone}
-                                               defaultValue={isolationSaveModalObj.data.cellPhone} required/>
+                                               role={'cellPhone'}
+                                               value={cellPhoneValue}
+                                               onChange={(e)=>handledCellphoneValue(e)}
+                                               required/>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -121,6 +138,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                     <th>담당자</th>
                                     <td>
                                         <input className="form-control w-100" type="text" ref={personCharge}
+                                               role={'personCharge'}
                                                defaultValue={isolationSaveModalObj.data.personCharge} required/>
                                     </td>
                                 </tr>
@@ -128,6 +146,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                     <th>시작일</th>
                                     <td>
                                         <input className="form-control w-100 date" type="date" ref={admissionDate}
+                                               role={'admissionDate'}
                                                defaultValue={isolationSaveModalObj.data.admissionDate && convertDate(isolationSaveModalObj.data.admissionDate)}
                                                required/>
                                     </td>
@@ -136,6 +155,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                     <th>종료예정일</th>
                                     <td>
                                         <input className="form-control w-100 date" type="date" ref={dschgeSchdldDate}
+                                               role={'dschgeSchdldDate'}
                                                defaultValue={
                                                    isolationSaveModalObj.data.dschgeSchdldDate &&
                                                    convertDate(isolationSaveModalObj.data.dschgeSchdldDate)}
