@@ -120,7 +120,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                         //    Comcd 신규 Row
                                         <tr key={Object(row.original)[primaryKey]} className={'checked-active'}>
                                             <td className="cd1">
-                                                <button type="button" className="btn-delete" onClick={()=>deleteRow(row.original.header,primaryKey)}><BsX/>
+                                                <button type="button" role="deleteRow" className="btn-delete" onClick={()=>deleteRow(row.original.header,primaryKey)}><BsX/>
                                                 </button>
                                             </td>
                                             <td className="cd2">
@@ -167,7 +167,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                             //    ComcdDetail 신규 Row
                                             <tr key={Object(row.original)['header']} className={'checked-active'}>
                                                 <td className="cd1">
-                                                    <button type="button" className="btn-delete" onClick={()=>deleteRow(row.original.header,primaryKey)}>
+                                                    <button type="button" role={'deleteRow'} className="btn-delete" onClick={()=>deleteRow(row.original.header,primaryKey)}>
                                                         <BsX/>
                                                     </button>
                                                 </td>

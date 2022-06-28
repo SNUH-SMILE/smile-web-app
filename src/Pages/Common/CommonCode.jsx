@@ -391,7 +391,7 @@ function CommonCode() {
 
     return (
         <main className="flex_layout_2row">
-            <div className="row row1">
+            <div className="row row1" role={'comCd'}>
                 <div className="col-lg-12">
                     <div className="card indiv">
                         <div className="card-content">
@@ -432,9 +432,9 @@ function CommonCode() {
                                             </div>
                                             <div className="ms-auto">
                                                 <div className="btn_wrap d-flex">
-                                                    <button type="button" className="btn btn-gray" onClick={getComCdList}>검색</button>
-                                                    <button type="button" className="btn btn-white btn-new" onClick={newRow}>신규</button>
-                                                    <button type="button" className="btn btn-ccolor" onClick={save}>저장</button>
+                                                    <button type="button" className="btn btn-gray" onClick={getComCdList} >검색</button>
+                                                    <button type="button" className="btn btn-white btn-new" onClick={newRow} role={'newComCd'}>신규</button>
+                                                    <button type="button" className="btn btn-ccolor" onClick={save} role={'saveComCd'}>저장</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -460,7 +460,7 @@ function CommonCode() {
                 </div>
             </div>
 
-            <div className="row row2 mt-4">
+            <div className="row row2 mt-4" role={'comCdDetail'}>
                 <div className="col col-lg-12">
                     <div className="card indiv">
                         <div className="card-content">
@@ -482,8 +482,8 @@ function CommonCode() {
                                             <div className="ms-auto">
                                                 <div className="btn_wrap d-flex">
                                                     <button type="button" className="btn btn-gray" onClick={()=>getComCdDetail(selectComCd.current)}>검색</button>
-                                                    <button type="button" className="btn btn-white btn-new2" onClick={newDetailRow}>신규</button>
-                                                    <button type="button" className="btn btn-ccolor" onClick={saveDetail}>저장</button>
+                                                    <button type="button" className="btn btn-white btn-new2" onClick={newDetailRow} role={'newComCdDetail'}>신규</button>
+                                                    <button type="button" className="btn btn-ccolor" onClick={saveDetail} role={'saveComCdDetail'}>저장</button>
                                                 </div>
                                             </div>
                                         </div>
