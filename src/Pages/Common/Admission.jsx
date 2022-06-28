@@ -25,7 +25,7 @@ function Admission() {
     // 페이지네이션
     const [paginationObj,setPaginationObj]=useState({currentPageNo:1,pageSize:10,recordCountPerPage:15})
     useEffect(()=>{
-        selectAdmissionListByCenter();
+        mountSelectAdmissionListByCenter();
     },[sortedOrder,paginationObj.currentPageNo])
 
 
@@ -52,7 +52,7 @@ function Admission() {
     }
 
     // 센터 정보 및 입소자 리스트 요청 및 총 몇페이지인지 저장
-    const selectAdmissionListByCenter = () => {
+    const mountSelectAdmissionListByCenter = () => {
         getLonginUserInfo()
             .then(({data}) => setLoginUserTreatmentCenterList(data.result.userTreatmentCenterVOList))
             .catch(e=>console.log('ERROR getLonginUserInfo'))
@@ -63,6 +63,24 @@ function Admission() {
                     })
                 }
             })
+    }
+    const selectAdmissionListByCenter = () => {
+        if(searchAdmissionCenter.current.value){
+            admissionApi.select().then(({data}) => {
+                setPaginationAndAdmissionTableDat(data);
+            })
+        }
+    }
+    const [selectValue,setSelectValue] = useState('')
+    useEffect(()=>{
+        if(loginUserTreatmentCenterList.length>0){
+            const mainCenterObject = loginUserTreatmentCenterList.filter(value => value.mainYn === 'Y')
+            setSelectValue(mainCenterObject[0].centerId)
+        }
+    },[loginUserTreatmentCenterList])
+
+    const handledSelect = (e)=>{
+        setSelectValue(e.target.value)
     }
 
     // 정렬 검색 이벤트
@@ -245,7 +263,13 @@ function Admission() {
                                                 <span className="stit">센터</span>
                                                 <select className="form-select"
                                                         ref={searchAdmissionCenter}
-                                                        onChange={selectAdmissionListByCenter}
+                                                        value={
+                                                            selectValue
+                                                        }
+                                                        onChange={(e)=>{
+                                                            selectAdmissionListByCenter();
+                                                            handledSelect(e)
+                                                        }}
                                                 >
                                                     <option value={''}>선택</option>
                                                     {

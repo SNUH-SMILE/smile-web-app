@@ -54,6 +54,7 @@ const CommonHeader = ({handledSideBar, title, handledLogOut}) => {
 }
 
 const DashboardHeader = ({handledSideBar, title, handledLogOut, mode, data, dashBoardFunc}) => {
+    const [selectValue,setSelectValue] = useState('')
     const [centers,setCenters] = useState([]);
     // const [scrollPosition, setScrollPosition] = useState(0);
     // const updateScroll = () => {
@@ -67,6 +68,12 @@ const DashboardHeader = ({handledSideBar, title, handledLogOut, mode, data, dash
             })
         }
     },[])
+    useEffect(()=>{
+        centers.length>0 && setSelectValue(centers[0].centerId)
+    },[centers])
+    const handledSelect = (e)=>{
+        setSelectValue(e.target.value)
+    }
     return (
         // <nav className="page-head dashboard_head" style={scrollPosition>0?{height:'171px',zIndex:1, position:'sticky',top:'0'}:{}}>
         <nav className="page-head dashboard_head" >
@@ -85,8 +92,11 @@ const DashboardHeader = ({handledSideBar, title, handledLogOut, mode, data, dash
                             {centers.length>0?
                             <select className="form-select w-auto d-inline bg-none"
                                     style={{minWidth:'112px'}}
-                                    value={centers[0].centerId}
-                                    onChange={(e)=>dashBoardFunc(e)}
+                                    value={selectValue}
+                                    onChange={(e)=> {
+                                        handledSelect(e);
+                                        dashBoardFunc(e);
+                                    }}
                             >
                                 <BlackOption value={''}>선택</BlackOption>
                                 {centers.map(value => {
