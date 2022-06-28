@@ -3,6 +3,7 @@ import {Modal} from "react-bootstrap";
 import Chart from "react-apexcharts"
 import ApexCharts from 'apexcharts';
 import styled from "styled-components";
+import getToday, {getTomorrow} from "../Utils/common";
 
 const VitalButton = styled.button`
   height: 35px;
@@ -166,8 +167,8 @@ function VitalsignModal({show, handledClose, dashBoardFunc}) {
                 title: {
                     text: "측정시간",
                 },
-                min: new Date('2022-06-26T23:55').getTime(),
-                max: new Date('2022-06-28T00:00').getTime(),
+                min: new Date(getToday()+' ').getTime(),
+                max: new Date(getTomorrow()).getTime(),
                 type: 'datetime',
                 tooltip: {
                     enabled: false
