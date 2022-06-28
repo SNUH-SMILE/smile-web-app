@@ -35,6 +35,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
 
     useEffect(()=>{
         setSex(isolationSaveModalObj.data.sex);
+        setCellPhoneValue(isolationSaveModalObj.data.cellPhone);
     },[isolationSaveModalObj])
     return (
         <Modal show={isolationSaveModalObj.show}
@@ -121,7 +122,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                     <td>
                                         <input className="form-control w-100" type="text" ref={cellPhone}
                                                role={'cellPhone'}
-                                               value={cellPhoneValue}
+                                               defaultValue={cellPhoneValue}
                                                onChange={(e)=>handledCellphoneValue(e)}
                                                required/>
                                     </td>

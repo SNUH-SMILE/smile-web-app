@@ -804,8 +804,8 @@ describe('Isolation Page', () => {
         })
 
         const cellPhone = getByRole('cellPhone')
-        cellPhone.value = null;
-        expect(cellPhone).toHaveValue(null);
+        cellPhone.value = '';
+        expect(cellPhone).toHaveValue('');
 
         const modalButton = getByText('등록');
         fireEvent.click(modalButton);
