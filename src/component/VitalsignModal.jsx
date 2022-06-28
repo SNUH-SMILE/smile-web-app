@@ -317,7 +317,7 @@ function VitalsignModal({show, handledClose, dashBoardFunc}) {
                 </div>
                 <div className="me-4 d-flex">
                     <span className="dtit">연락처</span>
-                    <strong className="dcon">{header.cellPhone }</strong>
+                    <strong className="dcon">{header.dispCellPhoneInfo}</strong>
                 </div>
             </Modal.Header>
             <Modal.Body>
