@@ -122,7 +122,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                     <td>
                                         <input className="form-control w-100" type="text" ref={cellPhone}
                                                role={'cellPhone'}
-                                               defaultValue={cellPhoneValue}
+                                               value={cellPhoneValue||''}
                                                onChange={(e)=>handledCellphoneValue(e)}
                                                required/>
                                     </td>
