@@ -367,7 +367,7 @@ const DetailHeader = ({title,handledSideBar,handledLogOut,dashBoardData, dashBoa
                 </div>
             </div>
         </nav>
-            <VitalsignModal show={show} handledClose={hideVitalsignModal} dashBoardFunc={dashBoardFunc}/>
+            <VitalsignModal show={show} handledClose={hideVitalsignModal} />
         </>
     )
 }
@@ -401,7 +401,7 @@ function Header({wrapper, interval, setHide}) {
     return (
         mode === 'Detail' ?
             <DetailHeader handledSideBar={handledSideBar} title={title} handledLogOut={handledLogOut}
-                          dashBoardData={dashBoardData} dashBoardFunc={dashBoardFunc}/>
+                          dashBoardData={dashBoardData} />
             :
         mode !== 'Center' && mode !== 'Quarantine' ?
             // 공통

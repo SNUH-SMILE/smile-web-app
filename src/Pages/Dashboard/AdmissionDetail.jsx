@@ -9,33 +9,13 @@ function AdmissionDetail() {
     UseSetPageTitle('환자상세','Detail')
 
     const{alert,confirm} = useAlert();
-    const {setDashBoardData,setDashBoardFunc} = useContext(TitleContext);
+    const {setDashBoardData} = useContext(TitleContext);
     const admissionDetailApi=new AdmissionDetailApi(localStorage.getItem('admissionId'));
     const [noticeList,setNoticeList] = useState([])
     useEffect(()=>{
         admissionDetailApi.select().then(({data}) => {
             setDashBoardData(data.result.headerVO);
             setNoticeList(data.result.noticeVOList);
-        });
-        setDashBoardFunc(()=>getVitalChartData);
-    },[])
-
-    const getVitalChartData = useCallback((
-        setHeader,
-        setBtResultList,
-        setSbpResultList,
-        setDbpResultList,
-        setRrResultList,
-        setSpo2ResultList,
-        setPrResultList  )=>{
-        admissionDetailApi.getVitalData('').then(({data}) => {
-            setHeader(data.result.headerVO)
-            setBtResultList(data.result.btResultList)
-            setSbpResultList(data.result.sbpResultList)
-            setDbpResultList(data.result.dbpResultList)
-            setRrResultList(data.result.rrResultList)
-            setSpo2ResultList(data.result.spo2ResultList)
-            setPrResultList(data.result.prResultList)
         });
     },[])
 

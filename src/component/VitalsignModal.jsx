@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import Chart from "react-apexcharts"
 import ApexCharts from 'apexcharts';
 import styled from "styled-components";
 import getToday, {getTomorrow} from "../Utils/common";
+import AdmissionDetailApi from "../Apis/AdmissionDetailApi";
 
 const VitalButton = styled.button`
   height: 35px;
@@ -26,8 +27,8 @@ const HealthSignal = styled.span`
 let ko = require("apexcharts/dist/locales/ko.json");
 
 
-function VitalsignModal({show, handledClose, dashBoardFunc}) {
-
+function VitalsignModal({show, handledClose}) {
+    const [xAxis,setXAxis] = useState({min:0,max:0,searchDt:''});
     const [btResultList, setBtResultList] = useState([])
     const [sbpResultList, setSbpResultList] = useState([])
     const [dbpResultList, setDbpResultList] = useState([])
@@ -165,10 +166,10 @@ function VitalsignModal({show, handledClose, dashBoardFunc}) {
             },
             xaxis: {
                 title: {
-                    text: "측정시간",
+                    text: xAxis.searchDt,
                 },
-                min: new Date(getToday()+' ').getTime(),
-                max: new Date(getTomorrow()).getTime(),
+                min: xAxis.min,
+                max: xAxis.max,
                 type: 'datetime',
                 tooltip: {
                     enabled: false
@@ -212,17 +213,17 @@ function VitalsignModal({show, handledClose, dashBoardFunc}) {
         bt: true,  // 체온
         sp: true,  // 산소포화도
     });
+
+    const admissionDetailApi=new AdmissionDetailApi(localStorage.getItem('admissionId'));;
+    const getChartHeader = ()=>{
+        admissionDetailApi.getVitalChartHeader().then(({data}) => {
+            setHeader(data.result)
+            setVitalCheckDate(data.result.searchDtList[0])
+        });
+    }
     useEffect(() => {
         if (show) {
-            dashBoardFunc && dashBoardFunc(
-                setHeader,
-                setBtResultList,
-                setSbpResultList,
-                setDbpResultList,
-                setRrResultList,
-                setSpo2ResultList,
-                setPrResultList,
-            );
+            getChartHeader()
             if (vitalAllButton) {
                 ApexCharts.exec('vitalChart', 'showSeries', '이완기')
                 ApexCharts.exec('vitalChart', 'showSeries', '수축기')
@@ -293,6 +294,33 @@ function VitalsignModal({show, handledClose, dashBoardFunc}) {
         }
 
     }
+    const [vitalCheckDate,setVitalCheckDate] = useState('');
+    const handledVitalCheckDate = (e)=>{
+        setVitalCheckDate(e.target.value);
+    }
+    useEffect(()=>{
+        vitalCheckDate&&admissionDetailApi.getVitalData(vitalCheckDate).then(({data}) => {
+            setXAxis({
+                min:data.result.min,
+                max:data.result.max,
+                searchDt:data.result.searchDt,
+            })
+            setBtResultList(data.result.btResultList);
+            setSbpResultList(data.result.sbpResultList);
+            setDbpResultList(data.result.dbpResultList);
+            setRrResultList(data.result.rrResultList);
+            setSpo2ResultList(data.result.spo2ResultList);
+            setPrResultList(data.result.prResultList);
+        });
+        setVitalAllButton(true);
+        setVitalButton({
+            bp: true,  //혈압
+            pr: true,  // 심박수
+            rr: true,  // 호흡
+            bt: true,  // 체온
+            sp: true,  // 산소포화도
+        })
+    },[vitalCheckDate])
 
     return (
         <Modal show={show}
@@ -306,7 +334,7 @@ function VitalsignModal({show, handledClose, dashBoardFunc}) {
                         <HealthSignal value={header.healthSignalVO?.signal1Yn} color={'#3ed06f'}/>
                         <HealthSignal value={header.healthSignalVO?.signal2Yn} color={'#d03e3e'}/>
                     </div>
-                    <h5 className="modal-title is-bar" id="VSdetailViewModal">{header.patientNm}/{header.roomNm}</h5>
+                    <h5 className="modal-title is-bar" id="VSdetailViewModal">{header.dispPatientNmInfo}</h5>
                 </div>
                 <div className="me-4 d-flex">
                     <span className="dtit">생년월일</span>
@@ -321,7 +349,20 @@ function VitalsignModal({show, handledClose, dashBoardFunc}) {
                     <strong className="dcon">{header.dispCellPhoneInfo}</strong>
                 </div>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={{paddingTop:'15px',overflow:'hidden'}}>
+                <div className={'d-flex align-items-center mb-1'}>
+                    <span className={'me-1 dtit'}>측정일</span>
+                    <select className={'form-select'}
+                            style={{maxWidth:'130px'}}
+                            value={vitalCheckDate}
+                            onChange={(e)=>handledVitalCheckDate(e)}
+                    >
+                        {
+                            header.searchDtList&&header.searchDtList.map(value=><option key={value} value={value}>{value}</option>)
+                        }
+
+                    </select>
+                </div>
                 <div className="card inchart">
                     <div className='d-flex justify-content-around'>
                         <VitalButton className='btn btn-sm p-1' name='all' show={vitalAllButton}

@@ -1,5 +1,4 @@
 import AuthorizationAxios from "../Utils/AuthorizationAxios";
-import getToday from "../Utils/common";
 
 class AdmissionDetailApi {
     constructor(admissionId) {
@@ -37,16 +36,26 @@ class AdmissionDetailApi {
 
     async getVitalData (searchDt) {
         try{
-            const today = getToday()
             const response = await AuthorizationAxios.post(
                 process.env.REACT_APP_BASE_URL + '/api/patientDashboard/detail/chart',
                 JSON.stringify({
                     admissionId: this.admissionId,
-                    searchDt : today
+                    searchDt : searchDt
                 }),
                 {headers: {'Content-Type': "application/json"}}
             )
-            console.log(response);
+            return response;
+        }catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
+    async getVitalChartHeader () {
+        try{
+            const response = await AuthorizationAxios.get(
+                process.env.REACT_APP_BASE_URL + '/api/patientDashboard/detail/chart/header',
+                {params: {admissionId: this.admissionId}}
+            )
             return response;
         }catch (e) {
             console.log(e);
