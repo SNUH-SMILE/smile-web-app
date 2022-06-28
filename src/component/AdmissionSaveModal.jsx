@@ -36,6 +36,14 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
          room :room,
     }
 
+    const [cellPhoneValue, setCellPhoneValue] = useState('')
+    const handledCellphoneValue = (e)=>{
+        const pattern=/^[0-9]+$/;
+        if(pattern.test(e.target.value)){
+            setCellPhoneValue(e.target.value);
+        }
+    }
+
     const [rooms, setRooms] = useState([])
     function getRoom(centerId) {
         commonCode('CD005').then(({data}) => {
@@ -52,6 +60,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
             getRoom(centerList[0].centerId)
         }
         setSex(admissionSaveModalObj.data.sex);
+        setCellPhoneValue(admissionSaveModalObj.data.cellPhone);
     },[admissionSaveModalObj])
     return (
         <Modal show={admissionSaveModalObj.show}
@@ -74,6 +83,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                         <input className="form-control w-100"
                                                type="text"
                                                ref={admissionId}
+                                               role={'admissionId'}
                                                defaultValue={admissionSaveModalObj.data.admissionId}
                                                readOnly/>
                                     </td>
@@ -84,6 +94,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                         <input className="form-control w-100"
                                                type="text"
                                                ref={patientId}
+                                               role={'patientId'}
                                                defaultValue={admissionSaveModalObj.data.patientId}
                                                readOnly/>
                                     </td>
@@ -94,6 +105,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                         <input className="form-control w-100"
                                                type="text"
                                                ref={patientNm}
+                                               role={'patientNm'}
                                                defaultValue={admissionSaveModalObj.data.patientNm}
                                                required/>
                                     </td>
@@ -103,6 +115,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                     <td>
                                         <input className="form-control w-100 date" type="date"
                                                ref={birthDate}
+                                               role={'birthDate'}
                                                defaultValue={admissionSaveModalObj.data.birthDate && convertDate(admissionSaveModalObj.data.birthDate)}
                                                required/>
                                     </td>
@@ -112,6 +125,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                     <td>
                                         <div className="form-check form-check-inline">
                                             <input className="form-check-input" type="radio" name="gender" id="gender1"
+                                                   role={'sexM'}
                                                    defaultChecked={admissionSaveModalObj.data.sex === 'M'}
                                                    onClick={()=>setSex('M')}
 
@@ -120,6 +134,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                         </div>
                                         <div className="form-check form-check-inline">
                                             <input className="form-check-input" type="radio" name="gender" id="gender2"
+                                                   role={'sexF'}
                                                    onClick={()=>setSex('F')}
                                                    defaultChecked={admissionSaveModalObj.data.sex === 'F'}/>
                                                 <label className="form-check-label" htmlFor="gender2">여자</label>
@@ -130,7 +145,11 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                     <th>연락처</th>
                                     <td>
                                         <input className="form-control w-100" type="text" ref={cellPhone}
-                                               defaultValue={admissionSaveModalObj.data.cellPhone} required/>
+                                               role={'cellPhone'}
+                                               // defaultValue={admissionSaveModalObj.data.cellPhone}
+                                               value={cellPhoneValue||''}
+                                               onChange={(e)=>handledCellphoneValue(e)}
+                                               required/>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -145,6 +164,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                     <th>담당자</th>
                                     <td>
                                         <input className="form-control w-100" type="text" ref={personCharge}
+                                               role={'personCharge'}
                                                defaultValue={admissionSaveModalObj.data.personCharge} required/>
                                     </td>
                                 </tr>
@@ -152,6 +172,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                     <th>시작일</th>
                                     <td>
                                         <input className="form-control w-100 date" type="date" ref={admissionDate}
+                                               role={'admissionDate'}
                                                defaultValue={admissionSaveModalObj.data.admissionDate  && convertDate(admissionSaveModalObj.data.admissionDate)}
                                                required/>
                                     </td>
@@ -160,6 +181,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                     <th>종료예정일</th>
                                     <td>
                                         <input className="form-control w-100 date" type="date" ref={dschgeSchdldDate}
+                                               role={'dschgeSchdldDate'}
                                                defaultValue={
                                                    admissionSaveModalObj.data.dschgeSchdldDate &&
                                                    convertDate(admissionSaveModalObj.data.dschgeSchdldDate)}
@@ -171,6 +193,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                     <td>
                                         <select className={'form-select'}
                                                 ref={centerId}
+                                                role={'centerId'}
                                                 onChange={(e)=>getRoom(e.target.value)}
                                                 defaultValue={centerList&&centerList.length>0&&centerList[0].centerId}
                                         >
@@ -191,6 +214,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                     <td>
                                         <select className={'form-select'} ref={room}
                                                 value={a}
+                                                role={'room'}
                                                 onChange={(e)=>onChangeA(e)}
                                         >
                                             <option value={''}>선택</option>

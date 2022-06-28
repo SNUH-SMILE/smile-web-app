@@ -135,42 +135,50 @@ function Admission() {
     const getSelectedAdmissionId = (patientId, {admissionId}) =>{
         selectedAdmissionId.current = admissionId;
     }
-    // 신규생성
-    const create = async (saveData) => {
-        let nullList = Object.keys(saveData)
-            .filter(value => value!=='admissionId' && value !== 'patientId')
-            .filter(value=>value === 'sex' ? saveData[value] === '' :saveData[value].current.value==='');
+    const validationModalData = async (nullList,saveData)=>{
         if(nullList.length > 0){
             nullList[0] === 'patientNm' && alert('이름이 공백입니다.')
+            nullList[0] === 'birthDate' && alert('생일이 공백입니다.')
             nullList[0] === 'sex' && alert('성별을 선택해주세요.')
             nullList[0] === 'cellPhone' && alert('연락처가 공백입니다.')
             nullList[0] === 'admissionDate' && alert('시작일이 공백입니다.')
             nullList[0] === 'dschgeSchdldDate' && alert('종료예정일이 공백입니다.')
             nullList[0] === 'personCharge' && alert('담당자 공백입니다.')
+            nullList[0] === 'centerId' && alert('센터가 공백입니다.')
             nullList[0] === 'room' && alert('위치가 공백입니다.')
             saveData[nullList[0]].current.focus();
+            return false;
         }
         else if(saveData['admissionDate'].current.value >= saveData['dschgeSchdldDate'].current.value){
             alert('종료 예정일은 시작일 이후이어야 합니다.')
             saveData['dschgeSchdldDate'].current.focus();
+            return false;
         }
-        else{
+        return true;
+    }
+    // 신규생성
+    const create = async (saveData) => {
+        let nullList = Object.keys(saveData)
+            .filter(value => value !== 'admissionId' && value !== 'patientId')
+            .filter(value => value === 'sex' ? saveData[value] === '' : saveData[value].current.value === '');
+        const validation = await validationModalData(nullList, saveData)
+        if (validation){
             let confirmStatus = await confirm(`${saveData['patientNm'].current.value}를 생성하시겠습니까?`)
-            if(confirmStatus){
+            if (confirmStatus) {
                 admissionApi.create(saveData).then(({data}) => {
-                    if(data.code === '00'){
+                    if (data.code === '00') {
                         alert(data.message)
                         handledCloseAdmissionSaveModal()
-                        setPaginationObj((prevState)=>({...prevState,
-                            prevPaginationExists:data.result.admissionListResponseByCenterVO.paginationInfoVO.prevPaginationExists,
-                            nextPaginationExists:data.result.admissionListResponseByCenterVO.paginationInfoVO.nextPaginationExists,
-                            firstPageNoOnPageList:data.result.admissionListResponseByCenterVO.paginationInfoVO.firstPageNoOnPageList,
-                            lastPageNoOnPageList :data.result.admissionListResponseByCenterVO.paginationInfoVO.lastPageNoOnPageList,
+                        setPaginationObj((prevState) => ({
+                            ...prevState,
+                            prevPaginationExists: data.result.admissionListResponseByCenterVO.paginationInfoVO.prevPaginationExists,
+                            nextPaginationExists: data.result.admissionListResponseByCenterVO.paginationInfoVO.nextPaginationExists,
+                            firstPageNoOnPageList: data.result.admissionListResponseByCenterVO.paginationInfoVO.firstPageNoOnPageList,
+                            lastPageNoOnPageList: data.result.admissionListResponseByCenterVO.paginationInfoVO.lastPageNoOnPageList,
                         }))
                         setTotalPageCount(data.result.admissionListResponseByCenterVO.paginationInfoVO.totalPageCount)
                         setAdmissionTableData(data.result.admissionListResponseByCenterVO.admissionByCenterVOList);
-                    }
-                    else{
+                    } else {
                         alert(data.message)
                     }
                 });
@@ -180,23 +188,8 @@ function Admission() {
     // 수정
     const update = async (saveData) => {
         let nullList = Object.keys(saveData).filter(value=>value === 'sex' ? saveData[value] === '' :saveData[value].current.value==='');
-        if(nullList.length > 0){
-            nullList[0] === 'admissionId' && alert('입소내역ID가 공백입니다.')
-            nullList[0] === 'patientId' && alert('환자ID가 공백입니다.')
-            nullList[0] === 'patientNm' && alert('이름이 공백입니다.')
-            nullList[0] === 'sex' && alert('성별을 선택해주세요.')
-            nullList[0] === 'cellPhone' && alert('연락처가 공백입니다.')
-            nullList[0] === 'admissionDate' && alert('시작일이 공백입니다.')
-            nullList[0] === 'dschgeSchdldDate' && alert('종료예정일이 공백입니다.')
-            nullList[0] === 'personCharge' && alert('담당자 공백입니다.')
-            nullList[0] === 'room' && alert('위치가 공백입니다.')
-            saveData[nullList[0]].current.focus();
-        }
-        else if(saveData['admissionDate'].current.value >= saveData['dschgeSchdldDate'].current.value){
-            alert('종료 예정일은 시작일 이후이어야 합니다.')
-            saveData['dschgeSchdldDate'].current.focus();
-        }
-        else{
+        const validation = await validationModalData(nullList, saveData)
+        if (validation){
             let confirmStatus = await confirm(`${saveData['patientNm'].current.value}를 수정하시겠습니까?`)
             if(confirmStatus){
                 admissionApi.update(saveData).then(({data}) => {

@@ -44,7 +44,7 @@ function Pagination({paginationObj, totalPageCount,handledList}) {
         <nav className="mt-4">
             <ul className="pagination">
                 <li className="page-item" >
-                    <button className="page-link" aria-label="Previous"  disabled={!prevPaginationExists} onClick={handledPrev}>
+                    <button className="page-link" aria-label="Previous" role={'prevPageIcon'} disabled={!prevPaginationExists} onClick={handledPrev}>
                         <span aria-hidden="true"><CgChevronLeft /></span>
                     </button>
                 </li>
@@ -52,7 +52,7 @@ function Pagination({paginationObj, totalPageCount,handledList}) {
                     totalPageCount && makePagination(firstPageNoOnPageList, lastPageNoOnPageList , activeNum, handledActive)
                 }
                 <li className="page-item">
-                    <button className="page-link" aria-label="Next" disabled={!nextPaginationExists} onClick={handledNext}>
+                    <button className="page-link" aria-label="Next" role={'nextPageIcon'} disabled={!nextPaginationExists} onClick={handledNext}>
                         <span aria-hidden="true"><CgChevronRight/></span>
                     </button>
                 </li>
