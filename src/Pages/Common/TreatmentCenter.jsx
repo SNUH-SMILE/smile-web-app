@@ -51,6 +51,7 @@ function TreatmentCenter() {
     const selectTreatmentCenter = () => {
         treatmentCenterApi.select().then(response => setTreatmentCenterList(response.data.result));
         commonCode('CD002').then(response => setHospitalList(response.data.result));
+        clear();
     }
 
     // 생활치료센터 상세정보 요청
