@@ -19,7 +19,7 @@ beforeEach(() => {
     document.body.appendChild(container);
     const mockAxios = new MockAdapter(AuthorizationAxios, {delayResponse: 0})
     mockAxios.onPost(process.env.REACT_APP_BASE_URL + '/api/patientDashboard/status/list',{
-        'qantnDiv':'2',
+        'qantnDiv':'1',
         'centerId':''
     })
         .reply(200,{
