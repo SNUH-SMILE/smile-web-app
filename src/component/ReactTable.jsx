@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, {useEffect, useRef} from "react";
 import {CgChevronLeft, CgChevronRight} from "react-icons/cg";
 import {BsCheckLg, BsX} from "react-icons/bs";
 import {useTable, useSortBy, usePagination} from "react-table";
@@ -24,28 +24,15 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
         getTableBodyProps,
         headerGroups,
         prepareRow,
-
         //Row
         rows,
-
         //Page
         page,
-        canPreviousPage, // 이전페이지존재여부
-        canNextPage,// 다음페이지존재여부
-        pageOptions,
-        pageCount,
-        gotoPage,
-        nextPage,
-        previousPage,
-        setPageSize,
-
-        state: { pageIndex, pageSize },
     }
         = useTable({
         columns,
         data,
         initialState: {pageIndex : 1, pageSize : 2}
-    // },sorted && useSortBy,pagination && usePagination)
     },sorted && useSortBy,pagination && usePagination)
     const hilighter = useRef(undefined)
 
@@ -55,6 +42,9 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
         hilighter.current.classList.add('active');
 
     }
+    useEffect(()=>{
+        hilighter.current !== undefined && hilighter.current.classList.remove('active');
+    },[data])
 
     return (
         <>
