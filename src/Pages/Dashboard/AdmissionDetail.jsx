@@ -125,7 +125,7 @@ function AdmissionDetail() {
                             <h5 className="title">알림 <span>발송</span></h5>
                             <button type="button" className="ms-auto btn-close"/>
                         </div>
-                        <ul className="scrollbar">
+                        <ul className="scrollbar" role={'noticeList'}>
                             {noticeList.map(value => {
                                 return(
                                     <NoticeCard data={value} key={value.noticeSeq}/>
@@ -134,7 +134,12 @@ function AdmissionDetail() {
                         </ul>
                         <div className="footer">
                             <form>
-                                <textarea className="form-control w-100" placeholder="텍스트를 입력해 주세요" value={noticeText} onChange={(e)=>maxLength(e,maxLen)}/>
+                                <textarea className="form-control w-100"
+                                          placeholder="텍스트를 입력해 주세요"
+                                          value={noticeText}
+                                          role={'noticeText'}
+                                          onChange={(e)=>maxLength(e,maxLen)}
+                                />
                                 <div className="btn_wrap d-flex">
                                     <span className="byte"><strong>{noticeText.length}</strong> / 500</span>
                                     <button type="button" className="ms-auto btn btn-pr3" onClick={addNotice}>알림 전송</button>
