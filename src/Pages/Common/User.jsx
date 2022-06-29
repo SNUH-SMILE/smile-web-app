@@ -208,6 +208,7 @@ function User() {
     // 사용자 리스트 요청
     const selectUserList = () => {
         userApi.select().then(({data}) => setUserList(data.result));
+        clear();
     }
 
     // 사용자 상세 정보 요청
