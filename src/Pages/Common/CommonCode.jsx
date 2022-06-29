@@ -22,6 +22,9 @@ function CommonCode() {
     // 업무구분
     const [comCdDiv, setComCdDivSelectData] = useState([]);
 
+    //공통코드 상세 리스트
+    const [comCdDetailList, setComCdDetailList] = useState([]);
+
     // 공통코드 구분 검색
     const comCdSearchCode = useRef();
     const comCdSearchName = useRef();
@@ -194,6 +197,8 @@ function CommonCode() {
         setPrevData(prevData.filter(value => Object.keys(value).includes('detailCd')))
         commonCodeApi.select().then(({data}) => data.code === '00' && setComCdList(data.result));
         commonCode('CD001').then(({data}) => data.code === '00' && setComCdDivSelectData(data.result));
+        setComCdDetailList([]);
+
     }
 
     // edit 모드전환시 이전 데이터 보관 하기 위해 선언
@@ -216,7 +221,9 @@ function CommonCode() {
     const newRow = () =>{
         setComCdList([...comCdList,{header: 'C'+newRowNum.current, comCd:'Create'+newRowNum.current,comCdNm:'',comCdDiv:'',useYn:'Y',remark:'',cudFlag:'C', active:true}])
         newRowNum.current +=1 ;
+        setComCdDetailList([]);
     }
+    const comCdReactTable = useRef();
 
     const save = async () => {
 
@@ -266,6 +273,11 @@ function CommonCode() {
                     alert(data.message);
                 }
             })
+            let comCdReactTableBody = comCdReactTable.current.querySelector('tbody')
+            if(comCdReactTableBody.scrollHeight>comCdReactTableBody.clientHeight){
+                comCdReactTableBody.scrollTo(0,0)
+            }
+            setComCdDetailList([]);
         }
     }
 
@@ -286,8 +298,7 @@ function CommonCode() {
         {Header: '리마크', accessor: 'remark', styleClassName: 'cd10', styleClassNameForBody:'text-start', editElement:'text',changeFunc:handledOnChange},
     ]
 
-    //공통코드 상세 리스트
-    const [comCdDetailList, setComCdDetailList] = useState([]);
+
 
     //공통코드 상세 리스트 조회
     const getComCdDetail = (comCd) =>{
@@ -440,7 +451,7 @@ function CommonCode() {
                                         </div>
                                     </form>
                                 </div>
-                                <div className="table-body height100">
+                                <div className="table-body height100" ref={comCdReactTable}>
 
                                     <ReactTable
                                         key={'comCd'}
@@ -468,7 +479,7 @@ function CommonCode() {
                                 <div className="table-header">
                                     <form>
                                         <div className="d-flex">
-                                            <div className="tbl_title">공통코드</div>
+                                            <div className="tbl_title">세부코드</div>
                                             <div className="me-1 d-flex">
                                                 <span className="stit">사용여부</span>
                                                 <select className="form-select"
