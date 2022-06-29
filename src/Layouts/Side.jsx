@@ -3,12 +3,12 @@ import SMILELogo from '../Assets/Images/main_logo.png';
 import {NavLink, useLocation} from "react-router-dom";
 
 const onClickParent = (e) =>{
-    if(e.currentTarget.ariaExpanded === 'false'){
-        e.currentTarget.ariaExpanded = 'true'
+    if(e.currentTarget.getAttribute('aria-expanded') === 'false'){
+        e.currentTarget.setAttribute('aria-expanded', 'true')
         e.currentTarget.nextElementSibling.classList.add('show')
     }
     else{
-        e.currentTarget.ariaExpanded = 'false'
+        e.currentTarget.setAttribute('aria-expanded', 'false')
         e.currentTarget.nextElementSibling.classList.remove('show')
     }
 
@@ -57,7 +57,7 @@ function Side() {
                                     <i/>
                                 </span>
                                 </a>
-                                <div className={current ? 'collapse show' : 'collapse'} id={"#collapse"+idx}>
+                                <div className={current ? 'collapse show' : 'collapse'} id={"#collapse"+idx} role={"collapse"+idx}>
                                     <div className="card my-2">
                                         <ul className="submenu navbar-nav my-2 px-3">
                                             {menu.child.map((value,idx) => {
