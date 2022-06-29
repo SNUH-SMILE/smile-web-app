@@ -1,12 +1,11 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 import DashboardCard from "../../component/DashboardCard";
-import {getLonginUserInfo} from "../../Apis/CommonCode";
 import CenterDashboardApi from "../../Apis/CenterDashboardApi";
 import {TitleContext} from "../../Providers/TitleContext";
 import useAdmissionDetail from "../../Utils/useAdmissionDetail";
 
-function CenterAdmissionBoard() {
+function QuarantinePatientDashboard() {
 
     UseSetPageTitle('자택격리자 대시보드', 'Quarantine')
     const {onMove} = useAdmissionDetail()
@@ -47,4 +46,4 @@ function CenterAdmissionBoard() {
     );
 }
 
-export default React.memo(CenterAdmissionBoard);
+export default React.memo(QuarantinePatientDashboard);
