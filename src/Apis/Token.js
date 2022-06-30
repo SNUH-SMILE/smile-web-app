@@ -17,26 +17,31 @@ const TokenMethod ={
                             }
                         }
                     )
+            console.log(response);
             return response;
         }catch (e) {
-            return false;
+            console.log(e)
         }
     },
 
     // 토큰 재발급
-    Reissue:function () {
-        axios
-            .post(
-                process.env.REACT_APP_BASE_URL + '/api/tokenReissue',
-                JSON.stringify({...new TokenStatusInfo}),
-                {
-                    headers: {
-                        'Content-Type': "application/json"
-                    }
-                })
-            .then(({data}) => {
-                localStorage.setItem('Authorization', data.result);
-            });
+    Reissue: async function () {
+        try {
+            await axios
+                .post(
+                    process.env.REACT_APP_BASE_URL + '/api/tokenReissue',
+                    JSON.stringify({...new TokenStatusInfo}),
+                    {
+                        headers: {
+                            'Content-Type': "application/json"
+                        }
+                    })
+                .then(({data}) => {
+                    localStorage.setItem('Authorization', data.result);
+                });
+        }catch (e) {
+            console.log(e)
+        }
     }
 }
 

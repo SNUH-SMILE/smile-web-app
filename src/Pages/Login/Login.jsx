@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import '../../Assets/Styles/Login/login.css';
 import logo from '../../Assets/Images/Login/login_logo.png';
 import background from '../../Assets/Images/Login/login_img.png';
@@ -60,7 +60,7 @@ function Login({setTokenInterval}) {
                         // 로그인 성공시 Token 재발급 Interval
                         setTokenInterval(setInterval(()=>{
                             TokenMethod.Reissue();
-                        },1800000))
+                        },parseInt(process.env.REACT_APP_AUTHORIZATION_REISSUE_TIME)))
                         // 메인 페이지로 이동
                         navigate('/treatmentCenter');
 

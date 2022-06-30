@@ -47,7 +47,7 @@ function App() {
                     // Interval 실행
                     setTokenInterval(setInterval(() => {
                         TokenMethod.Reissue();
-                    }, 1800000))
+                    }, parseInt(process.env.REACT_APP_AUTHORIZATION_REISSUE_TIME)))
 
                 } else if (tokenStatus === '80') { // 토큰 만료
                     if (rememberYn === 'Y') { // 토큰 만료시 로그인 유지가 Y 이면 메인(입력한 URL) or 로그인
