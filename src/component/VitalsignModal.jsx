@@ -3,7 +3,6 @@ import {Modal} from "react-bootstrap";
 import Chart from "react-apexcharts"
 import ApexCharts from 'apexcharts';
 import styled from "styled-components";
-import getToday, {getTomorrow} from "../Utils/common";
 import AdmissionDetailApi from "../Apis/AdmissionDetailApi";
 
 const VitalButton = styled.button`
