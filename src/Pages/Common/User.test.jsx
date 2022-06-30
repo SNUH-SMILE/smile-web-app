@@ -6,6 +6,7 @@ import HcAlert from "../../component/HCAlert";
 import User from "./User";
 import MockAdapter from "axios-mock-adapter";
 import AuthorizationAxios from "../../Utils/AuthorizationAxios";
+import userEvent from "@testing-library/user-event";
 
 let container;
 
@@ -15,9 +16,9 @@ beforeEach(() => {
     const mockAxios = new MockAdapter(AuthorizationAxios, {delayResponse: 0})
     // 사용자 검색
     mockAxios.onPost(process.env.REACT_APP_BASE_URL + '/api/user/list', {
-        userId: '',
-        userNm: '',
-        centerId: ''
+        'userId': '',
+        'userNm': '',
+        'centerId': ''
     }).reply(200,
         {
             "code": "00",
@@ -37,6 +38,34 @@ beforeEach(() => {
                     "mainCenterId": "C001",
                     "mainCenterNm": "테스트 생활치료센터",
                     "remark": "User1Remark",
+                    "rememberYn": "N",
+                    "userTreatmentCenterVOList": null
+                }
+            ]
+        }, {'Content-Type': 'application/json', 'Authorization': `Bearer asdadasd`})
+    mockAxios.onPost(process.env.REACT_APP_BASE_URL + '/api/user/list', {
+        'userId': '',
+        'userNm': '',
+        'centerId': 'C000'
+    }).reply(200,
+        {
+            "code": "00",
+            "message": "사용자 리스트 검색 완료",
+            "result": [
+                {
+                    "regId": "test",
+                    "regNm": null,
+                    "regDt": "2022-06-11 15:25:27",
+                    "updId": "test",
+                    "updNm": null,
+                    "updDt": "2022-06-11 17:33:15",
+                    "userId": "U00002",
+                    "password": "test",
+                    "userNm": "UserName2",
+                    "delYn": "N",
+                    "mainCenterId": "C000",
+                    "mainCenterNm": "test센터0",
+                    "remark": "User2Remark",
                     "rememberYn": "N",
                     "userTreatmentCenterVOList": null
                 }
@@ -359,6 +388,110 @@ describe('User Page', () => {
             expect(getByText("U00001")).toBeInTheDocument();
             expect(getByText("UserName1")).toBeInTheDocument();
         })
+    })
+
+    // 검색 생활치료센터 모달에서 테이블 선택이 라디오 버튼으로 표현되는지
+    test('Search UserList TreatmentCenter Modal Have Radio', async ()=>{
+        const {getByText,getByRole} = render(
+            <AlertStore>
+                <TitleStore>
+                    <BrowserRouter>
+                        <User/>
+                    </BrowserRouter>
+                </TitleStore>
+                <HcAlert/>
+            </AlertStore>
+            , container)
+
+
+        await waitFor(() => {
+            expect(getByText("U00001")).toBeInTheDocument();
+            expect(getByText("UserName1")).toBeInTheDocument();
+        })
+        const selectTreatmentCenter = getByRole('selectTreatmentCenter');
+        userEvent.click(selectTreatmentCenter);
+
+        const modal = getByRole('dialog')
+
+        await waitFor(() => {
+            expect(modal).toBeInTheDocument();
+            expect(modal).toHaveTextContent('생활치료센터');
+            expect(modal).toContainHTML('name="lcenter"');
+        })
+    })
+
+    // 검색 생활치료센터 모달에서 생활치료센터를 선택하지 않고 선택버튼을 눌렀을때
+    test('Search UserList By TreatmentCenter Then Dont Selected TreatmentCenter', async ()=>{
+        const {getByText,getByRole} = render(
+            <AlertStore>
+                <TitleStore>
+                    <BrowserRouter>
+                        <User/>
+                    </BrowserRouter>
+                </TitleStore>
+                <HcAlert/>
+            </AlertStore>
+            , container)
+
+
+        await waitFor(() => {
+            expect(getByText("U00001")).toBeInTheDocument();
+            expect(getByText("UserName1")).toBeInTheDocument();
+        })
+        const selectTreatmentCenter = getByRole('selectTreatmentCenter');
+        userEvent.click(selectTreatmentCenter);
+
+        const modal = getByRole('dialog')
+
+        await waitFor(() => {
+            expect(modal).toBeInTheDocument();
+            expect(modal).toHaveTextContent('생활치료센터');
+        })
+
+        const modalSelectButton = getByRole('selectButton');
+        userEvent.click(modalSelectButton)
+
+        await waitFor(()=>expect(getByText('생활치료센터를 선택하세요.')).toBeInTheDocument())
+    })
+
+    // 검색 생활치료센터 모달에서 생활치료센터를 선택하고 선택버튼을 눌렀을때
+    test('Search UserList By TreatmentCenter Then Selected TreatmentCenter', async ()=>{
+        const {getByText,getByRole} = render(
+            <AlertStore>
+                <TitleStore>
+                    <BrowserRouter>
+                        <User/>
+                    </BrowserRouter>
+                </TitleStore>
+                <HcAlert/>
+            </AlertStore>
+            , container)
+
+
+        await waitFor(() => {
+            expect(getByText("U00001")).toBeInTheDocument();
+            expect(getByText("UserName1")).toBeInTheDocument();
+        })
+        const selectTreatmentCenter = getByRole('selectTreatmentCenter');
+        userEvent.click(selectTreatmentCenter);
+
+        const modal = getByRole('dialog')
+
+        await waitFor(() => {
+            expect(modal).toBeInTheDocument();
+            expect(modal).toHaveTextContent('생활치료센터');
+        })
+        const radio = document.querySelector('input[type="radio"]')
+        userEvent.click(radio);
+        expect(radio).toBeChecked();
+
+        // debug()
+        const modalSelectButton = getByRole('selectButton');
+        userEvent.click(modalSelectButton);
+
+        await waitFor(()=>expect(selectTreatmentCenter).toHaveDisplayValue('test센터0'));
+        await waitFor(()=>expect(getByText('UserName2')).toBeInTheDocument());
+
     })
 
     // 사용자 상세정보 조회

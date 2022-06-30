@@ -18,6 +18,7 @@ function TreatmentCenterModal({treatmentCenterModalObject,handleClose}) {
                 [...selectedData, data]
             );
         } else if (mode === 'except') {
+            console.log('except');
             // CheckBox
             setSelectedData(
                 selectedData.filter(value => value.centerId !== data.centerId)

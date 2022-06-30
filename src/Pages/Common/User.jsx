@@ -321,6 +321,7 @@ function User() {
                                                 <div className="me-1 d-flex">
                                                     <span className="stit">생활치료센터</span>
                                                     <input className="form-control search w200" type="text"
+                                                           role={'selectTreatmentCenter'}
                                                            value={searchCenter.centerNm}
                                                            onClick={()=> handleTreatmentCenterModalOpen('radio')}
                                                            onChange={()=>selectUserList()}
