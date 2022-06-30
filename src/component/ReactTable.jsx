@@ -11,7 +11,7 @@ const RedSpan = styled.span`
 const BlueSpan = styled.span`
   color:#2094ff;
 `
-function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited, pagination, trOnclick, deleteRow ,targetSelectData, primaryKey }) {
+function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited, pagination, trOnclick, deleteRow ,targetSelectData, primaryKey, crud }) {
     // Table Header
     const columns = React.useMemo(() => tableHeader, [tableHeader])
 
@@ -37,14 +37,17 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
     const hilighter = useRef(undefined)
 
     const highlighter = (e) =>{
+        console.log(hilighter.current);
         hilighter.current !== undefined && hilighter.current.classList.remove('active');
         hilighter.current=e.currentTarget;
         hilighter.current.classList.add('active');
 
     }
     useEffect(()=>{
-        hilighter.current !== undefined && hilighter.current.classList.remove('active');
-    },[data])
+        if(crud !== 'U'){
+            hilighter.current !== undefined && hilighter.current.classList.remove('active');
+        }
+    },[data,crud])
 
     return (
         <>
