@@ -761,7 +761,7 @@ describe('User Page', () => {
 
     // 사용자 수정
     test('Update User is Succeed', async () => {
-        const {debug, getByRole, getByText} = render(
+        const { getByRole, getByText} = render(
             <AlertStore>
                 <TitleStore>
                     <BrowserRouter>
@@ -791,7 +791,6 @@ describe('User Page', () => {
             expect(detailUserPW).toHaveValue('test');
             expect(detailUserNM).toHaveValue('UserName1');
             expect(detailUserRM).toHaveValue('User1Remark');
-            debug()
         })
 
         detailUserNM.value = 'UpdateUserNM';

@@ -312,7 +312,7 @@ describe('QuarantinePatientDashboard',()=>{
     // 자택격리자 대시보드 페이지 Mount 및 useEffect[] 테스트
     test('Mount QuarantinePatientDashboard And Effect is Succeed',async ()=>{
         renderHook(() => UseSetPageTitle())
-        const {debug,getByText} = render(
+        const {getByText} = render(
             <AlertStore>
                 <TitleStore>
                     <BrowserRouter>
@@ -333,7 +333,7 @@ describe('QuarantinePatientDashboard',()=>{
     // 자택격리자 카드 클릭시 환자상세 페이지로 이동하는지
     test('Click QuarantinePatient Card then Move the page',async ()=>{
         renderHook(() => UseSetPageTitle())
-        const {debug,getByText} = render(
+        const {getByText} = render(
             <AlertStore>
                 <TitleStore>
                     <BrowserRouter>
@@ -358,7 +358,6 @@ describe('QuarantinePatientDashboard',()=>{
 
         await waitFor(()=>{
             expect(screen.getByText('환자상세')).toBeInTheDocument();
-            debug()
         })
     })
 })

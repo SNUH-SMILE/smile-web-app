@@ -638,7 +638,7 @@ describe('CenterAdmissionBoard',()=>{
     // 생활치료센터 입소자 카드 클릭시 환자상세 페이지로 이동하는지
     test('Click CenterAdmissionBoard Card then Move the page',async ()=>{
         renderHook(() => UseSetPageTitle())
-        const {debug,getByText} = render(
+        const {getByText} = render(
             <AlertStore>
                 <TitleStore>
                     <BrowserRouter>
@@ -663,7 +663,6 @@ describe('CenterAdmissionBoard',()=>{
 
         await waitFor(()=>{
             expect(screen.getByText('환자상세')).toBeInTheDocument();
-            debug()
         })
     })
 })

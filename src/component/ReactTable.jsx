@@ -37,7 +37,6 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
     const hilighter = useRef(undefined)
 
     const highlighter = (e) =>{
-        console.log(hilighter.current);
         hilighter.current !== undefined && hilighter.current.classList.remove('active');
         hilighter.current=e.currentTarget;
         hilighter.current.classList.add('active');
@@ -93,7 +92,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                 {
 
                     pagination ?
-                        page.map((row, i) => {
+                        page.map((row) => {
                             prepareRow(row)
                             return (
                                 <tr {...row.getRowProps()}>
@@ -104,7 +103,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                             )
                         })
                         :
-                        rows.map((row, i) => {
+                        rows.map((row) => {
                             prepareRow(row)
                             return (
                                 edited ?
@@ -359,7 +358,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                                 className="form-check-input"
                                                                 type="radio"
                                                                 name="lcenter"
-                                                                onClick={(e) => {
+                                                                onClick={() => {
                                                                     cell.column.editEvent(row.values, 'select');
                                                                 }}
                                                             />

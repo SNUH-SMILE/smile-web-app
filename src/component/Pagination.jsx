@@ -35,7 +35,6 @@ function Pagination({paginationObj, totalPageCount,handledList}) {
     }
     const handledNext = () =>{
         const num = firstPageNoOnPageList+10;
-        console.log(num);
         handledList(prevValue=>({...prevValue, currentPageNo: num}))
         setActiveNum(num)
     }
