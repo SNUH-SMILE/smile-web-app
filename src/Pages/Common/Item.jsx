@@ -22,6 +22,7 @@ function Item() {
 
     const [val, setVal] = useState({'refFrom':'', 'refTo':''});
 
+    const [crud, setCrud] = useState('')
     // 측정항목 관리 API
     const itemApi = new ItemApi(itemId, itemNm, unit, refFrom, refTo, searchItemId, searchItemNm);
 
@@ -80,6 +81,7 @@ function Item() {
                 alert(data.message);
             }
         });
+        setCrud('G');
     };
 
     // 측정항목 상세정보 요청
@@ -112,6 +114,7 @@ function Item() {
 
         if (isNew) {
             itemNm.current.focus();
+            crud==='S' ? setCrud('C') : setCrud('S')
         }
     };
 
@@ -183,7 +186,8 @@ function Item() {
             }
         }).catch((e) => {
             console.log('[ERROR]-Item.jsx updateItem', e);
-        });        
+        });
+        setCrud('U')
     };
 
     // 삭제
@@ -269,7 +273,7 @@ function Item() {
                                     </form>
                                 </div>
                                 <div className="table-body height100">
-                                    <ReactTable tableHeader={itemTableColumns} tableBody={itemList} trOnclick={getItemInfo} />
+                                    <ReactTable tableHeader={itemTableColumns} tableBody={itemList} trOnclick={getItemInfo} crud={crud}/>
                                 </div>
                             </div>
                         </div>
