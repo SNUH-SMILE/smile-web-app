@@ -55,7 +55,7 @@ function Admission() {
     const mountSelectAdmissionListByCenter = () => {
         getLonginUserInfo()
             .then(({data}) => setLoginUserTreatmentCenterList(data.result.userTreatmentCenterVOList))
-            .catch(e=>console.log('ERROR getLonginUserInfo'))
+            .catch(()=>console.log('ERROR getLonginUserInfo'))
             .then(()=>{
                 if(searchAdmissionCenter.current.value){
                     admissionApi.select().then(({data}) => {
@@ -67,15 +67,20 @@ function Admission() {
     const selectAdmissionListByCenter = () => {
         if(searchAdmissionCenter.current.value){
             admissionApi.select().then(({data}) => {
+                console.log(data);
                 setPaginationAndAdmissionTableDat(data);
             })
+        }
+        else{
+            setAdmissionTableData([]);
+            setTotalPageCount(0);
+            setPaginationObj({currentPageNo:1,pageSize:10,recordCountPerPage:15});
         }
     }
     const [selectValue,setSelectValue] = useState('')
     useEffect(()=>{
-        if(loginUserTreatmentCenterList.length>0){
-            const mainCenterObject = loginUserTreatmentCenterList.filter(value => value.mainYn === 'Y')
-            setSelectValue(mainCenterObject[0].centerId)
+        if(loginUserTreatmentCenterList&&loginUserTreatmentCenterList.length>0){
+            setSelectValue(loginUserTreatmentCenterList[0].centerId)
         }
     },[loginUserTreatmentCenterList])
 
@@ -297,6 +302,7 @@ function Admission() {
                                                 <div className="btn_wrap d-flex">
                                                     <button type="button" className="btn btn-gray" onClick={(e)=>handledOnSearch(e)}>검색</button>
                                                     <button type="button" className="btn btn-white"
+                                                            // hidden={!selectValue}
                                                             onClick={()=>handledAdmissionSaveModal('신규')}>신규
                                                     </button>
                                                     <button type="button" className="btn btn-ccolor"

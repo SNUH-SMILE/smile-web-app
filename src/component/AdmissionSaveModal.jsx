@@ -56,7 +56,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
     }
 
     useEffect(()=>{
-        if(centerList.length> 0){
+        if(centerList&&centerList.length> 0){
             getRoom(centerList[0].centerId)
         }
         setSex(admissionSaveModalObj.data.sex);
