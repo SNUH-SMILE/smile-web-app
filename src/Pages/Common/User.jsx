@@ -121,6 +121,7 @@ function User() {
     // 생활치료센터 검색조건
     const [searchCenter, setSearchCenter] = useState({'centerId':'', 'centerNm':''});
 
+    const [crud, setCrud] = useState('')
     useEffect(()=>{
         selectUserList();
     },[searchCenter])
@@ -247,7 +248,9 @@ function User() {
             const confirmSate = await confirm(userId.current.value
                 ? '['+ userId.current.value + '] 를 수정하시겠습니까?'
                 :'['+ userNm.current.value + '] 를 생성하시겠습니까?')
-            confirmSate && userApi.save().then(({data}) => {
+            if(confirmSate){
+                userId.current.value && setCrud('U');
+                userApi.save().then(({data}) => {
                 if(data.code==='00'){
                     setUserList(data.result.userVOList);
                     userId.current.value = data.result.userVO.userId;
@@ -261,6 +264,7 @@ function User() {
                     alert(data.message);
                 }
             });
+            }
         }
     }
 
@@ -283,6 +287,7 @@ function User() {
         userNm.current.value = '';
         remark.current.value = '';
         setUserTreatmentCenterList([]);
+        crud==='S' ? setCrud('C') : setCrud('S')
     }
 
     const handledSearch = (e) =>{
@@ -328,7 +333,7 @@ function User() {
                                         </form>
                                     </div>
                                     <div className="table-body height100">
-                                        <ReactTable tableHeader={userTableColumn} tableBody={userList} trOnclick={selectUserInfo}/>
+                                        <ReactTable tableHeader={userTableColumn} tableBody={userList} trOnclick={selectUserInfo} crud={crud}/>
 
                                     </div>
                                 </div>
