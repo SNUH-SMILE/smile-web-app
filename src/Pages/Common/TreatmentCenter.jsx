@@ -17,7 +17,7 @@ function TreatmentCenter() {
     const treatmentCenterSearchNm = useRef();
     const treatmentCenterSearchHospitalNm = useRef();
     const hospitalCd = useRef();
-
+    const [crud,setCrud] = useState('')
     // 생활치료센터 Api
     const treatmentCenterApi =
         new TreatmentCenterApi(
@@ -93,6 +93,7 @@ function TreatmentCenter() {
                 alert('생활치료센터가 수정에 실패했습니다.');
             }
         }).catch((e) => console.log(e));
+        setCrud('U')
     }
 
     //생활치료센터 삭제
@@ -145,6 +146,7 @@ function TreatmentCenter() {
         centerNm.current.value = '';
         centerLocation.current.value = '';
         hospitalCd.current.value = '';
+        crud==='S' ? setCrud('C') : setCrud('S')
     }
 
     // 검색 Input Enter 이벤트
@@ -206,7 +208,7 @@ function TreatmentCenter() {
 
                                 <div className="table-body height100">
                                     <ReactTable tableHeader={treatmentCenterTableColumn} tableBody={treatmentCenterList}
-                                                trOnclick={detailTreatmentCenter}/>
+                                                trOnclick={detailTreatmentCenter} crud={crud}/>
                                 </div>
                             </div>
                         </div>
