@@ -21,9 +21,9 @@ beforeEach(() => {
         })
     mockAxios.onPost(process.env.REACT_APP_BASE_URL + '/api/tokenReissue',{'token':'SUCCESS'})
         .reply(200,{
-            rememberYn:"N",
-            token:'ReSUCCESS',
-            tokenStatus:"00"
+            code:"00",
+            result:'ReSUCCESS',
+            message:"신규 토큰 발급 성공"
         })
     mockAxios.onPost(process.env.REACT_APP_BASE_URL + '/api/tokenStatus',{'token':'ExpireN'})
         .reply(200,{
@@ -39,9 +39,9 @@ beforeEach(() => {
         })
     mockAxios.onPost(process.env.REACT_APP_BASE_URL + '/api/tokenReissue',{'token':'ExpireY'})
         .reply(200,{
-            rememberYn:"N",
-            token:'ReSUCCESS',
-            tokenStatus:"00"
+            code:"00",
+            result:'ReSUCCESS',
+            message:"신규 토큰 발급 성공"
         })
     mockAxios.onPost(process.env.REACT_APP_BASE_URL + '/api/tokenStatus',{'token':'IntervalSUCCESS'})
         .reply(200,{
@@ -51,9 +51,9 @@ beforeEach(() => {
         })
     mockAxios.onPost(process.env.REACT_APP_BASE_URL + '/api/tokenReissue',{'token':'IntervalSUCCESS'})
         .reply(200,{
-            rememberYn:"N",
-            token:'IntervalSUCCESS',
-            tokenStatus:"00"
+            code:"00",
+            result:'IntervalSUCCESS',
+            message:"신규 토큰 발급 성공"
         })
     mockAxios.onPost(process.env.REACT_APP_BASE_URL + '/api/tokenStatus',{'token':'Failed'})
         .reply(200,{
