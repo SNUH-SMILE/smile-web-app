@@ -19,7 +19,8 @@ function CenterAdmissionBoard() {
     const {setDashBoardData,setDashBoardFunc} = useContext(TitleContext);
     const selectPatientList = (centerId) => {
         getLonginUserInfo().then(({data}) => {
-            centerDashboardApi.select('2', centerId ? centerId.target.value : data.result.mainCenterId)
+            console.log(data);
+            centerDashboardApi.select('2', centerId ? centerId.target.value : data.result.userTreatmentCenterVOList[0].centerId)
                 .then(({data}) => {
                     setPatientList(data.result.patientList)
                     setDashBoardData(data.result.header)

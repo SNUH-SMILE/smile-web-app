@@ -69,7 +69,7 @@ const DashboardHeader = ({handledSideBar, title, handledLogOut, mode, data, dash
         }
     },[])
     useEffect(()=>{
-        centers.length>0 && setSelectValue(centers[0].centerId)
+        centers&&centers.length>0 && setSelectValue(centers[0].centerId)
     },[centers])
     const handledSelect = (e)=>{
         setSelectValue(e.target.value)
@@ -89,7 +89,7 @@ const DashboardHeader = ({handledSideBar, title, handledLogOut, mode, data, dash
                     {mode==='Center' &&
                         <>
                             <span className="dash"/>
-                            {centers.length>0?
+                            {centers&&centers.length>0?
                             <select className="form-select w-auto d-inline bg-none"
                                     style={{minWidth:'112px'}}
                                     value={selectValue}
