@@ -26,7 +26,7 @@ AuthorizationAxios.interceptors.response.use(
     },
     (error => {
         console.log('ResponseError',error)
-        if(error.response.status === 500){
+        if(error.response.status === 500 || error.response.status === 400){
             window.location='/error';
         }
     })
