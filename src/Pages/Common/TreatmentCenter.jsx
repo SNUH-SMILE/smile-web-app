@@ -109,7 +109,11 @@ function TreatmentCenter() {
                         setTreatmentCenterList(data.result);
                         clear();
                     } else {
-                        alert('생활치료센터가 삭제에 실패했습니다.');
+                        if (data.message) {
+                            alert(data.message);
+                        } else {
+                            alert('생활치료센터 삭제에 실패했습니다.');
+                        }
                     }
                 }).catch((e) => console.log(e));
             }
