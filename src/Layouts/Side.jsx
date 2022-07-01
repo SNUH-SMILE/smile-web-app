@@ -14,7 +14,7 @@ const menu = [
             {name: '사용자관리', url: '/user'},
             {name: '측정항목관리', url: '/item'},
             {name: '생활치료센터 환자 현황', url: '/treatmentCenterPatient'},
-            {name: '자가격리자 환자 현황', url: '/isolationPatient'},
+            {name: '자택격리자 환자 현황', url: '/isolationPatient'},
             {name: '문의사항', url: '/qna'},
             {name: '생활치료센터 대시보드', url: '/dashboard/center'},
             {name: '자택격리환자 대시보드', url: '/dashboard/quarantine'},
