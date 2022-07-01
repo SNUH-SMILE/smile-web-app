@@ -55,4 +55,4 @@ function Layouts({interval,setHide}) {
 Layouts.propTypes = {
     interval: PropTypes.number
 }
-export default Layouts;
+export default React.memo(Layouts);
