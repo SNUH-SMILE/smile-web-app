@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 import DashboardCard from "../../component/DashboardCard";
 import {getLonginUserInfo} from "../../Apis/CommonCode";
@@ -19,13 +19,11 @@ function CenterAdmissionBoard() {
     const {setDashBoardData,setDashBoardFunc} = useContext(TitleContext);
     const selectPatientList = (centerId) => {
         getLonginUserInfo().then(({data}) => {
-            console.log(data);
             centerDashboardApi.select('2', centerId ? centerId.target.value : data.result.userTreatmentCenterVOList[0].centerId)
                 .then(({data}) => {
-                    setPatientList(data.result.patientList)
-                    setDashBoardData(data.result.header)
-
-                });
+                    setDashBoardData(()=>({...data.result.header}));
+                    setPatientList(()=>data.result.patientList);
+                })
         })
     }
 
