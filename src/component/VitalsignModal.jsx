@@ -236,16 +236,19 @@ function VitalsignModal({show, handledClose}) {
             setVitalCheckDate(data.result.searchDtList[0])
         });
     }
+    const showAllSeries = () =>{
+        ApexCharts.exec('vitalChart', 'showSeries', '이완기')
+        ApexCharts.exec('vitalChart', 'showSeries', '수축기')
+        ApexCharts.exec('vitalChart', 'showSeries', '심박수')
+        ApexCharts.exec('vitalChart', 'showSeries', '호흡수')
+        ApexCharts.exec('vitalChart', 'showSeries', '산소포화도')
+        ApexCharts.exec('vitalChart', 'showSeries', '체온')
+    }
     useEffect(() => {
         if (show) {
             getChartHeader()
             if (vitalAllButton) {
-                ApexCharts.exec('vitalChart', 'showSeries', '이완기')
-                ApexCharts.exec('vitalChart', 'showSeries', '수축기')
-                ApexCharts.exec('vitalChart', 'showSeries', '심박수')
-                ApexCharts.exec('vitalChart', 'showSeries', '호흡수')
-                ApexCharts.exec('vitalChart', 'showSeries', '산소포화도')
-                ApexCharts.exec('vitalChart', 'showSeries', '체온')
+                showAllSeries()
             }
         } else {
             setVitalAllButton(true);
@@ -270,12 +273,7 @@ function VitalsignModal({show, handledClose}) {
     function allSeries() {
         setVitalAllButton((prevState) => {
             if (!prevState) {
-                ApexCharts.exec('vitalChart', 'showSeries', '이완기')
-                ApexCharts.exec('vitalChart', 'showSeries', '수축기')
-                ApexCharts.exec('vitalChart', 'showSeries', '심박수')
-                ApexCharts.exec('vitalChart', 'showSeries', '호흡수')
-                ApexCharts.exec('vitalChart', 'showSeries', '산소포화도')
-                ApexCharts.exec('vitalChart', 'showSeries', '체온')
+                showAllSeries()
             } else {
                 ApexCharts.exec('vitalChart', 'hideSeries', '이완기')
                 ApexCharts.exec('vitalChart', 'hideSeries', '수축기')
