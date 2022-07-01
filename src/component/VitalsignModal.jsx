@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import Chart from "react-apexcharts"
 import ApexCharts from 'apexcharts';
@@ -74,13 +74,29 @@ function VitalsignModal({show, handledClose}) {
                 height: 550,
                 type: "line",
                 toolbar: {
-                    show: true
+                    show: true,
+                    tools:{
+                        download:false
+
+                    },
                 },
+
                 animations: {
                     enabled: false
                 },
                 locales: [ko],
                 defaultLocale: 'ko'
+            },
+            export: {
+                csv: {
+                    filename: undefined,
+                    columnDelimiter: ',',
+                    headerCategory: 'category',
+                    headerValue: 'value',
+                    dateFormatter(timestamp) {
+                        return new Date(timestamp).toDateString()
+                    }
+                },
             },
             colors: ["#9CBAE3", "#646464", "#E73323", "#F4C243", "#A1CE63", "#67359A",],
             markers: {
@@ -213,7 +229,7 @@ function VitalsignModal({show, handledClose}) {
         sp: true,  // 산소포화도
     });
 
-    const admissionDetailApi=new AdmissionDetailApi(localStorage.getItem('admissionId'));;
+    const admissionDetailApi=new AdmissionDetailApi(localStorage.getItem('admissionId'));
     const getChartHeader = ()=>{
         admissionDetailApi.getVitalChartHeader().then(({data}) => {
             setHeader(data.result)
