@@ -360,6 +360,9 @@ function CommonCode() {
         if(comCdDetailList.length<1){
             alert('신규 또는 수정건이 없습니다.')
         }
+        else if(comCdDetailList.filter(value => value.active === true).length === 0){
+            alert('신규 또는 수정건이 없습니다.')
+        }
         else{
             const data =comCdDetailList.filter(value => value.active === true).map(value => {
                 return {...value, cudFlag : value.cudFlag || 'U'};

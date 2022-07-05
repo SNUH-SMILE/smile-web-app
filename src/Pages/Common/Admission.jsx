@@ -60,6 +60,7 @@ function Admission() {
                 if(searchAdmissionCenter.current.value){
                     admissionApi.select().then(({data}) => {
                         setPaginationAndAdmissionTableDat(data);
+                        selectedAdmissionId.current=''
                     })
                 }
             })
