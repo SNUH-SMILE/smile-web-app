@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import React, { useContext, useEffect, useRef, useState} from 'react';
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 import AdmissionDetailApi from "../../Apis/AdmissionDetailApi";
 import {TitleContext} from "../../Providers/TitleContext";
@@ -53,9 +53,14 @@ function AdmissionDetail() {
         }
     }
 
+    const noticeArea = useRef();
+    const collapseNoticeArea = ()=>{
+        noticeArea.current.classList.toggle('toggled')
+
+    }
     return (
         <main className="flex_layout_dashboard" style={{padding:"8px"}}>
-            <div className="row history-alarm">
+            <div className="row history-alarm" ref={noticeArea}>
                 <div className="col">
                     <div className="card indiv tab3">
                         <div className="header d-flex">
@@ -123,7 +128,7 @@ function AdmissionDetail() {
                     <div className="card indiv alarm">
                         <div className="header d-flex">
                             <h5 className="title">알림 <span>발송</span></h5>
-                            <button type="button" className="ms-auto btn-close"/>
+                            <button type="button" className="ms-auto btn-close" onClick={collapseNoticeArea}/>
                         </div>
                         <ul className="scrollbar" role={'noticeList'}>
                             {noticeList.map(value => {

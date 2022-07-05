@@ -7,7 +7,7 @@ import QnaApi from "../../Apis/QnaApi";
 import useAlert from "../../Utils/UseAlert";
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 
-function Qna(props) {
+function Qna() {
     UseSetPageTitle('문의사항')
     const {alert,confirm} = useAlert();
     const [qnaTableData, setQnaTableData] = useState([])
@@ -44,7 +44,7 @@ function Qna(props) {
 
     const selectQnaListByCenter = () =>{
         getLonginUserInfo().then(({data})=> setUserTreatmentCenter(data.result.userTreatmentCenterVOList))
-            .catch(e=>console.log('ERROR getLonginUserInfo In Qna'))
+            .catch(()=>console.log('ERROR getLonginUserInfo In Qna'))
             .then(()=> {
                 qnaApi.select().then(({data}) => setPaginationAndQnaTableData(data))
             });
@@ -148,6 +148,7 @@ function Qna(props) {
                                                     </select>
                                                 </div>
                                                 <div className="me-3 d-flex">
+                                                    <span className="stit">답변여부</span>
                                                     <select className="form-select" ref={replyYn} defaultValue={''} onChange={(e)=>handledSearchRequirement(e)}>
                                                         <option value={''}>전체</option>
                                                         <option value={'Y'}>답변완료</option>

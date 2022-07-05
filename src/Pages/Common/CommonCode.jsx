@@ -194,8 +194,11 @@ function CommonCode() {
      */
     // 공통코드 구분 조회 및 업무구분 조회
     const getComCdList = () =>{
-        setPrevData(prevData.filter(value => Object.keys(value).includes('detailCd')))
-        commonCodeApi.select().then(({data}) => data.code === '00' && setComCdList(data.result));
+        setPrevData(prevData.filter(value => Object.keys(value).includes('detailCd')));
+        commonCodeApi.select().then(({data}) => {
+            data.code === '00' && setComCdList(data.result)
+            selectComCd.current='';
+        });
         commonCode('CD001').then(({data}) => data.code === '00' && setComCdDivSelectData(data.result));
         setComCdDetailList([]);
 
@@ -302,14 +305,27 @@ function CommonCode() {
 
     //공통코드 상세 리스트 조회
     const getComCdDetail = (comCd) =>{
-        selectComCd.current= comCd;
-        setPrevData(prevData.filter(value => !Object.keys(value).includes('detailCd')))
-        commonCodeApi.selectDetail(comCd).then(({data}) => {
+        if(comCd === ''){
+            alert('상위코드를 선택해주세요');
+        }
+        else{
+            selectComCd.current= comCd;
+            setPrevData(prevData.filter(value => !Object.keys(value).includes('detailCd')))
+            commonCodeApi.selectDetail(comCd).then(({data}) => {
                 if(data.code === '00'){
                     setComCdDetailList([])
                     setComCdDetailList(data.result)
                 }
             });
+        }
+        // selectComCd.current= comCd;
+        // setPrevData(prevData.filter(value => !Object.keys(value).includes('detailCd')))
+        // commonCodeApi.selectDetail(comCd).then(({data}) => {
+        //     if(data.code === '00'){
+        //         setComCdDetailList([])
+        //         setComCdDetailList(data.result)
+        //     }
+        // });
     }
     // 공통코드 상세 신규 로우 추가
     const newDetailRow = () =>{
@@ -341,62 +357,66 @@ function CommonCode() {
     }
     //공통코드 상세 저장
     const saveDetail = async () => {
+        if(comCdDetailList.length<1){
+            alert('신규 또는 수정건이 없습니다.')
+        }
+        else{
+            const data =comCdDetailList.filter(value => value.active === true).map(value => {
+                return {...value, cudFlag : value.cudFlag || 'U'};
+            });
 
-        const data =comCdDetailList.filter(value => value.active === true).map(value => {
-            return {...value, cudFlag : value.cudFlag || 'U'};
-        });
-
-        let state = data.every(value => {
-            if(!value.detailCd){
-                const detailCdArr= document.querySelectorAll('tr.checked-active input[name="detailCd"]')
-                for (const detailCd of detailCdArr) {
-                    if(detailCd.value===''){
-                        detailCd.focus();
-                        break;
+            let state = data.every(value => {
+                if(!value.detailCd){
+                    const detailCdArr= document.querySelectorAll('tr.checked-active input[name="detailCd"]')
+                    for (const detailCd of detailCdArr) {
+                        if(detailCd.value===''){
+                            detailCd.focus();
+                            break;
+                        }
                     }
-                }
-                alert(`${value.detailCd ?'['+ value.detailCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 세부코드가 누락되었습니다.`)
-                return false;
-            }
-            else{
-                const detailCdArr= document.querySelectorAll('tr.checked-active input[name="detailCd"]')
-                for (const detailCd of detailCdArr) {
-                    if(comCdDetailList.filter(value1 => value1.detailCd === detailCd.value).length > 1){
-                        alert(`중복된 세부코드가 존재합니다.-${value.detailCd ?'['+ value.detailCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }`) ;
-                        detailCd.focus();
-                        return false;
-                    }
-                }
-            }
-
-            if(!value.detailCdNm){
-                const detailCdNmArr= document.querySelectorAll('tr.checked-active input[name="detailCdNm"]')
-                for (const detailCdNm of detailCdNmArr) {
-                    if(detailCdNm.value===''){
-                        detailCdNm.focus();
-                        break;
-                    }
-                }
-                alert(`${value.detailCd ?'['+ value.detailCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 세부코드명이 누락되었습니다.`)
-                return false;
-            }
-            return true;
-        })
-
-        if(state){
-            let confirmState = await confirm('생성 / 수정 하시겠습니까?')
-            confirmState && commonCodeApi.saveDetail(data).then(({data}) => {
-                if(data.code === '00'){
-                    alert(data.message);
-                    setPrevData(prevData.filter(value => !Object.keys(value).includes('detailCd')))
-                    setComCdDetailList([]);
-                    setComCdDetailList(data.result);
-                    commonCode('CD001').then(response => setComCdDivSelectData(response.data.result));
+                    alert(`${value.detailCd ?'['+ value.detailCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 세부코드가 누락되었습니다.`)
+                    return false;
                 }
                 else{
-                    alert(data.message);
+                    const detailCdArr= document.querySelectorAll('tr.checked-active input[name="detailCd"]')
+                    for (const detailCd of detailCdArr) {
+                        if(comCdDetailList.filter(value1 => value1.detailCd === detailCd.value).length > 1){
+                            alert(`중복된 세부코드가 존재합니다.-${value.detailCd ?'['+ value.detailCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }`) ;
+                            detailCd.focus();
+                            return false;
+                        }
+                    }
                 }
+
+                if(!value.detailCdNm){
+                    const detailCdNmArr= document.querySelectorAll('tr.checked-active input[name="detailCdNm"]')
+                    for (const detailCdNm of detailCdNmArr) {
+                        if(detailCdNm.value===''){
+                            detailCdNm.focus();
+                            break;
+                        }
+                    }
+                    alert(`${value.detailCd ?'['+ value.detailCd +']':'[신규 '+ value.header.split('C')[1] +'번]' }의 세부코드명이 누락되었습니다.`)
+                    return false;
+                }
+                return true;
             })
+
+            if(state){
+                let confirmState = await confirm('생성 / 수정 하시겠습니까?')
+                confirmState && commonCodeApi.saveDetail(data).then(({data}) => {
+                    if(data.code === '00'){
+                        alert(data.message);
+                        setPrevData(prevData.filter(value => !Object.keys(value).includes('detailCd')))
+                        setComCdDetailList([]);
+                        setComCdDetailList(data.result);
+                        commonCode('CD001').then(response => setComCdDivSelectData(response.data.result));
+                    }
+                    else{
+                        alert(data.message);
+                    }
+                })
+            }
         }
     }
 

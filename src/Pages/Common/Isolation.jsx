@@ -41,7 +41,10 @@ function Isolation() {
 
     // 자가격리자 리스트 조회
     const getIsolationList = () =>{
-        isolationApi.select().then(({data}) => setPaginationAndAdmissionTableData(data));
+        isolationApi.select().then(({data}) => {
+            selectedIsolationId.current='';
+            setPaginationAndAdmissionTableData(data);
+        });
     }
 
     // 정렬 검색 이벤트

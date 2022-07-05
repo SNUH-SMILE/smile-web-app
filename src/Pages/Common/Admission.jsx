@@ -67,7 +67,7 @@ function Admission() {
     const selectAdmissionListByCenter = () => {
         if(searchAdmissionCenter.current.value){
             admissionApi.select().then(({data}) => {
-                console.log(data);
+                selectedAdmissionId.current=''
                 setPaginationAndAdmissionTableDat(data);
             })
         }
