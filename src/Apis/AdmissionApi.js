@@ -6,6 +6,7 @@ class AdmissionApi {
         searchAdmissionCenter,
         searchAdmissionId,
         searchAdmissionNm,
+        searchAdmissionState,
         paginationObj,
         sortedOrderBy,
         sortedOrderDir,
@@ -14,6 +15,7 @@ class AdmissionApi {
         this.searchAdmissionCenter = searchAdmissionCenter
         this.searchAdmissionId = searchAdmissionId
         this.searchAdmissionNm = searchAdmissionNm
+        this.searchAdmissionState = searchAdmissionState
         this.pageSize=paginationObj.pageSize;
         this.currentPageNo=paginationObj.currentPageNo;
         this.recordCountPerPage=paginationObj.recordCountPerPage;
@@ -33,11 +35,14 @@ class AdmissionApi {
                     centerId:this.searchAdmissionCenter.current.value,
                     patientId:this.searchAdmissionId.current.value,
                     patientNm: this.searchAdmissionNm.current.value,
+                    qantnStatus: this.searchAdmissionState.current.value,
                     currentPageNo:this.currentPageNo,
                     recordCountPerPage:this.recordCountPerPage,
                     pageSize:this.pageSize,
                     orderBy:this.sortedOrderBy,
                     orderDir:this.sortedOrderDir,
+
+
                 }),
                 {headers: {'Content-Type': "application/json"}}
             );
