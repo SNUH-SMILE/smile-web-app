@@ -21,6 +21,7 @@ function Header({wrapper, interval, setHide}) {
         if (confirmState) {
             AuthenticationApi.logOut().then(() => {
                 localStorage.setItem('Authorization', null);
+                localStorage.setItem('lvl', null);
                 localStorage.setItem('admissionId', null);
                 clearInterval(interval);
                 setHide(false);

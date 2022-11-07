@@ -47,7 +47,11 @@
     ]
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.19.1",
     "apexcharts": "^3.35.3",
-    "dotenv-cli": "^5.1.0"
+    "dotenv-cli": "^5.1.0",
+    "eslint": "^8.26.0",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-jsx-a11y": "^6.6.1"
   }
 }

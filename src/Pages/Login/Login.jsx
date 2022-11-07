@@ -53,10 +53,11 @@ function Login({setTokenInterval}) {
                 {headers: {'Content-Type': "application/json"}})
                 //통신 성공시
                 .then(({data}) => {
-                    const {code, message, result} = data;
+                    const {code, message, lvl, result} = data;
                     // 로그인 성공시
                     if (code === '00') {
                         localStorage.setItem('Authorization',result);
+                        localStorage.setItem('lvl',lvl);
                         // 로그인 성공시 Token 재발급 Interval
                         setTokenInterval(setInterval(()=>{
                             TokenMethod.Reissue();
