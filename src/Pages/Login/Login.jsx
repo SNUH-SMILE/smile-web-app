@@ -64,7 +64,6 @@ function Login({setTokenInterval}) {
                         },parseInt(process.env.REACT_APP_AUTHORIZATION_REISSUE_TIME)))
                         // 메인 페이지로 이동
                         navigate('/treatmentCenter');
-
                     }
                     // 비밀번호 불일치
                     else if (code === '10') {

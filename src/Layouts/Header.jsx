@@ -30,6 +30,8 @@ function Header({wrapper, interval, setHide}) {
         }
     },[])
 
+
+
     // 사이드바 Collapse 토글
     const context = useContext(TitleContext);
     const {title,mode, dashBoardData, dashBoardFunc} = context;

@@ -39,7 +39,6 @@ const menu = [
     }
 ]
 
-
 function Side() {
     const currentUrl = useLocation();
     let userLvl = localStorage.getItem('lvl');
