@@ -62,22 +62,22 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                 {sorted&&column.sortedYn&&
                                 <span>
                                     {column.orderDiv === '' &&
-                                        <button className="sort"
-                                                onClick={column.sortedEvent ? ()=>column.sortedEvent(column.id,'Asc') : null}
+                                        <button className="sort" style={{backgroundSize: "90%"}}
+                                                onClick={column.sortedEvent ? ()=>column.sortedEvent(column.id,'Asc') : null }
                                         />
                                     }
                                     {column.orderDiv === 'Asc' && column.id === column.orderBy &&
-                                    <button className="sort up"
+                                    <button className="sort up" style={{backgroundSize: "90%"}}
                                             onClick={column.sortedEvent ? ()=>column.sortedEvent(column.id,'Desc') : null}
                                     />
                                     }
                                     {column.orderDiv === 'Desc' && column.id === column.orderBy &&
-                                    <button className="sort down"
+                                    <button className="sort down" style={{backgroundSize: "90%"}}
                                             onClick={column.sortedEvent ? ()=>column.sortedEvent('','') : null}
                                     />
                                     }
                                     {column.orderDiv !== '' && column.id !== column.orderBy &&
-                                    <button className="sort"
+                                    <button className="sort" style={{backgroundSize: "90%"}}
                                             onClick={column.sortedEvent ? ()=>column.sortedEvent(column.id,'Asc') : null}
                                     />
                                     }
@@ -424,7 +424,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                                         :null
                                                                     }
                                                             >
-                                                                {cell.column.editElementType !== 'Isolation'? cell.value === '1' ? '재원중' :'퇴실': null}
+                                                                {cell.column.editElementType !== 'Isolation'? cell.value === '1' ? '재원중' :'퇴소': null}
                                                                 {cell.column.editElementType === 'Isolation'? cell.value === '1' ? '격리중' :'격리해제': null}
                                                             </button>
                                                         </td>
