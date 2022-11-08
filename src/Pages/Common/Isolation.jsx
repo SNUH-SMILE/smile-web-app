@@ -14,6 +14,7 @@ function Isolation() {
     const {alert,confirm} = useAlert();
     const searchPatientId = useRef('')
     const searchPatientNm = useRef('')
+    const searchPatientIsolation = useRef()
     const [paginationObj, setPaginationObj] = useState({currentPageNo: 1, pageSize: 10, recordCountPerPage: 15})
     const [totalPageCount, setTotalPageCount] = useState(null);
     const [isolationTableData,setIsolationTableData] = useState([]);
@@ -22,7 +23,7 @@ function Isolation() {
     // Div: 정렬 방식 ('' || asc || desc)
     const [sortedOrder,setSortedOrder] = useState({By:'',Dir:''})
 
-    const isolationApi = new IsolationApi(searchPatientId,searchPatientNm,paginationObj,sortedOrder);
+    const isolationApi = new IsolationApi(searchPatientId,searchPatientNm,searchPatientIsolation,paginationObj,sortedOrder);
 
     useEffect(()=>{
         getIsolationList();
@@ -189,16 +190,16 @@ function Isolation() {
         {Header: '격리시작일', accessor: 'admissionDate', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '격리일수', accessor: 'qantnDay', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '혈압', accessor: 'bp', vital:true,},
-        {Header: '맥박', accessor: 'prResult', vital:true,},
+        {Header: '심박수', accessor: 'prResult', vital:true,},
+        {Header: '호흡수', accessor: 'rrResult', vital:true},
         {Header: '체온', accessor: 'btResult', vital:true},
-        {Header: '호흡', accessor: 'rrResult', vital:true},
         {Header: '산소포화도', accessor: 'spResult', vital:true},
         {Header: '격리상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editElementType:'Isolation',editEvent:handledIsolationExitModal},
     ]
 
     // 검색 Input Enter 이벤트
     const handledOnSearch = (e) => {
-        if (e.keyCode === 13 || e.target.tagName === 'BUTTON') {
+        if (e.keyCode === 13 || e.target.tagName === 'BUTTON'|| e.target.tagName === 'SELECT') {
             if(paginationObj.currentPageNo === 1){
                 getIsolationList();
             }
@@ -224,10 +225,18 @@ function Isolation() {
                                                     <input className="form-control w160" type="text" defaultValue=""
                                                            onKeyUp={handledOnSearch} ref={searchPatientId}/>
                                                 </div>
-                                                <div className="me-1 d-flex">
+                                                <div className="me-3 d-flex">
                                                     <span className="stit">환자명</span>
                                                     <input className="form-control w160" type="text" defaultValue=""
                                                            onKeyUp={handledOnSearch} ref={searchPatientNm}/>
+                                                </div>
+                                                <div className="me-3 d-flex">
+                                                    <span className="stit">격리상태</span>
+                                                    <select className="form-select"  defaultValue={''} ref={searchPatientIsolation} onChange={(e)=>handledOnSearch(e)}>
+                                                        <option value={''}>전체</option>
+                                                        <option value={'1'}>격리중</option>
+                                                        <option value={'2'}>격리해제</option>
+                                                    </select>
                                                 </div>
                                                 <div className="ms-auto">
                                                     <div className="btn_wrap d-flex">

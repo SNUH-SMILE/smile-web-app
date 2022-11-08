@@ -291,7 +291,7 @@ function Admission() {
                                                        onKeyUp={handledOnSearch}
                                                 />
                                             </div>
-                                            <div className="me-1 d-flex">
+                                            <div className="me-3 d-flex">
                                                 <span className="stit">환자명</span>
                                                 <input className="form-control w160"
                                                        type="text"
