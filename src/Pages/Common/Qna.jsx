@@ -137,7 +137,7 @@ function Qna() {
                                             <div className="d-flex">
                                                 <div className="tbl_title">문의사항 리스트</div>
                                                 <div className="me-3 d-flex">
-                                                    <span className="stit">센터</span>
+                                                    <span className="stit">환자위치</span>
                                                     <select className="form-select" ref={centerId} defaultValue={''} onChange={(e)=>handledSearchRequirement(e)}>
                                                         <option value={''}>전체</option>
                                                         {userTreatmentCenter&&userTreatmentCenter.map(value =>
