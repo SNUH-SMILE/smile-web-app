@@ -14,6 +14,7 @@ function Admission() {
 
     // 검색
     const searchAdmissionCenter = useRef();
+    const searchAdmissionState = useRef();
     const searchAdmissionId = useRef();
     const searchAdmissionNm = useRef();
 
@@ -30,7 +31,7 @@ function Admission() {
 
 
     // 입소자관련 Api
-    const admissionApi = new AdmissionApi(searchAdmissionCenter,searchAdmissionId,searchAdmissionNm,paginationObj,sortedOrder.By,sortedOrder.Dir);
+    const admissionApi = new AdmissionApi(searchAdmissionCenter,searchAdmissionId,searchAdmissionNm,searchAdmissionState,paginationObj,sortedOrder.By,sortedOrder.Dir);
     // 입소자 리스트
     const [admissionTableData, setAdmissionTableData] = useState([]);
 
@@ -96,7 +97,7 @@ function Admission() {
 
     // 검색 Input Enter 이벤트
     const handledOnSearch = (e) => {
-        if (e.keyCode === 13 || e.target.tagName === 'BUTTON') {
+        if (e.keyCode === 13 || e.target.tagName === 'BUTTON'|| e.target.tagName === 'SELECT') {
             if(paginationObj.currentPageNo === 1){
                 selectAdmissionListByCenter();
             }
@@ -240,9 +241,9 @@ function Admission() {
         {Header: '위치', accessor: 'roomNm', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '격리일수', accessor: 'qantnDay', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '혈압', accessor: 'bp', vital:true,},
-        {Header: '맥박', accessor: 'prResult', vital:true,},
+        {Header: '심박수', accessor: 'prResult', vital:true,},
         {Header: '체온', accessor: 'btResult', vital:true},
-        {Header: '호흡', accessor: 'rrResult', vital:true},
+        {Header: '호흡수', accessor: 'rrResult', vital:true},
         {Header: '산소포화도', accessor: 'spResult', vital:true},
         {Header: '재원상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editEvent:handledAdmissionExitModal},
     ]
@@ -290,7 +291,7 @@ function Admission() {
                                                        onKeyUp={handledOnSearch}
                                                 />
                                             </div>
-                                            <div className="me-1 d-flex">
+                                            <div className="me-3 d-flex">
                                                 <span className="stit">환자명</span>
                                                 <input className="form-control w160"
                                                        type="text"
@@ -298,6 +299,14 @@ function Admission() {
                                                        ref={searchAdmissionNm}
                                                        onKeyUp={handledOnSearch}
                                                 />
+                                            </div>
+                                            <div className="me-3 d-flex">
+                                                <span className="stit">재원상태</span>
+                                                <select className="form-select"  defaultValue={''} ref={searchAdmissionState} onChange={(e)=>handledOnSearch(e)}>
+                                                    <option value={''}>전체</option>
+                                                    <option value={'1'}>재원중</option>
+                                                    <option value={'2'}>퇴소</option>
+                                                </select>
                                             </div>
                                             <div className="ms-auto">
                                                 <div className="btn_wrap d-flex">

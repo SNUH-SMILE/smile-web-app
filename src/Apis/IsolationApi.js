@@ -1,9 +1,10 @@
 import AuthorizationAxios from "../Utils/AuthorizationAxios";
 
 class IsolationApi {
-    constructor(searchPatientId, searchPatientNm, paginationObj, sortedOrder) {
+    constructor(searchPatientId, searchPatientNm, searchPatientIsolation, paginationObj, sortedOrder) {
         this.searchPatientId = searchPatientId;
         this.searchPatientNm = searchPatientNm;
+        this.searchPatientIsolation = searchPatientIsolation;
         this.currentPageNo = paginationObj.currentPageNo;
         this.recordCountPerPage = paginationObj.recordCountPerPage;
         this.pageSize = paginationObj.pageSize;
@@ -19,11 +20,13 @@ class IsolationApi {
                 JSON.stringify({
                     patientId: this.searchPatientId.current.value,
                     patientNm: this.searchPatientNm.current.value,
+                    qantnStatus: this.searchPatientIsolation.current.value,
                     currentPageNo: this.currentPageNo,
                     recordCountPerPage: this.recordCountPerPage,
                     pageSize: this.pageSize,
                     orderBy: this.sortedOrderBy,
                     orderDir: this.sortedOrderDir,
+
                 }),
                 {headers: {'Content-Type': "application/json"}}
             );
