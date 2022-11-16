@@ -66,16 +66,16 @@ const Dashboard = ({mode, data, dashBoardFunc}) => {
                         <div><span>{mode === 'Center' ? '퇴소' : '해제'}</span> {data.todayDischargeCount} 명</div>
                     </div>
                     <div className="d-flex mb-1 bts">
-                        <span className="basic"><i/> 기본</span>
-                        <span className="taste"><i/> 미각</span>
-                        <span className="smell"><i/> 후각</span>
+                        <span className="basic"><i/> 없음</span>
+                        <span className="taste"><i/> 호흡기계</span>
+                        <span className="smell"><i/> 정신건강</span>
                     </div>
                 </div>
                 <div className="dashboard_head-text">
                     <ul>
                         <li><strong>혈압</strong>mmHg</li>
                         <li><strong>심박수</strong>BPM</li>
-                        <li><strong>호흡수</strong>회/분</li>
+                        <li><strong>호흡수</strong>회/RR</li>
                         <li><strong>체온</strong>℃</li>
                         <li><strong>산소포화도</strong>%</li>
                     </ul>

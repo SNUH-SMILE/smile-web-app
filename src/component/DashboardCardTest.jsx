@@ -60,6 +60,7 @@ function DashboardCard({data, color, lightDisplay, onClick}) {
                         <span>심박수</span>
                         <strong className="ms-auto">
                             {data.prRiskGb === 'H' && <RedSpan>{data.prResult}</RedSpan>}
+                            {data.prRiskGb === 'L' && <BlueSpan>{data.prResult}</BlueSpan>}
                             {data.prRiskGb === '' && <BlackSpan>{data.prResult}</BlackSpan>}
                         </strong>
                     </li>
@@ -67,6 +68,7 @@ function DashboardCard({data, color, lightDisplay, onClick}) {
                         <span>호흡수</span>
                         <strong className="ms-auto">
                             {data.rrRiskGb === 'H' && <RedSpan>{data.rrResult}</RedSpan>}
+                            {data.rrRiskGb === 'L' && <BlueSpan>{data.rrResult}</BlueSpan>}
                             {data.rrRiskGb === '' && <BlackSpan>{data.rrResult}</BlackSpan>}
                         </strong>
                     </li>
@@ -74,6 +76,7 @@ function DashboardCard({data, color, lightDisplay, onClick}) {
                         <span>체온</span>
                         <strong className="ms-auto">
                             {data.btRiskGb === 'H' && <RedSpan>{data.btResult}</RedSpan>}
+                            {data.btRiskGb === 'L' && <BlueSpan>{data.btResult}</BlueSpan>}
                             {data.btRiskGb === '' && <BlackSpan>{data.btResult}</BlackSpan>}
                         </strong>
                     </li>
@@ -81,6 +84,7 @@ function DashboardCard({data, color, lightDisplay, onClick}) {
                         <span>산소포화도</span>
                         <strong className="ms-auto">
                             {data.spRiskGb === 'H' && <RedSpan>{data.spResult}</RedSpan>}
+                            {data.spRiskGb === 'L' && <BlueSpan>{data.spResult}</BlueSpan>}
                             {data.spRiskGb === '' && <BlackSpan>{data.spResult}</BlackSpan>}
                         </strong>
                     </li>
