@@ -4,6 +4,7 @@ import {BsCheckLg, BsX} from "react-icons/bs";
 import {useTable, useSortBy, usePagination} from "react-table";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import useAdmissionDetail from "../Utils/useAdmissionDetail";
 
 const RedSpan = styled.span`
   color:#ff2020;
@@ -11,10 +12,10 @@ const RedSpan = styled.span`
 const BlueSpan = styled.span`
   color:#2094ff;
 `
-function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited, pagination, trOnclick, deleteRow ,targetSelectData, primaryKey, crud }) {
+function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited, pagination, trOnclick, trDbOnclicke, deleteRow ,targetSelectData, primaryKey, crud }) {
     // Table Header
     const columns = React.useMemo(() => tableHeader, [tableHeader])
-
+    const {onMove} = useAdmissionDetail()
     // Table Body
     const data = React.useMemo(() => tableBody, [tableBody])
 
@@ -348,7 +349,11 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                     {
                                         trOnclick(row.cells[0].value,row.original);
                                         highlighter(e);
-                                    }: (e)=>highlighter(e)}>
+                                    }: (e)=>highlighter(e)}
+                                    onDoubleClick={trDbOnclicke ? (e)=>{
+                                        onMove(row.original.admissionId);
+                                    }:(e)=>  onMove(row.original.admissionId)}
+                                    >
                                         {row.cells.map(cell => {
                                             if(cell.column.Header === '선택'){
                                                 if(cell.column.editElement === 'radio'){
@@ -556,7 +561,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
     )
 }
 
-// customTableStyle=null,tableHeader, tableBody, sorted, edited, pagination, trOnclick, deleteRow ,targetSelectData, primaryKey
+// customTableStyle=null,tableHeader, tableBody, sorted, edited, pagination, trOnclick, trDbOnclicke, deleteRow ,targetSelectData, primaryKey
 ReactTable.defaultProps={
     customTableStyle:'',
     tableBody:[],
@@ -564,6 +569,7 @@ ReactTable.defaultProps={
     edited:false,
     pagination:false,
     trOnclick:null,
+    trDbOnclicke:null,
     deleteRow:null ,
     targetSelectData:null,
     primaryKey:''
@@ -575,6 +581,7 @@ ReactTable.propTypes = {
     edited:PropTypes.bool,
     pagination:PropTypes.bool,
     trOnclick:PropTypes.func,
+    trDbOnclicke:PropTypes.func,
     deleteRow:PropTypes.func ,
     targetSelectData:PropTypes.array,
     primaryKey:PropTypes.string
