@@ -66,6 +66,7 @@ const Dashboard = ({mode, data, dashBoardFunc}) => {
                         <div><span>{mode === 'Center' ? '퇴소' : '해제'}</span> {data.todayDischargeCount} 명</div>
                     </div>
                     <div className="d-flex mb-1 bts">
+                        <div><p>중증도 악화</p></div>
                         <span className="basic"><i/> 없음</span>
                         <span className="taste"><i/> 호흡기계</span>
                         <span className="smell"><i/> 정신건강</span>

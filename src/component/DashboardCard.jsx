@@ -38,7 +38,7 @@ function DashboardCard({data, color, lightDisplay, onClick}) {
             <Card className="card icard" color={color}>
                 <ColorHeader className="card-header d-flex" color={color}>
                     <span>{data.roomNm}</span>
-                    <span className="age ms-auto">{data.age}/{data.sexNm}</span>
+                    <span className="age ms-auto">{data.sexNm}/{data.age}</span>
                 </ColorHeader>
                 <div className="pinfo d-flex">
                     <div className={lightDisplay === 'grid' ? "bts d-grid" : "bts d-flex"}>
