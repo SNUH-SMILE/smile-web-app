@@ -1134,48 +1134,57 @@ main {padding:30px;}
 }
 
 
-.current-head {
+.current-top .head .current-head {
+    height: 50px;
+    word-break: break-all;
     display: flex;
     align-items: center;
 }
-.current-head h2 {
+.current-top .head .current-head h2 {
     margin: 0;
     font-size: 30px;
     color: #fff;
 }
-.current-head > span {
+.current-head-bottom > span {
+    margin-left: 15px;
     margin-top: 10px;
     font-size: 15px;
     color: #fff;
     letter-spacing: -0.2px;
 }
-.current-info {
+.current-top .current-info {
     margin-top: 30px;
 }
-.current-info table tbody th,
-.current-info table tbody td {
+.current-top .current-info table tbody th,
+.current-top .current-info table tbody td {
     color: #fff;
     font-size: 15px;
     font-weight: 400;
 }
-.current-info table tbody th {
+.current-top .current-info table tbody th {
     width: 82px;
     opacity: .8;
 }
-.current-info table tbody td {
+.current-top .current-info table tbody td {
     font-weight: 500;
 }
-.current-btn {
+.current-top {
+    float: left;
+}
+.current-top .head{
+    float: left;
+}
+current-top .current-btn {
     display: flex;
     margin-top: 36px;
 }
-.current-btn .btn {
+current-top .current-btn .btn {
     margin-right: 15px;
     padding-right: 15px;
     padding-left: 15px;
     font-size: 12px;
 }
-.current-btn .btn strong {
+.current-top .current-btn .btn strong {
     font-size: 14px;
     font-weight: 500;
 }
