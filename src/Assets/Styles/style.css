@@ -955,16 +955,24 @@ main {padding:30px;}
     text-align: left;
     color: #fff;
 }
+.dashboard_head .current .bts div {
+    top: 95px;
+    position: absolute;
+}
+.dashboard_head .current .bts div p{
+    color: white;
+    font-size: 13px;
+}
 .dashboard_head .current .bts span i {
     position:relative;
     display:inline-block; margin-right:5px; vertical-align:middle;
     width:16px; height:16px;
-    background:#fff; border:solid 1px #eee; border-radius:4px;
+    border-radius:4px;
 }
 .dashboard_head .current .bts span i:after {
     position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
     display:inline-block; content:"";
-    width:8px; height:8px; border-radius:4px; overflow:hidden;
+    width:15px; height:15px; border-radius:8px; overflow:hidden;
     background:#999;
 }
 .dashboard_head .current .bts span.basic i:after {background:#999;}
@@ -973,6 +981,7 @@ main {padding:30px;}
 
 .dashboard_head .current > .d-flex {align-items:center;}
 .dashboard_head .bts2 {
+
     height:28px;
     margin-right:10px;
     flex-direction:column;
@@ -1217,7 +1226,7 @@ main {padding:30px;}
 }
 .card.icard .pinfo .bts span {
     display:inline-block; margin:0 2px;
-    width:8px; height:8px; border-radius:4px; overflow:hidden;
+    width:10px; height:10px; border-radius:6px; overflow:hidden;
     /*background:#999;*/
 }
 .card.icard .pinfo .bts span.basic {background:#999;}

@@ -254,7 +254,7 @@ function Isolation() {
                                     </div>
                                     <div className="table-body">
                                         <ReactTable tableHeader={isolationTableColumn} tableBody={isolationTableData}
-                                                    sorted={true} customTableStyle={'table table-striped table-hover text-expert'} trOnclick={getSelectedIsolationId}/>
+                                                    sorted={true} customTableStyle={'table table-striped table-hover text-expert'} trOnclick={getSelectedIsolationId} trDbOnclicke={getSelectedIsolationId}/>
                                     </div>
                                 </div>
                             </div>

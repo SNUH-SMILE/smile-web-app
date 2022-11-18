@@ -45,7 +45,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
         >
             <Modal.Header closeButton>
                 <h5 className="modal-title"
-                    id="selfIsolationInsertModal">{isolationSaveModalObj.data.admissionId ? '자택격리자 수정' : '자택격리자 등록'}</h5>
+                    id="selfIsolationInsertModal">{isolationSaveModalObj.data.admissionId ? '자택격리자 수정' : '자택격리자 신규 등록'}</h5>
             </Modal.Header>
             <Modal.Body>
                 <div className="row">
@@ -149,6 +149,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                         <input className="form-control w-100 date" type="date" ref={admissionDate}
                                                role={'admissionDate'}
                                                defaultValue={isolationSaveModalObj.data.admissionDate && convertDate(isolationSaveModalObj.data.admissionDate)}
+                                               readOnly={isolationSaveModalObj.data.admissionId ? true: false}
                                                required/>
                                     </td>
                                 </tr>
