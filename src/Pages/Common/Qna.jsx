@@ -145,6 +145,7 @@ function Qna(props) {
                                                                 {value.centerNm }
                                                             </option>
                                                         )}
+                                                        <option value={'9999'}>자택격리자</option>
                                                     </select>
                                                 </div>
                                                 <div className="me-3 d-flex">
