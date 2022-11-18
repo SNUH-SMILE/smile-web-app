@@ -1,14 +1,16 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import getToday from "../Utils/common";
 
 function IsolationExitModal({isolationExitModalObj, handledClose, discharge}) {
     const todayInput = useRef()
+    const [quantLocation, setQuantLocation] = useState();
     useEffect(()=>{
         if(isolationExitModalObj.show){
             todayInput.current.value= getToday();
         }
     },[isolationExitModalObj.show])
+
     return (
         <Modal show={isolationExitModalObj.show}
             onHide={() => handledClose()}
@@ -16,14 +18,14 @@ function IsolationExitModal({isolationExitModalObj, handledClose, discharge}) {
                dialogClassName={'modal-dialog modal-dialog-centered modal-dialog-scrollable'}
         >
             <Modal.Header closeButton>
-                <h5 className="modal-title" id="selfIsolationExitModal">자택격리자 퇴소</h5>
+                <h5 className="modal-title" id="selfIsolationExitModal">자택격리자 격리 해제 관리</h5>
             </Modal.Header>
             <Modal.Body>
                 <div className="table-responsive">
                     <table className="table table-borderless mt-3">
                         <tbody>
                         <tr>
-                            <th>입소내역ID</th>
+                            <th>격리내역ID</th>
                             <td>
                                 <input className="form-control w-100" type="text"
                                        defaultValue={isolationExitModalObj.data.admissionId} readOnly
@@ -53,6 +55,31 @@ function IsolationExitModal({isolationExitModalObj, handledClose, discharge}) {
                                        defaultValue="" ref={todayInput} required/>
                             </td>
                         </tr>
+                        <tr>
+                            <th>퇴소시 위치</th>
+                            <td>
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input"
+                                           name="location"
+                                           id="location1"
+                                           type="radio"
+                                           defaultChecked={quantLocation === '1'}
+                                           onClick={()=> setQuantLocation('1')}/>
+
+                                    <label className="form-check-label" htmlFor="location1">자택</label>
+                                </div>
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input"
+                                           name="location"
+                                           id="location2"
+                                           defaultChecked={quantLocation === '2'}
+                                           onClick={()=> setQuantLocation('2')}
+                                           type="radio"
+                                    />
+                                    <label className="form-check-label" htmlFor="location2">병원</label>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -60,7 +87,7 @@ function IsolationExitModal({isolationExitModalObj, handledClose, discharge}) {
             <Modal.Footer>
                 <button type="button" className="btn btn-pr4"
                         role={'modalDischargeButton'}
-                        onClick={()=>discharge(isolationExitModalObj.data.admissionId,todayInput.current.value,isolationExitModalObj.data.patientNm)}>
+                        onClick={()=>discharge(isolationExitModalObj.data.admissionId,todayInput.current.value,quantLocation,isolationExitModalObj.data.patientNm)}>
                     격리해제
                 </button>
             </Modal.Footer>

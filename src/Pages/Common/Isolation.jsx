@@ -159,14 +159,14 @@ function Isolation() {
     const handledIsolationExitModal = (admissionId) =>{
         isolationApi.detail(admissionId).then(({data}) => setIsolationExitModalObj({show: true, data: {...data.result}}))
     };
-    const discharge = useCallback(async (admissionId, dischargeDate, patientNm) => {
+    const discharge = useCallback(async (admissionId, dischargeDate,quantLocation,patientNm) => {
         if(dischargeDate===''){
             alert('격리해제일이 공백입니다.');
         }
         else{
             const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`);
             if(confirmState) {
-                isolationApi.discharge(admissionId, dischargeDate).then(({data}) => {
+                isolationApi.discharge(admissionId, dischargeDate, quantLocation).then(({data}) => {
                     if(data.code==='00'){
                         alert(data.message);
                         handledCloseIsolationExitModal();

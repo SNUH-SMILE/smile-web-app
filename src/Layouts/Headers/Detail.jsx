@@ -1,8 +1,11 @@
-import React, {useState} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import {Badge} from "react-bootstrap";
 import VitalsignModal from "../../component/VitalsignModal";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import IsolationExitModal from "../../component/IsolationExitModal";
+import IsolationApi from "../../Apis/IsolationApi";
+import useAlert from "../../Utils/UseAlert";
 
 const HealthSignal = styled.span`
   display: inline-block;
@@ -39,6 +42,47 @@ const Detail = ({dashBoardData}) => {
     const hideVitalsignModal = () => {
         setShow(false)
     }
+    const {alert,confirm} = useAlert();
+    const searchPatientId = useRef('')
+    const searchPatientNm = useRef('')
+    const searchPatientIsolation = useRef()
+    const [paginationObj, setPaginationObj] = useState({currentPageNo: 1, pageSize: 10, recordCountPerPage: 15})
+    const [sortedOrder,setSortedOrder] = useState({By:'',Dir:''})
+    const isolationApi = new IsolationApi(searchPatientId,searchPatientNm,searchPatientIsolation,paginationObj,sortedOrder);
+
+    // 격리해제 모달 닫기
+    const handledCloseIsolationExitModal = useCallback(() =>{
+        setIsolationExitModalObj({show: false, data: {}})
+    },[])
+    //격리해제 모달 열기
+    const handledIsolationExitModal = (admissionId) =>{
+
+        isolationApi.detail(admissionId).then(({data}) => setIsolationExitModalObj({show: true, data: {...data.result}}))
+    };
+    const [isolationExitModalObj,setIsolationExitModalObj] = useState({show:false,data: {}});
+
+
+    const discharge = useCallback(async (admissionId, dischargeDate, quantLocation, patientNm) => {
+        if(dischargeDate===''){
+            alert('격리해제일이 공백입니다.');
+        }
+        else{
+            console.log(quantLocation);
+            const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`);
+            if(confirmState) {
+                isolationApi.discharge(admissionId, dischargeDate, quantLocation).then(({data}) => {
+                    if(data.code==='00'){
+                        alert(data.message);
+                        handledCloseIsolationExitModal();
+                    }
+                    else{
+                        alert(data.message);
+                    }
+                });
+            }
+        }
+    },[])
+
     const {recentResultInfo} = dashBoardData;
     return (
         <>
@@ -59,8 +103,10 @@ const Detail = ({dashBoardData}) => {
                                         <strong>자택</strong>
                                     </ButtonH34> : null
                             }
-                            <ButtonH34 type="button" className="btn btn-exit" >
-                                <strong>{dashBoardData.qantnDiv === '2' ? '퇴소 / 전원관리' : '격리해제관리'}</strong>
+                            <ButtonH34 type="button" className="btn btn-exit"
+                                       disabled={dashBoardData.qantnDiv !== '1'&& dashBoardData.dschgeDate == null}
+                                       onClick={dashBoardData.qantnDiv !== '2'&& dashBoardData.dschgeDate == null ? () =>handledIsolationExitModal(dashBoardData.admissionId): null}>
+                                <strong>{dashBoardData.qantnDiv === '2' ? '퇴소 / 전원관리' : '격리 해제 관리'}</strong>
                             </ButtonH34>
                         </div>
                         <div className={'current-info'} style={{marginTop: '5px'}}>
@@ -265,6 +311,8 @@ const Detail = ({dashBoardData}) => {
                 </div>
             </div>
             <VitalsignModal show={show} handledClose={hideVitalsignModal}/>
+            <IsolationExitModal isolationExitModalObj={isolationExitModalObj} handledClose={handledCloseIsolationExitModal} discharge={discharge}/>
+          {/*  <QuarantineModal show={open} handledClose={hideVitalsignModal2} data = {dashBoardData}/>*/}
         </>
     )
 }

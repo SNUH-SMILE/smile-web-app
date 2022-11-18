@@ -115,7 +115,7 @@ class IsolationApi {
 
 
     //자가격리자 격리해제 처리
-    async discharge (admissionId,dischargeDate){
+    async discharge (admissionId,dischargeDate,quantLocation){
         try{
             const response = await AuthorizationAxios.patch(process.env.REACT_APP_BASE_URL + '/api/admission/quarantine/discharge',
                 JSON.stringify({
@@ -130,6 +130,7 @@ class IsolationApi {
                     },
                     admissionId:admissionId,
                     dschgeDate:dischargeDate.replaceAll('-',''),
+                    quantLocation:quantLocation,
                 }),
                 {headers: {'Content-Type': "application/json"}});
             return response;
