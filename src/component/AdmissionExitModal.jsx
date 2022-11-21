@@ -1,8 +1,9 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Modal} from "react-bootstrap";
 
 function AdmissionExitModal({admissionExitModalObj, handledClose, discharge}) {
     const todayInput = useRef()
+    const [quantLocation, setQuantLocation] = useState();
     useEffect(()=>{
         if(admissionExitModalObj.show){
             const today = new Date()
@@ -59,6 +60,31 @@ function AdmissionExitModal({admissionExitModalObj, handledClose, discharge}) {
                                 <input className="form-control w-100 date" type="date" ref={todayInput} defaultValue={todayInput} required />
                             </td>
                         </tr>
+                        <tr>
+                            <th>퇴소시 위치</th>
+                            <td>
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input"
+                                           name="location"
+                                           id="location1"
+                                           type="radio"
+                                           defaultChecked={quantLocation === '1'}
+                                           onClick={()=> setQuantLocation('1')}/>
+
+                                    <label className="form-check-label" htmlFor="location1">자택</label>
+                                </div>
+                                <div className="form-check form-check-inline">
+                                    <input className="form-check-input"
+                                           name="location"
+                                           id="location2"
+                                           defaultChecked={quantLocation === '2'}
+                                           onClick={()=> setQuantLocation('2')}
+                                           type="radio"
+                                    />
+                                    <label className="form-check-label" htmlFor="location2">병원</label>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -66,7 +92,7 @@ function AdmissionExitModal({admissionExitModalObj, handledClose, discharge}) {
             <Modal.Footer>
                 <button type="button" className="btn btn-pr4"
                         role={'modalDischargeButton'}
-                        onClick={()=>discharge(admissionExitModalObj.data.admissionId,todayInput.current.value,admissionExitModalObj.data.patientNm)}>퇴소</button>
+                        onClick={()=>discharge(admissionExitModalObj.data.admissionId,todayInput.current.value,quantLocation,admissionExitModalObj.data.patientNm)}>퇴소</button>
             </Modal.Footer>
         </Modal>
     );

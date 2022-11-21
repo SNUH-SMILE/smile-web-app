@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import IsolationExitModal from "../../component/IsolationExitModal";
 import IsolationApi from "../../Apis/IsolationApi";
 import useAlert from "../../Utils/UseAlert";
+import AdmissionExitModal from "../../component/AdmissionExitModal";
+import AdmissionApi from "../../Apis/AdmissionApi";
 
 const HealthSignal = styled.span`
   display: inline-block;
@@ -42,26 +44,74 @@ const Detail = ({dashBoardData}) => {
     const hideVitalsignModal = () => {
         setShow(false)
     }
+
     const {alert,confirm} = useAlert();
     const searchPatientId = useRef('')
     const searchPatientNm = useRef('')
+    const [searchAdmissionCenter,setSearchAdmissionCenter] = useState();
+    const searchAdmissionState = useRef();
+    const searchAdmissionId = useRef();
+    const searchAdmissionNm = useRef();
     const searchPatientIsolation = useRef()
     const [paginationObj, setPaginationObj] = useState({currentPageNo: 1, pageSize: 10, recordCountPerPage: 15})
     const [sortedOrder,setSortedOrder] = useState({By:'',Dir:''})
     const isolationApi = new IsolationApi(searchPatientId,searchPatientNm,searchPatientIsolation,paginationObj,sortedOrder);
-
-    // 격리해제 모달 닫기
+    // 입소자관련 Api
+    const admissionApi = new AdmissionApi(searchAdmissionCenter,searchAdmissionId,searchAdmissionNm,searchAdmissionState,paginationObj,sortedOrder.By,sortedOrder.Dir);
+    //재택격리자 격리해제 모달 닫기
     const handledCloseIsolationExitModal = useCallback(() =>{
         setIsolationExitModalObj({show: false, data: {}})
     },[])
-    //격리해제 모달 열기
+    //재택격리자 격리해제 모달 열기
     const handledIsolationExitModal = (admissionId) =>{
-
         isolationApi.detail(admissionId).then(({data}) => setIsolationExitModalObj({show: true, data: {...data.result}}))
     };
+    //재택격리자 격리해제 모달
     const [isolationExitModalObj,setIsolationExitModalObj] = useState({show:false,data: {}});
 
 
+    //생활치료센터 퇴소 모달
+    const [admissionExitModalObj,setAdmissionExitModalObj] = useState({show:false,data: {}});
+    //생활치료센터 퇴소 모달 열기 (admissionId 로 api 요청 하려고 인자로 받음)
+/*    const handledAdmissionExitModal = (admissionId) =>{
+
+        admissionApi.detail(admissionId).then(({data}) => setAdmissionExitModalObj({show: true, data: {...data.result}}))
+    }*/
+    const handledAdmissionExitModal = (admissionId) =>{
+        isolationApi.detail(admissionId).then(({data}) =>{
+            setSearchAdmissionCenter(dashBoardData.centerNm);
+            data.result.centerNm = dashBoardData.centerNm;
+            console.log(data)
+            setAdmissionExitModalObj({show: true, data: {...data.result}})
+        })
+    }
+    //생활치료센터 퇴소 모달 닫기
+    const handledCloseAdmissionExitModal = useCallback(() =>{
+        setAdmissionExitModalObj({show: false, data: {}})
+    },[])
+
+    /*생활치료센터 퇴소 API*/
+    const discharge2 = useCallback(async (admissionId, dischargeDate,quantLocation, patientNm) => {
+        if(dischargeDate===''){
+            alert('퇴소일이 공백입니다.')
+        }
+        else{
+            const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`)
+            if(confirmState) {
+/*                admissionApi.discharge(admissionId, dischargeDate, quantLocation).then(({data}) => {
+                    if(data.code==='00'){
+                        alert(data.message)
+                        handledCloseAdmissionExitModal()
+                    }
+                    else{
+                        alert(data.message)
+                    }
+                });*/
+            }
+        }
+    },[])
+
+    /*재택격리자 해제 API*/
     const discharge = useCallback(async (admissionId, dischargeDate, quantLocation, patientNm) => {
         if(dischargeDate===''){
             alert('격리해제일이 공백입니다.');
@@ -73,7 +123,7 @@ const Detail = ({dashBoardData}) => {
                 isolationApi.discharge(admissionId, dischargeDate, quantLocation).then(({data}) => {
                     if(data.code==='00'){
                         alert(data.message);
-                        handledCloseIsolationExitModal();
+
                     }
                     else{
                         alert(data.message);
@@ -104,8 +154,8 @@ const Detail = ({dashBoardData}) => {
                                     </ButtonH34> : null
                             }
                             <ButtonH34 type="button" className="btn btn-exit"
-                                       disabled={dashBoardData.qantnDiv !== '1'&& dashBoardData.dschgeDate == null}
-                                       onClick={dashBoardData.qantnDiv !== '2'&& dashBoardData.dschgeDate == null ? () =>handledIsolationExitModal(dashBoardData.admissionId): null}>
+                                       disabled={dashBoardData.dschgeDate != null}
+                                       onClick={dashBoardData.qantnDiv !== '2'&& dashBoardData.dschgeDate == null ? () =>handledIsolationExitModal(dashBoardData.admissionId):()=> handledAdmissionExitModal(dashBoardData.admissionId)}>
                                 <strong>{dashBoardData.qantnDiv === '2' ? '퇴소 / 전원관리' : '격리 해제 관리'}</strong>
                             </ButtonH34>
                         </div>
@@ -311,7 +361,11 @@ const Detail = ({dashBoardData}) => {
                 </div>
             </div>
             <VitalsignModal show={show} handledClose={hideVitalsignModal}/>
+            {/*자택격리자 격리해제*/}
             <IsolationExitModal isolationExitModalObj={isolationExitModalObj} handledClose={handledCloseIsolationExitModal} discharge={discharge}/>
+
+            {/*생활치료센터 퇴소*/}
+            <AdmissionExitModal admissionExitModalObj={admissionExitModalObj} handledClose={handledCloseAdmissionExitModal} discharge={discharge2}/>
           {/*  <QuarantineModal show={open} handledClose={hideVitalsignModal2} data = {dashBoardData}/>*/}
         </>
     )

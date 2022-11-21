@@ -136,7 +136,7 @@ class AdmissionApi {
     }
 
     //생활치료센터 입소자 퇴실 처리
-    async discharge (admissionId,dischargeDate){
+    async discharge (admissionId,dischargeDate,quantLocation){
         try{
             const response = await AuthorizationAxios.patch(process.env.REACT_APP_BASE_URL + '/api/admission/center/discharge',
                 JSON.stringify({
@@ -152,10 +152,12 @@ class AdmissionApi {
                     },
                     admissionId:admissionId,
                     dschgeDate:dischargeDate.replaceAll('-',''),
+                    quantLocation:quantLocation,
                 }),
                 {headers: {'Content-Type': "application/json"}});
             return response;
         }catch (e) {
+            console.log(e);
             console.log(`AdmissionApi discharge`);
             return false;
         }

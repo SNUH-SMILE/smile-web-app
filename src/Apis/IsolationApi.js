@@ -130,7 +130,7 @@ class IsolationApi {
                     },
                     admissionId:admissionId,
                     dschgeDate:dischargeDate.replaceAll('-',''),
-                    quantLocation:quantLocation,
+                    quantLocation:quantLocation
                 }),
                 {headers: {'Content-Type': "application/json"}});
             return response;
