@@ -20,7 +20,7 @@ function AdmissionDetail() {
     },[])
 
     const [noticeText,setNoticeText] = useState('');
-
+    const [isValid,setIsValid] = useState(false);
     const maxLen = value => value.length <= 500;
     const maxLength = (e,validator)=>{
         const {value} = e.target;
@@ -31,6 +31,11 @@ function AdmissionDetail() {
         if (willUpdate) {
             setNoticeText(value);
         }
+    };
+    const test = ()=>{
+        console.log(isValid)
+        setIsValid(true);
+        alert(isValid)
     };
     const addNotice = async () => {
         if(!noticeText){
@@ -100,7 +105,8 @@ function AdmissionDetail() {
                             </div>
                         </div>
                     </div>
-                    <div className="card indiv history">
+
+                    <div className="card indiv history"style={{width: !isValid ? "calc(55%)" : 'calc(38%)%'}}>
                         <div className="header d-flex">
                             <h5 className="title">기록</h5>
                             <input type="datetime-local" className="form-control w200 ms-auto"/>
@@ -125,31 +131,38 @@ function AdmissionDetail() {
                             </div>
                         </div>
                     </div>
-                    <div className="card indiv alarm">
-                        <div className="header d-flex">
-                            <h5 className="title">알림 <span>발송</span></h5>
-                            <button type="button" className="ms-auto btn-close" onClick={collapseNoticeArea}/>
+
+                        <div className={`card indiv ${!isValid ? 'alarm2' : 'alarm'}`}>
+                   {/* <div className="card indiv alarm">*/}
+                        <div className="arrow">
+                            <button className="arrow-right" onClick={test}>ddd</button>
                         </div>
-                        <ul className="scrollbar" role={'noticeList'}>
-                            {noticeList.map(value => {
-                                return(
-                                    <NoticeCard data={value} key={value.noticeSeq}/>
-                                )
-                            })}
-                        </ul>
-                        <div className="footer">
-                            <form>
+                        <div className="main">
+                            <div className="header d-flex">
+                                <h5 className="title">알림 <span>발송</span></h5>
+                                <button type="button" className="ms-auto btn-close" onClick={collapseNoticeArea}/>
+                            </div>
+                            <ul className="scrollbar" role={'noticeList'}>
+                                {noticeList.map(value => {
+                                    return(
+                                        <NoticeCard data={value} key={value.noticeSeq}/>
+                                    )
+                                })}
+                            </ul>
+                            <div className="footer">
+                                <form>
                                 <textarea className="form-control w-100"
                                           placeholder="텍스트를 입력해 주세요"
                                           value={noticeText}
                                           role={'noticeText'}
                                           onChange={(e)=>maxLength(e,maxLen)}
                                 />
-                                <div className="btn_wrap d-flex">
-                                    <span className="byte"><strong>{noticeText.length}</strong> / 500</span>
-                                    <button type="button" className="ms-auto btn btn-pr3" onClick={addNotice}>알림 전송</button>
-                                </div>
-                            </form>
+                                    <div className="btn_wrap d-flex">
+                                        <span className="byte"><strong>{noticeText.length}</strong> / 500</span>
+                                        <button type="button" className="ms-auto btn btn-pr3" onClick={addNotice}>알림 전송</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

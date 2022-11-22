@@ -1282,7 +1282,8 @@ current-top .current-btn .btn {
 
 .flex_layout_dashboard > .row.history-alarm > .col .tab3 {width:calc(38%); margin-right:1.5%;}
 .flex_layout_dashboard > .row.history-alarm > .col .history {width:calc(38%); margin-right:1.5%;}
-.flex_layout_dashboard > .row.history-alarm > .col .alarm {width:21%; position:relative;}
+.flex_layout_dashboard > .row.history-alarm > .col .alarm {width:21%; position:relative; margin-right: 1.5rem;}
+.flex_layout_dashboard > .row.history-alarm > .col .alarm2 {width:11%; position:relative; margin-right: 1.5rem;}
 
 /* 알림 닫기 */
 .flex_layout_dashboard > .history-alarm.toggled > .col .tab3 {width:calc(49% - 37px);}
@@ -1293,6 +1294,11 @@ current-top .current-btn .btn {
 .flex_layout_dashboard > .history-alarm.toggled > .col .alarm .btn-close {
     position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
     background:url("../Images/ic_al_open.png") no-repeat center;
+    z-index:2;
+}
+.flex_layout_dashboard > .history-alarm.toggled > .col .alarm .arrow-right {
+    position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+    background:url("../Images/lnb_arr_right.png") no-repeat center;
     z-index:2;
 }
 .flex_layout_dashboard > .history-alarm > .col .alarm .btn-close:focus {
@@ -1341,22 +1347,43 @@ current-top .current-btn .btn {
 .history-alarm .history .body textarea {height:100%;}
 .history-alarm .history .body .btn-wrap {margin-top:20px; font-size:0; text-align:right}
 .history-alarm .history .body .btn-wrap button + button {margin-left:10px;}
-
-.history-alarm .alarm .body {
-    height:100%;
+.history-alarm .arrow {
+    width: 10%;
+    height: 100%;
+    position: absolute;
 }
-.history-alarm .alarm ul {
-    height:450px; overflow-y: auto;
+.history-alarm .main {
+
+}
+.history-alarm .alarm2 .main ul {
+    height:365px; overflow-y: auto;
     margin:0; padding:20px 20px 0;
 }
-.history-alarm .alarm ul li {
+.history-alarm .alarm2 .main .body {
+    width: 10%;
+    height:100%;
+}
+.history-alarm .alarm2 .main ul li {
     list-style:none;
     padding: 15px;
     border-radius: 10px;
     background-color: #f0f6fb;
 }
-.history-alarm .alarm ul li + li {margin-top:10px;}
-.history-alarm .alarm ul li div.msg {
+.history-alarm .alarm .main .body {
+    height:100%;
+}
+.history-alarm .alarm .main ul {
+    height:365px; overflow-y: auto;
+    margin:0; padding:20px 20px 0;
+}
+.history-alarm .alarm .main ul li {
+    list-style:none;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f0f6fb;
+}
+.history-alarm .alarm .main ul li + li {margin-top:10px;}
+.history-alarm .alarm .main ul li div.msg {
     font-size: 14px;
     font-stretch: normal;
     font-style: normal;
@@ -1365,10 +1392,10 @@ current-top .current-btn .btn {
     text-align: left;
     color: var(--primary-color4);
 }
-.history-alarm .alarm ul li div.from {
+.history-alarm .alarm .main ul li div.from {
     margin-top:15px;
 }
-.history-alarm .alarm ul li div.from span {
+.history-alarm .alarm .main ul li div.from span {
     font-size: 13px;
     font-stretch: normal;
     font-style: normal;
@@ -1377,18 +1404,18 @@ current-top .current-btn .btn {
     text-align: right;
     color: #999;
 }
-.history-alarm .alarm .footer {
+.history-alarm .alarm .main .footer {
     height:calc(100% - 350px);
     margin-top:20px; padding:0 20px;
 }
-.history-alarm .alarm .footer form {
+.history-alarm .alarm .main .footer form {
     height:100%;
 }
-.history-alarm .alarm .footer textarea {
+.history-alarm .alarm .main .footer textarea {
     height:calc(100% - 80px);
 }
-.history-alarm .alarm .footer .btn_wrap {margin-top:20px;}
-.history-alarm .alarm .footer span.byte {
+.history-alarm .alarm .main .footer .btn_wrap {margin-top:20px;}
+.history-alarm .alarm .main .footer span.byte {
     font-size: 11px;
     font-stretch: normal;
     font-style: normal;
@@ -1397,6 +1424,7 @@ current-top .current-btn .btn {
     text-align: right;
     color: #999;
 }
+
 
 
 
