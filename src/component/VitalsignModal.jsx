@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import Chart from "react-apexcharts"
 import ApexCharts from 'apexcharts';
@@ -140,20 +140,8 @@ function VitalsignModal({show, handledClose}) {
                 },
             },
             dataLabels: {
-                enabled: false,
-                enabledOnSeries: [0, 1, 2, 3, 4],
-                style: {
-                    colors: ["#9CBAE3", "#646464", "#E73323", "#F4C243", "#A1CE63", "#67359A",],
-                },
-                background: {
-                    enabled: true,
-                    foreColor: '#fff',
-                    borderRadius: 2,
-                    padding: 4,
-                    opacity: 0.9,
-                    borderWidth: 1,
-                    borderColor: '#fff'
-                },
+                enabled: true,
+
             },
             stroke: {
                 width: 3,
@@ -309,10 +297,10 @@ function VitalsignModal({show, handledClose}) {
 
     }
     const [rangeValue, setRangeValue] = useState();
-    function handledRangeValue(e) {
+    const handledRangeValue = useCallback(e=>{
         setRangeValue(e.target.value);
         setVitalCheckDate(header.searchDtList[e.target.value]);
-    }
+    })
     const [vitalCheckDate,setVitalCheckDate] = useState('');
     const handledVitalCheckDate = (e)=>{
         setVitalCheckDate(e.target.value);
@@ -367,10 +355,11 @@ function VitalsignModal({show, handledClose}) {
                     <span className="dtit">연락처</span>
                     <strong className="dcon">{header.dispCellPhoneInfo}</strong>
                 </div>
-                <div className="me-4 d-flex" style={{marginLeft:'500px'}}>
+                <div className="me-4 d-flex" style={{marginLeft:'450px'}}>
+                    <span className="dtit">측정일</span>
                     <input type="range" min={0}
-                           max={header.searchDtList&&header.searchDtList.length}
-                           onChange={(e)=>handledRangeValue(e)}
+                           max={header.searchDtList&&header.searchDtList.length-1}
+                           onMouseUp={(e)=>handledRangeValue(e)}
                            value ={header.searchDtList&&header.searchDtList.map[rangeValue]}/>
                 </div>
             </Modal.Header>
