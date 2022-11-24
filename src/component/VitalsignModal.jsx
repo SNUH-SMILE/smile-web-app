@@ -101,7 +101,7 @@ function VitalsignModal({show, handledClose}) {
             },
             colors: ["#9CBAE3", "#646464", "#E73323", "#F4C243", "#A1CE63", "#67359A",],
             markers: {
-                size: 0,
+                size: 5,
                 hover: {
                     size: 3
                 }
@@ -140,8 +140,20 @@ function VitalsignModal({show, handledClose}) {
                 },
             },
             dataLabels: {
-                enabled: true,
-
+                enabled: false,
+                enabledOnSeries: [0, 1, 2, 3, 4],
+                style: {
+                    colors: ["#9CBAE3", "#646464", "#E73323", "#F4C243", "#A1CE63", "#67359A",],
+                },
+                background: {
+                    enabled: true,
+                    foreColor: '#fff',
+                    borderRadius: 2,
+                    padding: 4,
+                    opacity: 0.9,
+                    borderWidth: 1,
+                    borderColor: '#fff'
+                },
             },
             stroke: {
                 width: 3,
