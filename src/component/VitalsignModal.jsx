@@ -5,6 +5,7 @@ import ApexCharts from 'apexcharts';
 import styled from "styled-components";
 import AdmissionDetailApi from "../Apis/AdmissionDetailApi";
 
+
 const VitalButton = styled.button`
   height: 35px;
   background: ${props => props.show ? '#005580' : 'gray'};
@@ -307,6 +308,11 @@ function VitalsignModal({show, handledClose}) {
         }
 
     }
+    const [rangeValue, setRangeValue] = useState();
+    function handledRangeValue(e) {
+        setRangeValue(e.target.value);
+        setVitalCheckDate(header.searchDtList[e.target.value]);
+    }
     const [vitalCheckDate,setVitalCheckDate] = useState('');
     const handledVitalCheckDate = (e)=>{
         setVitalCheckDate(e.target.value);
@@ -361,6 +367,12 @@ function VitalsignModal({show, handledClose}) {
                     <span className="dtit">연락처</span>
                     <strong className="dcon">{header.dispCellPhoneInfo}</strong>
                 </div>
+                <div className="me-4 d-flex" style={{marginLeft:'500px'}}>
+                    <input type="range" min={0}
+                           max={header.searchDtList&&header.searchDtList.length}
+                           onChange={(e)=>handledRangeValue(e)}
+                           value ={header.searchDtList&&header.searchDtList.map[rangeValue]}/>
+                </div>
             </Modal.Header>
             <Modal.Body style={{paddingTop:'15px',overflow:'hidden'}}>
                 <div className={'d-flex align-items-center mb-1'}>
@@ -371,9 +383,10 @@ function VitalsignModal({show, handledClose}) {
                             onChange={(e)=>handledVitalCheckDate(e)}
                     >
                         {
-                            header.searchDtList&&header.searchDtList.map(value=><option key={value} value={value}>{value}</option>)
+                            header.searchDtList&&header.searchDtList.map(value=>
+                                <option key={value} value={value}>{value}</option>
+                            )
                         }
-
                     </select>
                 </div>
                 <div className="card inchart">

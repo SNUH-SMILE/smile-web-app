@@ -1564,3 +1564,13 @@ current-top .current-btn .btn {
     background: #ffffff;
     color: black;
 }
+input[type=range] {
+    -webkit-appearance: none;
+    overflow: hidden;
+    width: 250px;
+    height: 5px;
+    background: transparent;
+    cursor: pointer;
+    background: #e5e4e3;
+    border-radius: 0; /* iOS */
+}
