@@ -10,7 +10,7 @@ import useAlert from "../../Utils/UseAlert";
 
 function Admission() {
     const {alert,confirm} = useAlert();
-    UseSetPageTitle('생활치료센터 환자 현황')
+    UseSetPageTitle('생활치료센터 리스트')
 
     // 검색
     const searchAdmissionCenter = useRef();
@@ -216,6 +216,7 @@ function Admission() {
     // 저장 모달 열기 (admissionId 로 api 요청 하려고 인자로 받음)
     const handledAdmissionSaveModal = (admissionId) =>{
         if(admissionId === '신규'){
+            console.log(admissionId)
             setAdmissionSaveModalObj({show: true, data:{},confirmFunc: create})
         }
         else{
@@ -242,8 +243,8 @@ function Admission() {
         {Header: '격리일수', accessor: 'qantnDay', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '혈압', accessor: 'bp', vital:true,},
         {Header: '심박수', accessor: 'prResult', vital:true,},
-        {Header: '체온', accessor: 'btResult', vital:true},
         {Header: '호흡수', accessor: 'rrResult', vital:true},
+        {Header: '체온', accessor: 'btResult', vital:true},
         {Header: '산소포화도', accessor: 'spResult', vital:true},
         {Header: '재원상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editEvent:handledAdmissionExitModal},
     ]

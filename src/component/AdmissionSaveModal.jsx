@@ -44,6 +44,10 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
         }
     }
 
+    useEffect(() => {
+        console.log(Object.keys(admissionSaveModalObj.data).length);
+        console.log(admissionSaveModalObj.data);
+    });
     const [rooms, setRooms] = useState([])
     function getRoom(centerId) {
         commonCode('CD005').then(({data}) => {
@@ -69,7 +73,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                dialogClassName={'modal-dialog modal-dialog-centered modal-dialog-scrollable'}
         >
             <Modal.Header closeButton>
-                <Modal.Title>{admissionSaveModalObj.admissionId === '' ? '생활치료센터 입소자 등록' : '생활치료센터 입소자 수정'}</Modal.Title>
+                <Modal.Title>{Object.keys(admissionSaveModalObj.data).length ==0 ? '생활치료센터 신규 입소자 등록' : '생활치료센터 입소자 수정'}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="row">

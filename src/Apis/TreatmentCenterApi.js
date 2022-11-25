@@ -2,7 +2,7 @@ import AuthorizationAxios from "../Utils/AuthorizationAxios";
 
 class TreatmentCenterApi {
     /**
-     * 생활치료센터
+     * handledCloseIsolationExitModal
      * @param centerId                                 생활치료센터 ID
      * @param centerNm                                 생활치료센터명
      * @param centerLocation                           생활치료센터위치

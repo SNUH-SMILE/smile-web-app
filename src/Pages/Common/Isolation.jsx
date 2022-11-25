@@ -9,7 +9,7 @@ import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 
 function Isolation() {
 
-    UseSetPageTitle('자택격리자 환자 현황')
+    UseSetPageTitle('자택격리자 리스트')
 
     const {alert,confirm} = useAlert();
     const searchPatientId = useRef('')

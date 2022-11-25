@@ -11,7 +11,7 @@ function CenterAdmissionBoard() {
     UseSetPageTitle('생활치료센터 대시보드', 'Center')
 
     const {onMove} = useAdmissionDetail()
-    const palette = ['#228be6', '#90d094', '#f1b244', '#e85564', '#735fc9', '#ad7922', '#ffcf00', '#2822ad', '#ad2222', '#f06595'];
+    const palette = ['#228be6', '#90d094', '#228be6', '#90d094', '#228be6', '#90d094', '#228be6', '#90d094', '#228be6', '#90d094'];
     const paletteNum = useRef(0);
     const [patientList, setPatientList] = useState([]);
     const centerDashboardApi = new CenterDashboardApi();
@@ -19,8 +19,10 @@ function CenterAdmissionBoard() {
     const {setDashBoardData,setDashBoardFunc} = useContext(TitleContext);
     const selectPatientList = (centerId) => {
         getLonginUserInfo().then(({data}) => {
+
             centerDashboardApi.select('2', centerId ? centerId.target.value : data.result.userTreatmentCenterVOList[0].centerId)
                 .then(({data}) => {
+                    console.log(data)
                     setDashBoardData(()=>({...data.result.header}));
                     setPatientList(()=>data.result.patientList);
                 })

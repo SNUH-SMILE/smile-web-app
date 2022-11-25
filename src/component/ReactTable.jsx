@@ -424,10 +424,6 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                             {/*<button type="button" className={cell.value === '1'? "btn btn-exit" : "btn btn-exit-done"} onClick={row.original}>{cell.value === '1' ? '재원중' : '퇴실'}</button>*/}
                                                             <button type="button"
                                                                     className={cell.value === '1'? "btn btn-exit" : "btn btn-exit-done"}
-                                                                    onClick={cell.column.editEvent && cell.value === '1'
-                                                                        ?  ()=>cell.column.editEvent(row.original.admissionId)
-                                                                        :null
-                                                                    }
                                                             >
                                                                 {cell.column.editElementType !== 'Isolation'? cell.value === '1' ? '재원중' :'퇴소': null}
                                                                 {cell.column.editElementType === 'Isolation'? cell.value === '1' ? '격리중' :'격리해제': null}
