@@ -371,7 +371,7 @@ function User() {
                                                 <tr>
                                                     <th>비밀번호</th>
                                                     <td>
-                                                        <input className="form-control w-100" type="text" role={'detailUserPW'}
+                                                        <input className="form-control w-100" type="password" role={'detailUserPW'}
                                                                maxLength="20" ref={userPw}
                                                                defaultValue={''}/>
                                                     </td>
