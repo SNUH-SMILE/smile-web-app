@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Badge} from "react-bootstrap";
 import VitalsignModal from "../../component/VitalsignModal";
 import styled from "styled-components";
@@ -223,21 +223,9 @@ const Detail = ({dashBoardData}) => {
                                             <h2>혈압</h2>
                                             <p>{recentResultInfo && recentResultInfo.bpResultDt}</p>
                                             <div>
-                                                {recentResultInfo && recentResultInfo.sbpRiskGb === 'H'
-                                                    ? <RedSpan>{recentResultInfo.sbpResult}</RedSpan>
-
-                                                    : recentResultInfo && recentResultInfo.sbpRiskGb === 'L' ?
-                                                        <BlueSpan>{recentResultInfo.sbpResult}</BlueSpan>
-                                                        : <span>{recentResultInfo && recentResultInfo.sbpResult}</span>
-                                                }
+                                                <span>{recentResultInfo && recentResultInfo.sbpResult}</span>
                                                 <span> / </span>
-                                                {recentResultInfo && recentResultInfo.dbpRiskGb === 'H'
-                                                    ? <RedSpan>{recentResultInfo.dbpResult}</RedSpan>
-
-                                                    : recentResultInfo && recentResultInfo.dbpRiskGb === 'L' ?
-                                                        <BlueSpan>{recentResultInfo.dbpResult}</BlueSpan>
-                                                        : <span>{recentResultInfo && recentResultInfo.dbpResult}</span>
-                                                }
+                                                <span>{recentResultInfo && recentResultInfo.dbpResult}</span>
                                                 <em> {recentResultInfo && recentResultInfo.bpUnit}</em>
                                             </div>
                                         </MH83Li>
@@ -245,13 +233,9 @@ const Detail = ({dashBoardData}) => {
                                             <h2>심박수</h2>
                                             <p>{recentResultInfo && recentResultInfo.prResultDt}</p>
                                             <div>
-                                                {recentResultInfo && recentResultInfo.prRiskGb === 'H'
-                                                    ? <RedSpan>{recentResultInfo.prResult}</RedSpan>
-
-                                                    : recentResultInfo && recentResultInfo.prRiskGb === 'L' ?
-                                                        <BlueSpan>{recentResultInfo.prResult}</BlueSpan>
-                                                        : <span>{recentResultInfo && recentResultInfo.prResult}</span>
-                                                }
+                                                <span>{recentResultInfo && recentResultInfo.prResult}</span>
+                                                <span> / </span>
+                                                <span>{recentResultInfo && recentResultInfo.prResult}</span>
                                                 <em> {recentResultInfo && recentResultInfo.prUnit}</em>
                                             </div>
                                         </MH83Li>
@@ -274,11 +258,11 @@ const Detail = ({dashBoardData}) => {
                                             <p>{recentResultInfo && recentResultInfo.btResultDt}</p>
                                             <div>
                                                 {recentResultInfo && recentResultInfo.btRiskGb === 'H'
-                                                    ? <RedSpan>{recentResultInfo.btResult}</RedSpan>
+                                                    ? <RedSpan>{recentResultInfo.btResult.substring(0,5)}</RedSpan>
 
                                                     : recentResultInfo && recentResultInfo.btRiskGb === 'L' ?
-                                                        <BlueSpan>{recentResultInfo.btResult}</BlueSpan>
-                                                        : <span>{recentResultInfo && recentResultInfo.btResult}</span>
+                                                        <BlueSpan>{recentResultInfo.btResult.substring(0,5)}</BlueSpan>
+                                                        : <span>{recentResultInfo && recentResultInfo.btResult.substring(0,5)}</span>
                                                 }
                                                 <em> {recentResultInfo && recentResultInfo.btUnit}</em>
                                             </div>
