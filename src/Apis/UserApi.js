@@ -10,7 +10,8 @@ export default class UserApi {
         userTreatmentCenterVOList,
         userSearchId,
         userSearchNm,
-        userSearchTreatmentCenter
+        userSearchTreatmentCenter,
+        lvl
     ) {
         //상세 정보
         this.userId = userId;
@@ -19,6 +20,7 @@ export default class UserApi {
         this.remark = remark;
         this.mainCenter = {...userTreatmentCenterVOList.find(value => value.mainYn === 'Y')}
         this.userTreatmentCenterVOList = userTreatmentCenterVOList;
+        this.lvl = lvl;
 
         //검색 정보
         this.userSearchId = userSearchId;
@@ -73,7 +75,8 @@ export default class UserApi {
                         remark: this.remark.current.value,
                         mainCenterId:this.mainCenter.centerId,
                         mainCenterNm:this.mainCenter.centerNm,
-                        userTreatmentCenterVOList:this.userTreatmentCenterVOList
+                        userTreatmentCenterVOList:this.userTreatmentCenterVOList,
+                        lvl:this.lvl.current.value,
                     }
                 }),
                 {headers: {'Content-Type': "application/json"}}

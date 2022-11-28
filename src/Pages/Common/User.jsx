@@ -58,6 +58,7 @@ function User() {
                 }
 
                 data.forEach((val) => {
+
                     if (userTreatmentCenterList.filter(x => x.centerId === val.centerId).length === 0) {
                         setUserTreatmentCenterList((userTreatmentCenterList) => [
                             ...userTreatmentCenterList,
@@ -104,16 +105,19 @@ function User() {
     const userPw = useRef();
     const userNm = useRef();
     const remark = useRef();
+    const lvl = useRef();
 
     // 사용자 리스트 테이블 헤더
     const userTableColumn = [
         {Header: '사용자ID', accessor: 'userId', styleClassName:'uid'},
         {Header: '사용자명', accessor: 'userNm', styleClassName:'uname'},
         {Header: '생활치료센터', accessor: 'mainCenterNm', styleClassName:'cname'},
+        {Header: 'lvl', accessor: 'lvl', styleClassName:'uname'},
         {Header: '리마크', accessor: 'remark', styleClassName:'umark text-start'},
     ]
     // 사용자 리스트
     const [ userList, setUserList ] = useState([])
+    const [ userOpen, setUserOpen ] = useState(false);
 
     // 선택 사용자 생활치료센터 리스트
     const [ userTreatmentCenterList, setUserTreatmentCenterList ] = useState([])
@@ -125,7 +129,6 @@ function User() {
     useEffect(()=>{
         selectUserList();
     },[searchCenter])
-
     const treatmentCenterHeaderCB = useRef();
 
     // 선택 사용자 생활치료센터 메인여부 변경시 State 값 업데이트
@@ -137,8 +140,20 @@ function User() {
             )
         )
     }
+    useEffect(() =>{
+        userList.forEach((i) =>{
+            if(i.lvl=="0"){
+                i.lvl = "전체";
+            }else if(i.lvl == "1"){
+                i.lvl="운영자"
+            }else{
+                i.lvl="진료진"
+            }
+        })
+    },[userList])
 
     useEffect(()=>{
+
         if(userTreatmentCenterList.length === 0){
             treatmentCenterHeaderCB.current.checked = false;
         }
@@ -202,7 +217,8 @@ function User() {
         userTreatmentCenterList,
         userSearchId,
         userSearchNm,
-        searchCenter
+        searchCenter,
+        lvl
     );
 
 
@@ -225,8 +241,10 @@ function User() {
                 userPw.current.value = data.result.password
                 userNm.current.value = data.result.userNm
                 remark.current.value = data.result.remark
+                lvl.current.value = data.result.lvl
             }
         });
+        setUserOpen(false);
     }
 
     const save = async () => {
@@ -237,6 +255,10 @@ function User() {
         else if(!userNm.current.value){
             userNm.current.focus()
             alert('사용자명이 공백입니다.')
+        }
+        else if(!lvl.current.value){
+            userNm.current.focus()
+            alert('권한이 공백입니다.')
         }
         else if(userTreatmentCenterList.length <= 0){
             alert('생활치료센터를 선택해주세요')
@@ -288,6 +310,7 @@ function User() {
         remark.current.value = '';
         setUserTreatmentCenterList([]);
         crud==='S' ? setCrud('C') : setCrud('S')
+        setUserOpen(true);
     }
 
     const handledSearch = (e) =>{
@@ -365,7 +388,8 @@ function User() {
                                                     <th>사용자ID</th>
                                                     <td className="uid">
                                                         <input className="form-control w-100" type="text" role={'detailUserID'}
-                                                               ref={userId} defaultValue={''} readOnly/>
+                                                               ref={userId} defaultValue={''}
+                                                               readOnly={!userOpen}/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -382,6 +406,17 @@ function User() {
                                                         <input className="form-control w-100" type="text" role={'detailUserNM'}
                                                                maxLength="500" ref={userNm}
                                                                defaultValue={''}/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>권한</th>
+                                                    <td className="lvl">
+                                                        <select className="form-select"  ref={lvl} defaultValue={''}>
+                                                            <option value=""></option>
+                                                            <option value="0">전체</option>
+                                                            <option value="1">운영자</option>
+                                                            <option value="2">진료진</option>
+                                                        </select>
                                                     </td>
                                                 </tr>
                                                 <tr>
