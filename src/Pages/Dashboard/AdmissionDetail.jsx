@@ -3,6 +3,7 @@ import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 import AdmissionDetailApi from "../../Apis/AdmissionDetailApi";
 import {TitleContext} from "../../Providers/TitleContext";
 import NoticeCard from "../../component/NoticeCard";
+import RecordCard from "../../component/RecordCard";
 import useAlert from "../../Utils/UseAlert";
 
 function AdmissionDetail() {
@@ -12,25 +13,37 @@ function AdmissionDetail() {
     const {setDashBoardData} = useContext(TitleContext);
     const admissionDetailApi=new AdmissionDetailApi(localStorage.getItem('admissionId'));
     const [noticeList,setNoticeList] = useState([])
+    const [recordList,setRecordList] = useState([])
     useEffect(()=>{
         collapseNoticeArea();
         admissionDetailApi.select().then(({data}) => {
             setDashBoardData(data.result.headerVO);
             setNoticeList(data.result.noticeVOList);
+            setRecordList(data.result.recordVOList);
         });
     },[])
+
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = today.getMonth();
+    const day = today.getDate();
+    const date = useState();
 
     const [noticeText,setNoticeText] = useState('');
 
     const maxLen = value => value.length <= 500;
-    const maxLength = (e,validator)=>{
+    const maxLength = (e,validator,type)=>{
         const {value} = e.target;
         let willUpdate = true;
         if (typeof validator === "function") {
             willUpdate = validator(value);
         }
         if (willUpdate) {
-            setNoticeText(value);
+            if(type =='record'){
+                setRecord(value);
+            }else{
+                setNoticeText(value);
+            }
         }
     };
     const addNotice = async () => {
@@ -40,7 +53,7 @@ function AdmissionDetail() {
         else{
             const confirmStatus = await confirm('알림을 생성하시겠습니까?');
             if(confirmStatus){
-                admissionDetailApi.addNotice(noticeText).then(({data}) => {
+                admissionDetailApi.addNotice(noticeText,date).then(({data}) => {
                     if(data.code==='00'){
                         alert(data.message);
                         setNoticeList(data.result);
@@ -54,6 +67,28 @@ function AdmissionDetail() {
         }
     }
 
+    const [record, setRecord] = useState('');
+    const recordSave = async () => {
+        let date = year + '-' + month + '-' + day;
+        if (!record) {
+            alert('작성 내용이 공백입니다.')
+        } else {
+            const confirmStatus = await confirm('기록을 생성하시겠습니까?');
+            if (confirmStatus) {
+                admissionDetailApi.addRecord(record,date).then(({data}) => {
+                    if (data.code === '00') {
+                        alert(data.message);
+                        setRecordList(data.result);
+                        setNoticeText('');
+                        console.log(recordList);
+                    } else {
+                        alert(data.message);
+                    }
+                });
+            }
+        }
+
+    }
     const noticeArea = useRef();
     const collapseNoticeArea = ()=>{
         noticeArea.current.classList.toggle('toggled')
@@ -107,22 +142,28 @@ function AdmissionDetail() {
                             <input type="datetime-local" className="form-control w200 ms-auto"/>
                         </div>
                         <div className="body">
-                                <textarea className="form-control w-100" defaultValue={
-                                    '네, 오늘 아침 공기는 다소 쌀쌀하게 느껴지기도 했었는데요.\n' +
-                                    '낮으로 들어서면서 포근한 봄기운이 가득합니다.\n' +
-                                    '오늘도 내륙 지역을 중심으로는 일교차가 크겠습니다.\n' +
-                                    '오늘 낮 최고 기온 서울은 20도까지 오르면서, 예년 이맘때 봄날씨가 이어지겠고요.\n' +
-                                    '포근하겠습니다. 하지만, 해가지면 공기는 다시 금세 서늘해지겠고요.\n' +
-                                    '아침과 낮의 기온 변화가 많게는 20도 가까이 차이가 나는 지역도 있겠습니다.\n' +
-                                    '입고 벗기 쉬운 외투 하나 챙겨 주시고요.\n' +
-                                    '건강 관리에 힘써 주시길 바랍니다.\n' +
-                                    '연일 맑은 날씨가 이어지면서 대기의 건조함은 더 심해지고 있습니다.'
-                                }>
-
-                                </textarea>
+                            <ul className="scrollbar" role={'noticeList'}>
+                                {recordList.map(value => {
+                                    return(
+                                        <RecordCard data={value} key={value.noticeSeq}/>
+                                    )
+                                })}
+                            </ul>
+                            <div className="footer">
+                                <form>
+                                <textarea className="form-control w-100"
+                                          placeholder="텍스트를 입력해 주세요"
+                                          value={record}
+                                          onChange={(e)=>maxLength(e,maxLen,'record')}
+                                />
+                                    <div className="btn_wrap d-flex">
+                                        <span className="byte"><strong>{noticeText.length}</strong> / 500</span>
+                                    </div>
+                                </form>
+                            </div>
                             <div className="btn-wrap">
                                 <button type="button" className="btn btn-gr3">신규</button>
-                                <button type="button" className="btn btn-pr3">저장</button>
+                                <button type="button" className="btn btn-pr3" onClick={recordSave}>저장</button>
                             </div>
                         </div>
                     </div>
@@ -144,7 +185,7 @@ function AdmissionDetail() {
                                           placeholder="텍스트를 입력해 주세요"
                                           value={noticeText}
                                           role={'noticeText'}
-                                          onChange={(e)=>maxLength(e,maxLen)}
+                                          onChange={(e)=>maxLength(e,maxLen,'notice')}
                                 />
                                 <div className="btn_wrap d-flex">
                                     <span className="byte"><strong>{noticeText.length}</strong> / 500</span>

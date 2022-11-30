@@ -1,7 +1,10 @@
 import AuthorizationAxios from "../Utils/AuthorizationAxios";
+import {useState} from "react";
 
 class AdmissionDetailApi {
-    constructor(admissionId) {
+    constructor(
+         admissionId
+    ) {
         this.admissionId = admissionId
     }
     //생활치료센터 입소자 리스트 조회
@@ -18,6 +21,23 @@ class AdmissionDetailApi {
         }
     }
 
+
+    async addRecord (record,date) {
+        try{
+            const response = await AuthorizationAxios.put(
+                process.env.REACT_APP_BASE_URL + '/api/patientDashboard/detail/record',
+                {
+                    admissionId: this.admissionId,
+                    record: record,
+                    medicalDate: date
+                }
+            )
+            return response;
+        }catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
     async addNotice (notice) {
         try{
             const response = await AuthorizationAxios.put(

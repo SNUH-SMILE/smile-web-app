@@ -616,7 +616,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-top:0;
 }
 
-
+/* lifecenterModal */
+.videoModal .modal-dialog {max-width:100%;}
 
 /* lifecenterModal */
 .lifecenterModal .modal-dialog {max-width:1000px;}
@@ -1295,6 +1296,18 @@ current-top .current-btn .btn {
     background:url("../Images/ic_al_open.png") no-repeat center;
     z-index:2;
 }
+
+/* 채팅 닫기 */
+.flex_layout_dashboard > .history-alarm.chat > .col .tab3 {width:calc(50% - 0px);}
+.flex_layout_dashboard > .history-alarm.chat > .col .history {width:calc(49% - 0px);}
+.flex_layout_dashboard > .history-alarm.chat > .col .alarm {width:0px;}
+.flex_layout_dashboard > .history-alarm.chat > .col .alarm .header .title span {display:none;}
+.flex_layout_dashboard > .history-alarm.chat > .col .alarm > * {display:none;}
+.flex_layout_dashboard > .history-alarm.chat > .col .alarm .btn-close {
+    position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+    background:url("../Images/ic_al_open.png") no-repeat center;
+    z-index:2;
+}
 .flex_layout_dashboard > .history-alarm > .col .alarm .btn-close:focus {
     outline: none !important;
     box-shadow: none;
@@ -1365,6 +1378,32 @@ current-top .current-btn .btn {
     text-align: left;
     color: var(--primary-color4);
 }
+
+.history-alarm .history ul {
+    height:350px; overflow-y: auto;
+    margin:0; padding:20px 20px 0;
+}
+
+.history-alarm .alarm history ul {
+    height:450px; overflow-y: auto;
+    margin:0; padding:20px 20px 0;
+}
+.history-alarm .history ul li {
+    list-style:none;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f0f6fb;
+}
+.history-alarm .history ul li + li {margin-top:10px;}
+.history-alarm .history ul li div.msg {
+    font-size: 14px;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--primary-color4);
+}
 .history-alarm .alarm ul li div.from {
     margin-top:15px;
 }
@@ -1377,18 +1416,18 @@ current-top .current-btn .btn {
     text-align: right;
     color: #999;
 }
-.history-alarm .alarm .footer {
+.history-alarm .footer {
     height:calc(100% - 350px);
     margin-top:20px; padding:0 20px;
 }
-.history-alarm .alarm .footer form {
+.history-alarm .footer form {
     height:100%;
 }
-.history-alarm .alarm .footer textarea {
+.history-alarm .footer textarea {
     height:calc(100% - 80px);
 }
-.history-alarm .alarm .footer .btn_wrap {margin-top:20px;}
-.history-alarm .alarm .footer span.byte {
+.history-alarm .footer .btn_wrap {margin-top:20px;}
+.history-alarm .footer span.byte {
     font-size: 11px;
     font-stretch: normal;
     font-style: normal;

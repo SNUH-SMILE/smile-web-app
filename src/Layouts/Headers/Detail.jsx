@@ -7,6 +7,7 @@ import IsolationExitModal from "../../component/IsolationExitModal";
 import IsolationApi from "../../Apis/IsolationApi";
 import useAlert from "../../Utils/UseAlert";
 import AdmissionExitModal from "../../component/AdmissionExitModal";
+import VidioModal from "../../component/VidioModal";
 import AdmissionApi from "../../Apis/AdmissionApi";
 
 const HealthSignal = styled.span`
@@ -68,8 +69,13 @@ const Detail = ({dashBoardData}) => {
     };
     //재택격리자 격리해제 모달
     const [isolationExitModalObj,setIsolationExitModalObj] = useState({show:false,data: {}});
-
-
+    const [video, setVideo] = useState({show:false})
+    const test = ()=>{
+        setVideo({show:true})
+    }
+    const test2 = ()=>{
+        setVideo({show:false})
+    }
     //생활치료센터 퇴소 모달
     const [admissionExitModalObj,setAdmissionExitModalObj] = useState({show:false,data: {}});
     //생활치료센터 퇴소 모달 열기 (admissionId 로 api 요청 하려고 인자로 받음)
@@ -140,78 +146,81 @@ const Detail = ({dashBoardData}) => {
                 <div className="row">
                     <div className="col col-4 d-flex flex-column justify-content-start">
                         <div className="current-top">
-                        <div className="current-btn"  style={{marginTop: '5px'}}>
-                            {
-                                dashBoardData.qantnDiv === '2' ?
-                                    <ButtonH34 type="button" className="btn btn-primary">
-                                        <strong>{dashBoardData.dispLocationInfo}</strong>
-                                    </ButtonH34> : null
-                            }
-                            {
-                                dashBoardData.qantnDiv === '1' ?
-                                    <ButtonH34 type="button" className="btn btn-primary"  style = {{width : "200px"}}>
-                                        <strong>자택</strong>
-                                    </ButtonH34> : null
-                            }
-                            <ButtonH34 type="button" className="btn btn-exit"
-                                       disabled={dashBoardData.dschgeDate != null}
-                                       onClick={dashBoardData.qantnDiv !== '2'&& dashBoardData.dschgeDate == null ? () =>handledIsolationExitModal(dashBoardData.admissionId):()=> handledAdmissionExitModal(dashBoardData.admissionId)}>
-                                <strong>{dashBoardData.qantnDiv === '2' ? '퇴소 / 전원관리' : '격리 해제 관리'}</strong>
-                            </ButtonH34>
-                        </div>
-                        <div className={'current-info'} style={{marginTop: '5px'}}>
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <th style={{margin: '3px'}}>
-                                        <Badge className={'d-flex justify-content-center align-items-center'}
-                                               bg="success"
-                                               style={{
-                                                   width: '60px',
-                                                   height: '24px',
-                                                   fontSize: '14px',
-                                                   fontWeight: 'normal'
-                                               }}>
-                                            {dashBoardData.dispDschgeInfo}
-                                        </Badge>
-                                    </th>
-                                    <td>{dashBoardData.dispAdmissionPeriodInfo}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className="head">
-                            <div className="current-head">
-                                <div className="bts2 is-tooltip d-flex">
-                                    {/*<HealthSignal value={dashBoardData ?'N':dashBoardData.healthSignalVO.signal1Yn} color={'#3ed06f'}/>*/}
-                                    <HealthSignal value={dashBoardData.healthSignalVO?.signal1Yn} color={'#3ed06f'}/>
-                                    {/*<HealthSignal value={dashBoardData ?'N':dashBoardData.healthSignalVO.signal2Yn} color={'#d03e3e'}/>*/}
-                                    <HealthSignal value={dashBoardData.healthSignalVO?.signal2Yn} color={'#d03e3e'}/>
+                            <div className="current-btn"  style={{marginTop: '5px'}}>
+                                {
+                                    dashBoardData.qantnDiv === '2' ?
+                                        <ButtonH34 type="button" className="btn btn-primary">
+                                            <strong>{dashBoardData.dispLocationInfo}</strong>
+                                        </ButtonH34> : null
+                                }
+                                {
+                                    dashBoardData.qantnDiv === '1' ?
+                                        <ButtonH34 type="button" className="btn btn-primary"  style = {{width : "200px"}}>
+                                            <strong>자택</strong>
+                                        </ButtonH34> : null
+                                }
+                                <ButtonH34 type="button" className="btn btn-exit"
+                                           disabled={dashBoardData.dschgeDate != null}
+                                           onClick={dashBoardData.qantnDiv !== '2'&& dashBoardData.dschgeDate == null ? () =>handledIsolationExitModal(dashBoardData.admissionId):()=> handledAdmissionExitModal(dashBoardData.admissionId)}>
+                                    <strong>{dashBoardData.qantnDiv === '2' ? '퇴소 / 전원관리' : '격리 해제 관리'}</strong>
+                                </ButtonH34>
+                            </div>
+                            <div className={'current-info'} style={{marginTop: '5px'}}>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <th style={{margin: '3px'}}>
+                                            <Badge className={'d-flex justify-content-center align-items-center'}
+                                                   bg="success"
+                                                   style={{
+                                                       width: '60px',
+                                                       height: '24px',
+                                                       fontSize: '14px',
+                                                       fontWeight: 'normal'
+                                                   }}>
+                                                {dashBoardData.dispDschgeInfo}
+                                            </Badge>
+                                        </th>
+                                        <td>{dashBoardData.dispAdmissionPeriodInfo}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="head">
+                                <div className="current-head">
+                                    <div className="bts2 is-tooltip d-flex">
+                                        {/*<HealthSignal value={dashBoardData ?'N':dashBoardData.healthSignalVO.signal1Yn} color={'#3ed06f'}/>*/}
+                                        <HealthSignal value={dashBoardData.healthSignalVO?.signal1Yn} color={'#3ed06f'}/>
+                                        {/*<HealthSignal value={dashBoardData ?'N':dashBoardData.healthSignalVO.signal2Yn} color={'#d03e3e'}/>*/}
+                                        <HealthSignal value={dashBoardData.healthSignalVO?.signal2Yn} color={'#d03e3e'}/>
+                                    </div>
+                                    <h2 className="me-3">{dashBoardData.patientNm}</h2>
                                 </div>
-                                <h2 className="me-3">{dashBoardData.patientNm}</h2>
+                                <div className="current-head-bottom">
+                                    <span>{dashBoardData.dispNameDetailInfo}</span>
+                                </div>
                             </div>
-                            <div className="current-head-bottom">
-                                <span>{dashBoardData.dispNameDetailInfo}</span>
+                            <div className="current-info" style={{marginTop: '5px'}}>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <th>생년월일</th>
+                                        <td>{dashBoardData.dispBirthDateInfo}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>환자번호</th>
+                                        <td>{dashBoardData.patientId}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>연락처</th>
+                                        <td>{dashBoardData.dispCellPhoneInfo}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div className="current-info" style={{marginTop: '5px'}}>
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <th>생년월일</th>
-                                    <td>{dashBoardData.dispBirthDateInfo}</td>
-                                </tr>
-                                <tr>
-                                    <th>환자번호</th>
-                                    <td>{dashBoardData.patientId}</td>
-                                </tr>
-                                <tr>
-                                    <th>연락처</th>
-                                    <td>{dashBoardData.dispCellPhoneInfo}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <div>
+                            <button onClick={test}>화상채팅테스트</button>
                         </div>
                     </div>
                     <div className="col col-8">
@@ -345,6 +354,8 @@ const Detail = ({dashBoardData}) => {
                 </div>
             </div>
             <VitalsignModal show={show} handledClose={hideVitalsignModal}/>
+
+            <VidioModal video={video} handledClose={test2}/>
             {/*자택격리자 격리해제*/}
             <IsolationExitModal isolationExitModalObj={isolationExitModalObj} handledClose={handledCloseIsolationExitModal} discharge={discharge}/>
 
