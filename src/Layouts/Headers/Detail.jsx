@@ -73,9 +73,9 @@ const Detail = ({dashBoardData}) => {
     const test = ()=>{
         setVideo({show:true})
     }
-    const test2 = ()=>{
+    const test2 = useCallback(() =>{
         setVideo({show:false})
-    }
+    });
     //생활치료센터 퇴소 모달
     const [admissionExitModalObj,setAdmissionExitModalObj] = useState({show:false,data: {}});
     //생활치료센터 퇴소 모달 열기 (admissionId 로 api 요청 하려고 인자로 받음)

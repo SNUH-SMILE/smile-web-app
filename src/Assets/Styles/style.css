@@ -1297,17 +1297,7 @@ current-top .current-btn .btn {
     z-index:2;
 }
 
-/* 채팅 닫기 */
-.flex_layout_dashboard > .history-alarm.chat > .col .tab3 {width:calc(50% - 0px);}
-.flex_layout_dashboard > .history-alarm.chat > .col .history {width:calc(49% - 0px);}
-.flex_layout_dashboard > .history-alarm.chat > .col .alarm {width:0px;}
-.flex_layout_dashboard > .history-alarm.chat > .col .alarm .header .title span {display:none;}
-.flex_layout_dashboard > .history-alarm.chat > .col .alarm > * {display:none;}
-.flex_layout_dashboard > .history-alarm.chat > .col .alarm .btn-close {
-    position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
-    background:url("../Images/ic_al_open.png") no-repeat center;
-    z-index:2;
-}
+
 .flex_layout_dashboard > .history-alarm > .col .alarm .btn-close:focus {
     outline: none !important;
     box-shadow: none;
@@ -1428,6 +1418,184 @@ current-top .current-btn .btn {
 }
 .history-alarm .footer .btn_wrap {margin-top:20px;}
 .history-alarm .footer span.byte {
+    font-size: 11px;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: right;
+    color: #999;
+}
+.screen{
+    display: none;
+}
+.screen.screenShareOn {
+    display: flex;
+    width: 70%;
+}
+/*video*/
+.flex_layout_dashboard > .row.video {
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+    height:100%;
+}
+.flex_layout_dashboard > .row.video > * {
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+}
+.flex_layout_dashboard > .row.video > .col {
+    display:flex;
+    height:100%;
+}
+.flex_layout_dashboard > .row.video > .col > .card {
+    transition:width 0.3s;
+    height:100%;
+}
+
+.flex_layout_dashboard > .row.video > .col .tab3 {width:calc(50% - 0px);margin-right: 1%;}
+.flex_layout_dashboard > .row.video > .col .history {width:calc(49% - 0px);}
+.flex_layout_dashboard > .row.video > .col .alarm {width:0%;}
+
+/* 채팅 닫기 */
+
+.flex_layout_dashboard > .video.chat > .col .tab3 {width:calc(38%); margin-right:1%;}
+.flex_layout_dashboard > .video.chat > .col .history {width:calc(45% - 0px);margin-right: 1%;}
+.flex_layout_dashboard > .video.chat > .col .alarm {width:21%;position:relative;}
+.flex_layout_dashboard > .video.chat > .col .alarm .header .title span {display:none;}
+.flex_layout_dashboard > .video.chat > .col .alarm > * {display:none;}
+.flex_layout_dashboard > .video.chat > .col .alarm .btn-close {
+    position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+    background:url("../Images/ic_al_open.png") no-repeat center;
+    z-index:2;
+}
+.flex_layout_dashboard > .video > .col.screenShare { display: flex;
+    flex-direction: column;
+}
+.flex_layout_dashboard > .video > .col.screenShare .tab3 {width:100%; height: 48%;margin-bottom: 1%}
+.flex_layout_dashboard > .video > .col.screenShare .history {width:100%; height: 50%;}
+.flex_layout_dashboard > .video > .col.screenShare .alarm {display: none}
+.flex_layout_dashboard > .video > .col.screenShare .alarm .header .title span {display:none;}
+.flex_layout_dashboard > .video > .col.screenShare .alarm > * {display:none;}
+.flex_layout_dashboard > .video > .col.screenShare .alarm .btn-close {
+    position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+    background:url("../Images/ic_al_open.png") no-repeat center;
+    z-index:2;
+}
+
+.video .header {
+    padding:20px 20px;
+    border-bottom:solid 1px #eee;
+}
+.video .header .title {
+    margin-bottom:0;
+    font-size: 18px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 34px;
+    letter-spacing: -0.2px;
+    text-align: left;
+    color: var(--primary-color4);
+}
+.video .header .nav-pills li + li {margin-left:20px;}
+.video .header .nav-pills .nav-link {
+    padding:0; background-color:#fff; border-radius:0;
+    font-size: 18px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 34px;
+    letter-spacing: -0.2px;
+    text-align: left;
+    color: rgba(0, 85, 128, 0.2);
+}
+.video .header .nav-pills .nav-link.active,
+.video .header .nav-pills .show>.nav-link {color: var(--primary-color4) !important;}
+.video .header .btn-close {margin-top:5px;}
+
+
+.video .body {
+    padding:20px;
+}
+
+.video .history .body {height:calc(100% - 135px);}
+.video .history .body textarea {height:100%;}
+.video .history .body .btn-wrap {margin-top:20px; font-size:0; text-align:right}
+.video .history .body .btn-wrap button + button {margin-left:10px;}
+
+.video .alarm .body {
+    height:100%;
+}
+.video .alarm ul {
+    height:450px; overflow-y: auto;
+    margin:0; padding:20px 20px 0;
+}
+.video .alarm ul li {
+    list-style:none;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f0f6fb;
+}
+.video .alarm ul li + li {margin-top:10px;}
+.video .alarm ul li div.msg {
+    font-size: 14px;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--primary-color4);
+}
+
+.video .history ul {
+    height:350px; overflow-y: auto;
+    margin:0; padding:20px 20px 0;
+}
+
+.video .alarm history ul {
+    height:450px; overflow-y: auto;
+    margin:0; padding:20px 20px 0;
+}
+.video .history ul li {
+    list-style:none;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f0f6fb;
+}
+.video .history ul li + li {margin-top:10px;}
+.video .history ul li div.msg {
+    font-size: 14px;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--primary-color4);
+}
+.video .alarm ul li div.from {
+    margin-top:15px;
+}
+.video .alarm ul li div.from span {
+    font-size: 13px;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: right;
+    color: #999;
+}
+.video .footer {
+    height:calc(100% - 350px);
+    margin-top:20px; padding:0 20px;
+}
+.video .footer form {
+    height:100%;
+}
+.video .footer textarea {
+    height:calc(100% - 80px);
+}
+.video .footer .btn_wrap {margin-top:20px;}
+.video .footer span.byte {
     font-size: 11px;
     font-stretch: normal;
     font-style: normal;
