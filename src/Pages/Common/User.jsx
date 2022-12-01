@@ -378,7 +378,7 @@ function User() {
                                                         <button type="button" className="btn btn-white btn-new" onClick={clear}>신규</button>
                                                         <button type="button" className="btn btn-ccolor" onClick={save}>저장</button>
                                                     </div>
-                                                </div>
+                                                </div>![](../../../../../AppData/Local/Temp/ee0b5ef894a94a9c1357651f5cbdb7c8.webp)
                                             </div>
                                         </div>
                                         <div className="table-body">

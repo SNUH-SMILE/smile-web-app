@@ -9,6 +9,8 @@ import useAlert from "../../Utils/UseAlert";
 import AdmissionExitModal from "../../component/AdmissionExitModal";
 import VidioModal from "../../component/VidioModal";
 import AdmissionApi from "../../Apis/AdmissionApi";
+import { Popout } from "react-portal-popout";
+import { PopoutProps } from "react-portal-popout";
 
 const HealthSignal = styled.span`
   display: inline-block;
@@ -57,6 +59,8 @@ const Detail = ({dashBoardData}) => {
     const [paginationObj, setPaginationObj] = useState({currentPageNo: 1, pageSize: 10, recordCountPerPage: 15})
     const [sortedOrder,setSortedOrder] = useState({By:'',Dir:''})
     const isolationApi = new IsolationApi(searchPatientId,searchPatientNm,searchPatientIsolation,paginationObj,sortedOrder);
+
+
     // 입소자관련 Api
     const admissionApi = new AdmissionApi(searchAdmissionCenter,searchAdmissionId,searchAdmissionNm,searchAdmissionState,paginationObj,sortedOrder.By,sortedOrder.Dir);
     //재택격리자 격리해제 모달 닫기
@@ -73,9 +77,33 @@ const Detail = ({dashBoardData}) => {
     const test = ()=>{
         setVideo({show:true})
     }
+    /*팝업관련*/
+    const [popupState,setPopupState] = useState(false);
+    const popup = ()=>{
+      // window.open("videoPopup.jsx","",'width:800px, height:800px')
+        setPopupState(true);
+    }
+    const handledCloseVideoPopup =() =>{
+        setPopupState(false);
+    }
+
+
+    const chatArea = useRef();
+    const screenShare = useRef();
+    const screenShareOn = useRef();
+    const openChat = ()=>{
+        chatArea.current.classList.toggle('chat')
+    }
+
+    const openScreenShare = ()=>{
+        screenShare.current.classList.toggle('screenShare')
+        screenShareOn.current.classList.toggle('screenShareOn')
+    }
+
     const test2 = useCallback(() =>{
         setVideo({show:false})
     });
+
     //생활치료센터 퇴소 모달
     const [admissionExitModalObj,setAdmissionExitModalObj] = useState({show:false,data: {}});
     //생활치료센터 퇴소 모달 열기 (admissionId 로 api 요청 하려고 인자로 받음)
@@ -87,7 +115,6 @@ const Detail = ({dashBoardData}) => {
         isolationApi.detail(admissionId).then(({data}) =>{
             setSearchAdmissionCenter(dashBoardData.centerNm);
             data.result.centerNm = dashBoardData.centerNm;
-            console.log(data)
             setAdmissionExitModalObj({show: true, data: {...data.result}})
         })
     }
@@ -146,6 +173,7 @@ const Detail = ({dashBoardData}) => {
                 <div className="row">
                     <div className="col col-4 d-flex flex-column justify-content-start">
                         <div className="current-top">
+
                             <div className="current-btn"  style={{marginTop: '5px'}}>
                                 {
                                     dashBoardData.qantnDiv === '2' ?
@@ -220,7 +248,8 @@ const Detail = ({dashBoardData}) => {
                             </div>
                         </div>
                         <div>
-                            <button onClick={test}>화상채팅테스트</button>
+                            <button onClick={test}>화상채팅테스트모달</button>
+                            <button onClick={popup}>화상채팅테스트팝업</button>
                         </div>
                     </div>
                     <div className="col col-8">
@@ -362,6 +391,66 @@ const Detail = ({dashBoardData}) => {
             {/*생활치료센터 퇴소*/}
             <AdmissionExitModal admissionExitModalObj={admissionExitModalObj} handledClose={handledCloseAdmissionExitModal} discharge={discharge2}/>
           {/*  <QuarantineModal show={open} handledClose={hideVitalsignModal2} data = {dashBoardData}/>*/}
+            {popupState && (
+                <Popout
+                    title={"화상면담"}
+                    onClose={handledCloseVideoPopup}
+                >
+                    <div>
+                        <div className="modal-content" style={{height:"100vh"}}>
+                            <div style={{height:"100vh"}}>
+                                <div style={{height:"98%"}}>
+                                    <main className="flex_layout_dashboard" style={{padding:"8px",background: "whitesmoke",height:"98%"}}>
+                                        <div className="row video" ref={chatArea}>
+                                            <div className="screen" ref={screenShareOn}>
+                                                <div className="card indiv tab3" style={{width:"100%"}}>
+                                                    <div className="header d-flex">
+                                                        <h5 className="title">화면공유</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col" ref={screenShare}>
+                                                <div className="card indiv tab3">
+                                                    <div className="header d-flex">
+                                                        <h5 className="title">의사화면</h5>
+
+                                                    </div>
+                                                    <div className="body">
+                                                        <div className="tab-content" id="pills-tabContent">
+                                                            <div className="tab-pane fade show active" id="pills-cont1" role="tabpanel">
+                                                                비디오나오는곳
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="card indiv history">
+                                                    <div className="header d-flex">
+                                                        <h5 className="title">환자화면</h5>
+                                                    </div>
+                                                    <div className="body">
+                                                        <ul className="scrollbar" role={'noticeList'}>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div className="card indiv alarm">
+                                                    <div className="header d-flex">
+                                                        <h5 className="title">채팅</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </main>
+                                </div>
+                            </div>
+                            <div>
+                                <button onClick={openChat}>채팅</button>
+                                <button onClick={openScreenShare}>화면공유</button>
+                            </div>
+                        </div>
+                    </div>
+                </Popout>
+            )}
         </>
     )
 }
