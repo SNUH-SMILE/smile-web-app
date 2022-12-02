@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 
 function RecordCard({data}) {
-    const { medicalSeq, medicalRecord  } = data;
+    const { medicalSeq, medicalRecord ,medicalRecorder, medicalDate } = data;
     useEffect(()=>{
         document.querySelector('#record'+medicalSeq).focus()
     },[])
@@ -11,8 +11,8 @@ function RecordCard({data}) {
                 {medicalRecord}
             </div>
             <div className="from d-flex">
-                <span></span>
-                <span className="ms-auto">{}</span>
+                <span>{medicalRecorder}</span>
+                <span className="ms-auto">{medicalDate}</span>
             </div>
         </li>
     );

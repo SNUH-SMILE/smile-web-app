@@ -16,6 +16,7 @@ import Qna from "./Pages/Common/Qna";
 import CenterAdmissionBoard from "./Pages/Dashboard/CenterAdmissionBoard";
 import QuarantinePatientDashboard from "./Pages/Dashboard/QuarantinePatientDashboard";
 import AdmissionDetail from "./Pages/Dashboard/AdmissionDetail";
+import VideoPopup from "./component/VideoPopup";
 
 function App() {
 
@@ -92,6 +93,7 @@ function App() {
                     <Route exact path={'/dashboard/quarantine'} element={<QuarantinePatientDashboard/>}/>
                     <Route exact path={'/admission/detail'} element={<AdmissionDetail/>}/>
                 </Route>
+                <Route exact path={'/videoPopup'} element={<VideoPopup/>}/>
                 <Route exact path={'*'} element={<Error404/>}/>
             </Routes>
         </TitleStore>

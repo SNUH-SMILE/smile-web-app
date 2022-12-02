@@ -1373,6 +1373,15 @@ current-top .current-btn .btn {
     height:350px; overflow-y: auto;
     margin:0; padding:20px 20px 0;
 }
+.history-alarm .history ul li div.from span {
+    font-size: 13px;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: right;
+    color: #999;
+}
 
 .history-alarm .alarm history ul {
     height:450px; overflow-y: auto;
@@ -1394,6 +1403,11 @@ current-top .current-btn .btn {
     text-align: left;
     color: var(--primary-color4);
 }
+.history-alarm .history ul li div.from {
+    margin-top:15px;
+}
+
+
 .history-alarm .alarm ul li div.from {
     margin-top:15px;
 }
