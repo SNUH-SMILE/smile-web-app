@@ -29,7 +29,6 @@ export default function Publisher() {
 
     return (
         <div>
-            Publisher
             <OTPublisher
                 properties={{
                     publishAudio: audio,

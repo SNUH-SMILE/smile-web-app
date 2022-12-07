@@ -80,7 +80,6 @@ function AdmissionDetail() {
                         alert(data.message);
                         setRecordList(data.result);
                         setNoticeText('');
-                        console.log(recordList);
                     } else {
                         alert(data.message);
                     }

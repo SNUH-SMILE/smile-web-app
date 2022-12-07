@@ -73,17 +73,7 @@ const Detail = ({dashBoardData}) => {
     //재택격리자 격리해제 모달
     const [isolationExitModalObj,setIsolationExitModalObj] = useState({show:false,data: {}});
 
-    /*팝업관련*/
-    const [popupState,setPopupState] = useState(false);
-    const popup = ()=>{
-      // window.open("videoPopup.jsx","",'width:800px, height:800px')
-        setPopupState(true);
-    }
-    const handledCloseVideoPopup =() =>{
-        setPopupState(false);
-    }
-
-
+    
     const chatArea = useRef();
     const screenShare = useRef();
     const screenShareOn = useRef();

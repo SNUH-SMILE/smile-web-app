@@ -1530,6 +1530,7 @@ current-top .current-btn .btn {
 
 .video .body {
     padding:20px;
+    height: 100%;
 }
 
 .video .history .body {height:calc(100% - 135px);}
@@ -1619,8 +1620,15 @@ current-top .current-btn .btn {
     color: #999;
 }
 
+.OTSubscriberContainer{
+    width: 100% !important;
+    height: 70vh !important;
 
-
+}
+.OTPublisherContainer {
+    width: 100% !important;
+    height: 70vh !important;
+}
 
 
 
