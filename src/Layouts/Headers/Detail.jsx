@@ -287,11 +287,11 @@ const Detail = ({dashBoardData}) => {
                                             <p>{recentResultInfo && recentResultInfo.btResultDt}</p>
                                             <div>
                                                 {recentResultInfo && recentResultInfo.btRiskGb === 'H'
-                                                    ? <RedSpan>{recentResultInfo.btResult.substring(0,5)}</RedSpan>
+                                                    ? <RedSpan>{recentResultInfo.btResult.length > 4? recentResultInfo.btResult.substring(0,5) : recentResultInfo.btResult}</RedSpan>
 
                                                     : recentResultInfo && recentResultInfo.btRiskGb === 'L' ?
-                                                        <BlueSpan>{recentResultInfo.btResult.substring(0,5)}</BlueSpan>
-                                                        : <span>{recentResultInfo && recentResultInfo.btResult.substring(0,5)}</span>
+                                                        <BlueSpan>{recentResultInfo.btResult.length > 4? recentResultInfo.btResult.substring(0,5) : recentResultInfo.btResult}</BlueSpan>
+                                                        : <span>{recentResultInfo && (recentResultInfo.btResult!=null && recentResultInfo.btResult.length > 4? recentResultInfo.btResult.substring(0,5) : recentResultInfo.btResult)}</span>
                                                 }
                                                 <em> {recentResultInfo && recentResultInfo.btUnit}</em>
                                             </div>
