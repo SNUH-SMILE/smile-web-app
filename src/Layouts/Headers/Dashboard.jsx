@@ -57,7 +57,7 @@ const Dashboard = ({mode, data, dashBoardFunc}) => {
             </div>
             <div className="d-flex justify-content-between align-items-end">
                 <div className="d-flex align-items-end">
-                    <h2 className="me-4">{mode === 'Center' ? data.dashboardTitle : '자택격리자 현황판'}</h2>
+                    <h2 className="me-4">{mode === 'Center' ? data.dashboardTitle : '자택격리자 대시보드'}</h2>
                     <div className="d-flex mb-1 inwon">
                         <div>
                             <span>전체</span> {data.totalCount} 명

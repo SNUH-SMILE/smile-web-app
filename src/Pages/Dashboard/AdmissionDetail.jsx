@@ -105,19 +105,19 @@ function AdmissionDetail() {
                                 <li className="nav-item" role="presentation">
                                     <button className="nav-link active" id="pills-tab1" data-bs-toggle="pill"
                                             data-bs-target="#pills-cont1" type="button" role="tab"
-                                            aria-controls="pills-cont1" aria-selected="true">문진
+                                            aria-controls="pills-cont1" aria-selected="true">자가보고 증상
                                     </button>
                                 </li>
                                 <li className="nav-item" role="presentation">
                                     <button className="nav-link" id="pills-tab2" data-bs-toggle="pill"
                                             data-bs-target="#pills-cont2" type="button" role="tab"
-                                            aria-controls="pills-cont2" aria-selected="false">증상
+                                            aria-controls="pills-cont2" aria-selected="false">정신건강 설문
                                     </button>
                                 </li>
                                 <li className="nav-item" role="presentation">
                                     <button className="nav-link" id="pills-tab3" data-bs-toggle="pill"
                                             data-bs-target="#pills-cont3" type="button" role="tab"
-                                            aria-controls="pills-cont3" aria-selected="false">정신
+                                            aria-controls="pills-cont3" aria-selected="false">투약내역
                                     </button>
                                 </li>
                             </ul>
