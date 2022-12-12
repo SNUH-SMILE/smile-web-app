@@ -143,7 +143,7 @@ function AdmissionDetail() {
                         </div>
                         <div className="body">
                             <ul className="scrollbar" role={'noticeList'}>
-                                {recordList.map(value => {
+                                {recordList && recordList.map(value => {
                                     return(
                                         <RecordCard data={value} key={value.noticeSeq}/>
                                     )
@@ -173,7 +173,7 @@ function AdmissionDetail() {
                             <button type="button" className="ms-auto btn-close" onClick={collapseNoticeArea}/>
                         </div>
                         <ul className="scrollbar" role={'noticeList'}>
-                            {noticeList.map(value => {
+                            {noticeList && noticeList.map(value => {
                                 return(
                                     <NoticeCard data={value} key={value.noticeSeq}/>
                                 )
