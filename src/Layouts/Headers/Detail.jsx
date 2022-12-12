@@ -78,6 +78,7 @@ const Detail = ({dashBoardData}) => {
     const screenShare = useRef();
     const screenShareOn = useRef();
     const openChat = ()=>{
+
         chatArea.current.classList.toggle('chat')
     }
 
@@ -238,7 +239,7 @@ const Detail = ({dashBoardData}) => {
                         </div>
                         <div>
                            {/* <ButtonH34 type="button" className="btn btn-exit" onClick={popup}>화상채팅 팝업</ButtonH34>*/}
-                            <ButtonH34 type="button" className="btn btn-exit" onClick={openPopup}>화상채팅테스트</ButtonH34>
+                            <ButtonH34 type="button" className="btn btn-exit" onClick={openPopup}>화상진료 테스트</ButtonH34>
 
                         </div>
                     </div>

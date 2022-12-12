@@ -29,6 +29,7 @@ class CheckBox extends React.Component {
             <div>
                 <label htmlFor={this.state.id}>{this.props.label}</label>
                 <input
+
                     type="checkbox"
                     checked={this.state.isChecked}
                     id={this.state.id}

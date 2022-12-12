@@ -20,6 +20,7 @@ function AdmissionDetail() {
             setDashBoardData(data.result.headerVO);
             setNoticeList(data.result.noticeVOList);
             setRecordList(data.result.recordVOList);
+            console.log(data);
         });
     },[])
 
@@ -69,7 +70,8 @@ function AdmissionDetail() {
 
     const [record, setRecord] = useState('');
     const recordSave = async () => {
-        let date = year + '-' + month + '-' + day;
+        let date = year + '-' + (("00"+month.toString()).slice(-2)) + '-' +(("00"+day.toString()).slice(-2));
+
         if (!record) {
             alert('작성 내용이 공백입니다.')
         } else {
@@ -79,7 +81,7 @@ function AdmissionDetail() {
                     if (data.code === '00') {
                         alert(data.message);
                         setRecordList(data.result);
-                        setNoticeText('');
+                        setRecord('');
                     } else {
                         alert(data.message);
                     }
@@ -138,7 +140,6 @@ function AdmissionDetail() {
                     <div className="card indiv history">
                         <div className="header d-flex">
                             <h5 className="title">기록</h5>
-                            <input type="datetime-local" className="form-control w200 ms-auto"/>
                         </div>
                         <div className="body">
                             <ul className="scrollbar" role={'noticeList'}>
@@ -156,7 +157,7 @@ function AdmissionDetail() {
                                           onChange={(e)=>maxLength(e,maxLen,'record')}
                                 />
                                     <div className="btn_wrap d-flex">
-                                        <span className="byte"><strong>{noticeText.length}</strong> / 500</span>
+                                        <span className="byte"><strong>{record.length}</strong> / 500</span>
                                     </div>
                                 </form>
                             </div>

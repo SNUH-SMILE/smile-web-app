@@ -1476,7 +1476,7 @@ current-top .current-btn .btn {
 .flex_layout_dashboard > .video.chat > .col .history {width:calc(45% - 0px);margin-right: 1%;}
 .flex_layout_dashboard > .video.chat > .col .alarm {width:21%;position:relative;}
 .flex_layout_dashboard > .video.chat > .col .alarm .header .title span {display:none;}
-.flex_layout_dashboard > .video.chat > .col .alarm > * {display:none;}
+
 .flex_layout_dashboard > .video.chat > .col .alarm .btn-close {
     position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
     background:url("../Images/ic_al_open.png") no-repeat center;
@@ -1619,6 +1619,7 @@ current-top .current-btn .btn {
     text-align: right;
     color: #999;
 }
+/*
 
 .OTSubscriberContainer{
     width: 100% !important;
@@ -1629,7 +1630,11 @@ current-top .current-btn .btn {
     width: 100% !important;
     height: 70vh !important;
 }
-
+.test OTSubscriberContainer{
+    width: 100vh !important;
+    height: 70vh !important;
+}
+*/
 
 
 .data-table .checked-contents {display:none;}

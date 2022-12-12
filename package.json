@@ -10,6 +10,7 @@
     "axios": "^0.27.2",
     "axios-mock-adapter": "^1.21.1",
     "bootstrap": "^5.1.3",
+    "opentok-react": "^0.11.0",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
     "react-apexcharts": "^1.4.0",

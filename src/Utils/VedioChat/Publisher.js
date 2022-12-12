@@ -1,53 +1,42 @@
-import React from "react";
-import { OTPublisher } from "opentok-react";
+import React, {useEffect, useRef, useState, Fragment} from 'react';
+import { OTPublisher ,OTPublisherRef} from "opentok-react";
 
 import Checkbox from "./Checkbox";
 
-export default function Publisher() {
+export default function Publisher({videoSource,video,audio,width,height}) {
     const [error, setError] = React.useState(null);
-    const [audio, setAudio] = React.useState(true);
-    const [video, setVideo] = React.useState(true);
-    const [videoSource, setVideoSource] = React.useState("camera");
+    const [height1, setHeight1] =useState();
+    const [width1, setWidth1] =useState();
 
-    const setChatAudio = (audio) => {
-        setAudio(audio);
-    };
-
-    const setChatVideo = (video) => {
-        setVideo(video);
-    };
-
-    const changeVideoSource = (videoSource) => {
-        videoSource !== "camera"
-            ? setVideoSource("camera")
-            : setVideoSource("screen");
-    };
-
+    useEffect(() => {
+        setHeight1(height)
+        setWidth1(width)
+        console.log(width1);
+        return()=> {
+          console.log("과연")
+        };
+    });
     const onError = (err) => {
         setError(`Failed to publish: ${err.message}`);
     };
 
+
+
     return (
         <div>
-            <OTPublisher
-                properties={{
-                    publishAudio: audio,
-                    publishVideo: video,
-                    videoSource: videoSource === "screen" ? "screen" : undefined
-                }}
-                onError={onError}
-            />
-            <Checkbox label="Share Screen" onChange={changeVideoSource} />
-            <Checkbox
-                label="Publish Audio"
-                initialChecked={audio}
-                onChange={setChatAudio}
-            />
-            <Checkbox
-                label="Publish Video"
-                initialChecked={video}
-                onChange={setVideo}
-            />
+            { width1 ?
+                <OTPublisher
+                    properties={{
+                        width: width1,
+                        height: height1,
+                        publishAudio: audio,
+                        publishVideo: video,
+                        videoSource: videoSource === "screen" ? "screen" : undefined
+                    }}
+                    onError={onError}
+                /> : <div></div>
+            }
+            {width1}
         </div>
     );
 }
