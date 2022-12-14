@@ -4,10 +4,13 @@ class TeleHelthApi {
 
     constructor() {
     }
-    async select() {
+    async select(admissionId) {
         try {
             const response = await AuthorizationAxios.post(
             process.env.REACT_APP_BASE_URL + '/api/teleHealth/getTeleHealth',
+                JSON.stringify({
+                    admissionId : admissionId
+                }),
                 {headers: {'Content-Type': "application/json"}}
             )
             return response;

@@ -34,7 +34,7 @@ function VideoPopup() {
     },[]);
 
     const connectTokApi = async ()=>{
-        teleHelthApi.select()
+        teleHelthApi.select(localStorage.getItem("admissionId"))
             .then(({data}) => {
                 if (data.code === '00') {
                     setApi({
