@@ -3,7 +3,7 @@ import { OTPublisher ,OTPublisherRef} from "opentok-react";
 
 import Checkbox from "./Checkbox";
 
-export default function Publisher({videoSource,video,audio,width,height}) {
+export default function Publisher({videoSource,video,audio,width,height,openScreen}) {
     const [error, setError] = React.useState(null);
     const [height1, setHeight1] =useState();
     const [width1, setWidth1] =useState();
@@ -24,7 +24,7 @@ export default function Publisher({videoSource,video,audio,width,height}) {
 
     return (
         <div>
-            { width1 ?
+            { width1 && videoSource=="screen" ?
                 <OTPublisher
                     properties={{
                         width: width1,
@@ -36,7 +36,31 @@ export default function Publisher({videoSource,video,audio,width,height}) {
                     onError={onError}
                 /> : <div></div>
             }
-            {width1}
+            { !openScreen && videoSource!="screen"?
+                <OTPublisher
+                    properties={{
+                        width: '94vh',
+                        height: '85vh',
+                        publishAudio: audio,
+                        publishVideo: video,
+                        videoSource: videoSource === "screen" ? "screen" : undefined
+                    }}
+                    onError={onError}
+                /> : <div></div>
+            }
+            { openScreen && videoSource !=="screen"?
+                <OTPublisher
+                    properties={{
+                        width: '50vh',
+                        height: '40vh',
+                        publishAudio: audio,
+                        publishVideo: video,
+                        videoSource: videoSource === "screen" ? "screen" : undefined
+                    }}
+                    onError={onError}
+                /> : <div></div>
+            }
+
         </div>
     );
 }

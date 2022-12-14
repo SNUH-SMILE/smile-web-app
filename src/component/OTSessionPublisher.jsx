@@ -3,7 +3,7 @@ import Publisher from "../Utils/VedioChat/Publisher";
 import Subscriber from "../Utils/VedioChat/Subscriber";
 import React, {useRef, useState} from "react";
 import { OTStreams, preloadScript, OTSession } from "opentok-react";
-function OTSessionPublisher({token,sessionId,apiKey,videoSource,video,audio,width,height}) {
+function OTSessionPublisher({token,sessionId,apiKey,videoSource,video,audio,width,height,openScreen}) {
     const state = useState({
         error: null,
         connected: false
@@ -25,11 +25,8 @@ function OTSessionPublisher({token,sessionId,apiKey,videoSource,video,audio,widt
         }
     };
 
-    const test= () =>{
-        console.log("dkfldkfkdflk")
-    }
-        const onError = (err) => {
-            setError(`Failed to connect to ${err.message}`);
+    const onError = (err) => {
+        setError(`Failed to connect to ${err.message}`);
     };
     return(
 
@@ -38,7 +35,6 @@ function OTSessionPublisher({token,sessionId,apiKey,videoSource,video,audio,widt
                 apiKey={apiKey}
                 sessionId={sessionId}
                 token={token}
-                onConnect={test}
                 eventHandlers={sessionEvents}
                 onError={onError}
             >
@@ -52,6 +48,7 @@ function OTSessionPublisher({token,sessionId,apiKey,videoSource,video,audio,widt
                     audio={audio}
                     videoSource={videoSource}
                     properties={{ videoSource: "screen"}}
+                    openScreen={openScreen}
                 />
             </OTSession>
         </div>

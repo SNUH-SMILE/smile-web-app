@@ -3,7 +3,7 @@ import { OTSubscriber } from "opentok-react";
 
 import CheckBox from "./Checkbox";
 
-export default function Publisher() {
+export default function Publisher(openScreen) {
     const [error, setError] = React.useState(null);
     const [audio, setAudio] = React.useState(true);
     const [video, setVideo] = React.useState(true);
@@ -22,26 +22,24 @@ export default function Publisher() {
 
     return (
         <div className="subscriber">
-            Subscriber
-            {error ? <div style={{ color: "red" }}>{error}</div> : null}
+            { openScreen ?
             <OTSubscriber
                 properties={{
-                    showControls: true,
-                    subscribeToAudio: audio,
-                    subscribeToVideo: video
+                    width: '50vh',
+                    height: '40vh',
                 }}
                 onError={onError}
-            />
-            <CheckBox
-                label="Subscribe to Audio"
-                initialChecked={audio}
-                onChange={setChatAudio}
-            />
-            <CheckBox
-                label="Subscribe to Video"
-                initialChecked={video}
-                onChange={setChatVideo}
-            />
+            />: <div></div>
+            }
+            { !openScreen ?
+                <OTSubscriber
+                    properties={{
+                        width: '94vh',
+                        height: '85vh'
+                    }}
+                    onError={onError}
+                />: <div></div>
+            }
         </div>
     );
 }

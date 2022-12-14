@@ -3,7 +3,7 @@ import Publisher from "../Utils/VedioChat/Publisher";
 import Subscriber from "../Utils/VedioChat/Subscriber";
 import React, {useState} from "react";
 import { OTStreams, preloadScript, OTSession } from "opentok-react";
-function OTSessionSubcriber({token,sessionId,apiKey}) {
+function OTSessionSubcriber({token,sessionId,apiKey,openScreen}) {
     const state = useState({
         error: null,
         connected: false
@@ -37,7 +37,9 @@ function OTSessionSubcriber({token,sessionId,apiKey}) {
         {error ? <div style={{color: "red"}}>{error}</div> : null}
 
         <OTStreams>
-            <Subscriber/>
+            <Subscriber
+             openScreen = {openScreen}
+            />
         </OTStreams>
 
     </OTSession>
