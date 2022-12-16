@@ -31,7 +31,7 @@ const menu = [
         ]
     },
     {
-        parent: '문의',
+        parent: '문의사항',
 		lvl:2,
         child: [
             {name: '문의사항', url: '/qna'},

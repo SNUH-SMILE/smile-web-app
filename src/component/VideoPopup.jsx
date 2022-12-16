@@ -201,8 +201,8 @@ function VideoPopup() {
                 </div>
                 <div>
                     <ButtonH34 type="button" className="btn btn-primary" onClick={handleScreenShare}>화면공유</ButtonH34>
-                    <ButtonH34 type="button" className="btn btn-primary" onClick={handledArchive}>화면녹화</ButtonH34>
-                    <ButtonH34 type="button" className="btn btn-primary" onClick={handledArchiveStop} disabled={!archiveId}>화면녹화중지</ButtonH34>
+                    <ButtonH34 type="button" className="btn btn-primary" onClick={handledArchive}>녹음 시작</ButtonH34>
+                    <ButtonH34 type="button" className="btn btn-primary" onClick={handledArchiveStop} disabled={!archiveId}>녹음 중지</ButtonH34>
                     <ButtonH34 type="button" className="btn btn-primary" onClick={handledSessionStop} >세션종료(테스트버튼) ※팝업종료전에 눌러주세요 </ButtonH34>
                 </div>
             </div>
