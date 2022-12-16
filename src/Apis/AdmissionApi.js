@@ -91,6 +91,7 @@ class AdmissionApi {
                     personCharge:saveData.personCharge.current.value,
                     centerId:saveData.centerId.current.value,
                     room:saveData.room.current.value,
+                    searsAccount: saveData.searsAccount.current.value,
                 }),
                 {headers: {'Content-Type': "application/json"}});
             return response;
@@ -126,6 +127,7 @@ class AdmissionApi {
                     personCharge:saveData.personCharge.current.value,
                     centerId:saveData.centerId.current.value,
                     room:saveData.room.current.value,
+                    searsAccount: saveData.searsAccount.current.value,
                 }),
                 {headers: {'Content-Type': "application/json"}});
             return response;

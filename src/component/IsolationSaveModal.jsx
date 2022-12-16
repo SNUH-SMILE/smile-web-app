@@ -7,6 +7,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
     const patientId = useRef();
     const patientNm = useRef();
     const birthDate = useRef();
+    const searsAccount = useRef();
     const [sex, setSex] = useState(isolationSaveModalObj.data.sex);
     const cellPhone = useRef();
     const admissionDate = useRef();
@@ -24,6 +25,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
         admissionDate: admissionDate,
         dschgeSchdldDate: dschgeSchdldDate,
         personCharge: personCharge,
+        searsAccount: searsAccount
     }
 
     const handledCellphoneValue = (e)=>{
@@ -162,6 +164,17 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                                    isolationSaveModalObj.data.dschgeSchdldDate &&
                                                    convertDate(isolationSaveModalObj.data.dschgeSchdldDate)}
                                                required/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>씨어스계정</th>
+                                    <td>
+                                        <input className="form-control w-100"
+                                               type="text"
+                                               ref={searsAccount}
+                                               role={'searsAccount'}
+                                               defaultValue={isolationSaveModalObj.data.searsAccount}
+                                        />
                                     </td>
                                 </tr>
                                 </tbody>

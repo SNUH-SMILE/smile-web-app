@@ -72,6 +72,7 @@ class IsolationApi {
                     admissionDate:saveData.admissionDate.current.value.replaceAll('-',''),
                     dschgeSchdldDate:saveData.dschgeSchdldDate.current.value.replaceAll('-',''),
                     personCharge:saveData.personCharge.current.value,
+                    searsAccount: saveData.searsAccount.current.value,
                 }),
                 {headers: {'Content-Type': "application/json"}});
             return response;
@@ -104,6 +105,7 @@ class IsolationApi {
                     admissionDate:saveData.admissionDate.current.value.replaceAll('-',''),
                     dschgeSchdldDate:saveData.dschgeSchdldDate.current.value.replaceAll('-',''),
                     personCharge:saveData.personCharge.current.value,
+                    searsAccount: saveData.searsAccount.current.value,
                 }),
                 {headers: {'Content-Type': "application/json"}});
             return response;

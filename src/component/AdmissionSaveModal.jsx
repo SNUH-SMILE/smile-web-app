@@ -11,6 +11,7 @@ import {convertDate} from "../Utils/common";
 function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
 
     const admissionId = useRef();
+    const searsAccount = useRef();
     const patientId = useRef();
     const patientNm = useRef();
     const birthDate = useRef();
@@ -34,6 +35,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
          personCharge :personCharge,
          centerId :centerId,
          room :room,
+         searsAccount: searsAccount
     }
 
     const [cellPhoneValue, setCellPhoneValue] = useState('')
@@ -230,6 +232,17 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
                                                  )
                                             }
                                         </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>씨어스계정</th>
+                                    <td>
+                                        <input className="form-control w-100"
+                                               type="text"
+                                               ref={searsAccount}
+                                               role={'searsAccount'}
+                                               defaultValue={admissionSaveModalObj.data.searsAccount}
+                                               />
                                     </td>
                                 </tr>
                                 </tbody>

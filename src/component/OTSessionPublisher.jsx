@@ -1,21 +1,16 @@
 import ConnectionStatus from "../Utils/VedioChat/ConnectionStatus";
 import Publisher from "../Utils/VedioChat/Publisher";
+
 import Subscriber from "../Utils/VedioChat/Subscriber";
-import React, {useRef, useState} from "react";
+import React, {useRef, useState,useEffect} from "react";
 import { OTStreams, preloadScript, OTSession } from "opentok-react";
 function OTSessionPublisher({token,sessionId,apiKey,videoSource,video,audio,width,height,openScreen}) {
-    const state = useState({
-        error: null,
-        connected: false
-    });
 
     const [connected, setConnected] = useState(false);
     const [error, setError] = useState(null);
 
 
     const sessionEvents = {
-
-
         sessionConnected: () => {
             setConnected(true);
         },
@@ -24,6 +19,8 @@ function OTSessionPublisher({token,sessionId,apiKey,videoSource,video,audio,widt
             setConnected(false);
         }
     };
+
+
 
     const onError = (err) => {
         setError(`Failed to connect to ${err.message}`);

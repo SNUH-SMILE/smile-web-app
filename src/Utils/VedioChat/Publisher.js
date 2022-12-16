@@ -11,9 +11,7 @@ export default function Publisher({videoSource,video,audio,width,height,openScre
     useEffect(() => {
         setHeight1(height)
         setWidth1(width)
-        console.log(width1);
         return()=> {
-          console.log("과연")
         };
     });
     const onError = (err) => {

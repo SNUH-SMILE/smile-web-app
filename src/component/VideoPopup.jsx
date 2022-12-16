@@ -8,6 +8,7 @@ import TeleHelthApi from "../Apis/TeleHelthApi";
 import styled from "styled-components";
 import {alertReducer} from "../Providers/AlertReducer";
 import useAlert from "../Utils/UseAlert";
+import OT from '@opentok/client';
 
 const ButtonH34 = styled.button`
   height: 34px;
@@ -25,8 +26,8 @@ function VideoPopup() {
     const screenShare = useRef();
     const screenShareOn = useRef();
     const [chat,setChat] = useState(false); //채팅 open
-    const [video, setVideo] = useState(false); // 화상 화면 open
-    const [audio, setAudio] = useState(false); // 오디오 볼륨 open
+    const [video, setVideo] = useState(true); // 화상 화면 open
+    const [audio, setAudio] = useState(true); // 오디오 볼륨 open
     const [archiveId, setArchiveId] = useState(); //녹화 정보를 받기위한 변수
 
     useEffect(() => {
@@ -39,7 +40,7 @@ function VideoPopup() {
                 if (data.code === '00') {
                     setApi({
                         "officerToken":data.result.officerToken
-                        ,"apiKey":data.result.apiKey
+                        ,"apiKey":data.result.apiKey.toString()
                         ,"sessionId":data.result.sessionId
                     });
                 }else {
@@ -50,7 +51,7 @@ function VideoPopup() {
 
     /*채팅 열기*/
     const openChat = ()=>{
-       // setChat(true);
+        setChat(true);
         chatArea.current.classList.toggle('chat')
     }
 
@@ -81,6 +82,12 @@ function VideoPopup() {
             }
         });
     }
+    const handledSessionStop = () => {
+        const session = OT.initSession(api.apiKey, api.sessionId);
+        session.disconnect();
+        console.log(session)
+    }
+
     const handledArchiveStop = () => {
         if(archiveId != null) {
             opentok.archiveStop(archiveId).then(({data}) => {
@@ -190,12 +197,13 @@ function VideoPopup() {
                 <div>
                     <ButtonH34 type="button" className="btn btn-primary" onClick={setChatVideo}>비디오</ButtonH34>
                     <ButtonH34 type="button" className="btn btn-primary" onClick={setChatAudio}>음소거</ButtonH34>
-                  {/*  <ButtonH34 type="button" className="btn btn-primary" onClick={openChat}>채팅</ButtonH34>*/}
+                   {/* <ButtonH34 type="button" className="btn btn-primary" onClick={openChat}>채팅</ButtonH34>*/}
                 </div>
                 <div>
                     <ButtonH34 type="button" className="btn btn-primary" onClick={handleScreenShare}>화면공유</ButtonH34>
                     <ButtonH34 type="button" className="btn btn-primary" onClick={handledArchive}>화면녹화</ButtonH34>
                     <ButtonH34 type="button" className="btn btn-primary" onClick={handledArchiveStop} disabled={!archiveId}>화면녹화중지</ButtonH34>
+                    <ButtonH34 type="button" className="btn btn-primary" onClick={handledSessionStop} >세션종료(테스트버튼) ※팝업종료전에 눌러주세요 </ButtonH34>
                 </div>
             </div>
         </div>
