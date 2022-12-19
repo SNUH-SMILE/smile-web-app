@@ -263,8 +263,6 @@ const Detail = ({dashBoardData}) => {
                                             <p>{recentResultInfo && recentResultInfo.prResultDt}</p>
                                             <div>
                                                 <span>{recentResultInfo && recentResultInfo.prResult}</span>
-                                                <span> / </span>
-                                                <span>{recentResultInfo && recentResultInfo.prResult}</span>
                                                 <em> {recentResultInfo && recentResultInfo.prUnit}</em>
                                             </div>
                                         </MH83Li>
@@ -352,18 +350,22 @@ const Detail = ({dashBoardData}) => {
                                         </MH83Li>
                                         <MH83Li className="bl_8" onClick={showVitalsignModal}>
                                             <h2>호흡기계 위험도</h2>
-                                            <p>{recentResultInfo && recentResultInfo.respiratoryRiskResultDt}</p>
+                                            <p>{recentResultInfo && recentResultInfo.riskScoreResultDt}</p>
                                             <div>
-                                                <span>{recentResultInfo && recentResultInfo.respiratoryRiskResult}</span>
-                                                <em> {recentResultInfo && recentResultInfo.respiratoryRiskUnit}</em>
+                                                <span>{recentResultInfo && recentResultInfo.riskScoreNm}</span>
+                                                <span>&nbsp; &nbsp;  {recentResultInfo && recentResultInfo.riskScoreResult}</span>
+                                            </div>
+                                            <div>
+                                                <span>{recentResultInfo && recentResultInfo.riskTemperNm}</span>
+                                                <span>&nbsp; &nbsp;  {recentResultInfo && recentResultInfo.riskTemperResult}</span>
                                             </div>
                                         </MH83Li>
                                         <MH83Li className="bl_9" onClick={showVitalsignModal}>
                                             <h2>정신건강 위험도</h2>
                                             <p>{recentResultInfo && recentResultInfo.mentalRiskResultDt}</p>
                                             <div>
-                                                <span>{recentResultInfo && recentResultInfo.mentalRiskResult}</span>
-                                                <em> {recentResultInfo && recentResultInfo.mentalRiskUnit}</em>
+                                                <span>{recentResultInfo && recentResultInfo.mentalRiskNm}</span>
+                                                <span>&nbsp; &nbsp;  {recentResultInfo && recentResultInfo.mentalRiskResult}</span>
                                             </div>
                                         </MH83Li>
                                     </ul>
