@@ -55,7 +55,7 @@ function Admission() {
     // 센터 정보 및 입소자 리스트 요청 및 총 몇페이지인지 저장
     const mountSelectAdmissionListByCenter = () => {
         getLonginUserInfo()
-            .then(({data}) => setLoginUserTreatmentCenterList(data.result.userTreatmentCenterVOList))
+            .then(({data}) =>setLoginUserTreatmentCenterList(data.result.userTreatmentCenterVOList))
             .catch(()=>console.log('ERROR getLonginUserInfo'))
             .then(()=>{
                 if(searchAdmissionCenter.current.value){
@@ -143,7 +143,7 @@ function Admission() {
         selectedAdmissionId.current = admissionId;
     }
     const validationModalData = async (nullList,saveData)=>{
-        if(nullList.length > 0){
+        if(nullList.length > 1 && nullList[0]!='searsAccount'){
             nullList[0] === 'patientNm' && alert('이름이 공백입니다.')
             nullList[0] === 'birthDate' && alert('생일이 공백입니다.')
             nullList[0] === 'sex' && alert('성별을 선택해주세요.')
