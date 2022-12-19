@@ -255,6 +255,10 @@ function Admission() {
         {Header: '체온', accessor: 'btResult', vital:true},
         {Header: '산소포화도', accessor: 'spResult', vital:true},
         {Header: '재원상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editEvent:handledAdmissionExitModal},
+        {Header: '체온다운', accessor: 'btDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
+        {Header: '심박다운', accessor: 'prDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
+        {Header: '호흡다운', accessor: 'rrDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort}
+
     ]
     return (
         <>
