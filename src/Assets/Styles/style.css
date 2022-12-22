@@ -1635,7 +1635,14 @@ current-top .current-btn .btn {
     height: 70vh !important;
 }
 */
-
+.interview {
+    background: aliceblue;
+    list-style: none;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f0f6fb;
+    margin: 10px
+}
 
 .data-table .checked-contents {display:none;}
 .data-table .checked-active .checked-text {display:none;}

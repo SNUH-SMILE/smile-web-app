@@ -1,21 +1,26 @@
-import React, { useContext, useEffect, useRef, useState} from 'react';
+import React, { useContext, useEffect, useRef, useState,createRef} from 'react';
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 import AdmissionDetailApi from "../../Apis/AdmissionDetailApi";
 import {TitleContext} from "../../Providers/TitleContext";
 import NoticeCard from "../../component/NoticeCard";
 import RecordCard from "../../component/RecordCard";
 import useAlert from "../../Utils/UseAlert";
+import ReactTable2 from "../../component/ReactTable2";
+import admissionApi from "../../Apis/AdmissionApi";
 
 function AdmissionDetail() {
     UseSetPageTitle('환자상세','Detail')
 
     const{alert,confirm} = useAlert();
     const {setDashBoardData} = useContext(TitleContext);
+    const val =['val01','val02','val03','val04','val05','val06','val07','val08','val09','val10','val11','val12',];
     const admissionDetailApi=new AdmissionDetailApi(localStorage.getItem('admissionId'));
     const [noticeList,setNoticeList] = useState([])
     const [recordList,setRecordList] = useState([])
     useEffect(()=>{
         collapseNoticeArea();
+        test();
+
         admissionDetailApi.select().then(({data}) => {
             setDashBoardData(data.result.headerVO);
             setNoticeList(data.result.noticeVOList);
@@ -30,6 +35,7 @@ function AdmissionDetail() {
     const day = today.getDate();
     const date = useState();
 
+    const [interviews, setInterviews] = useState();
     const [noticeText,setNoticeText] = useState('');
 
     const maxLen = value => value.length <= 500;
@@ -47,6 +53,12 @@ function AdmissionDetail() {
             }
         }
     };
+    const test = async () =>{
+        admissionDetailApi.test().then(({data}) => {
+            setInterviews(data.result);
+            console.log(data.result);
+        })
+    }
     const addNotice = async () => {
         if(!noticeText){
             alert('알림 내용이 공백입니다.')
@@ -93,8 +105,8 @@ function AdmissionDetail() {
     const noticeArea = useRef();
     const collapseNoticeArea = ()=>{
         noticeArea.current.classList.toggle('toggled')
-
     }
+
     return (
         <main className="flex_layout_dashboard" style={{padding:"8px"}}>
             <div className="row history-alarm" ref={noticeArea}>
@@ -125,16 +137,67 @@ function AdmissionDetail() {
                         </div>
                         <div className="body">
                             <div className="tab-content" id="pills-tabContent">
-                                <div className="tab-pane fade show active" id="pills-cont1" role="tabpanel"
-                                     aria-labelledby="pills-tab1">문진...
-                                </div>
-                                <div className="tab-pane fade" id="pills-cont2" role="tabpanel"
-                                     aria-labelledby="pills-tab2">증상...
-                                </div>
+                                <div className="scrollbar" role={'recordList'} style={{overflow:"auto",height:"560px"}}>
+                                    <div className="tab-pane fade show active" id="pills-cont1" role="tabpanel"
+                                         aria-labelledby="pills-tab1">문진...
+
+                                    {interviews && interviews.map((it,idx)=>(
+                                        <div ket={idx} className="interview">
+                                            <h2>{it.interviewTitle}</h2>
+                                            <table>
+                                                <tbody>
+                                                {Object.values(it.interviewContents).filter(i=>i.interCategori.substring(0,1)=='1').map((content, i) => (
+                                                  <>
+                                                      <tr style={{fontSize: "17px"}}>
+                                                        <td>{content.interNo}.</td>
+                                                        <td>{content.interContent}</td>
+                                                     </tr>
+                                                     <tr style={{fontSize: "13px"}}>{/*type에 따라 inputbox(13), radio(10), checkbox(11)로 표현 */}
+
+                                                        { content.interType == '13'?
+                                                            <td colSpan="2">
+                                                                <input type="text" className="form-control" defaultValue={content.answerValue || null} readOnly></input>
+
+                                                            </td>
+                                                            : content.interType =='10' ?
+                                                                <td colSpan="2">
+                                                                    {val.map((name,idx) =>
+                                                                      <> {content[name] &&
+                                                                          <input className="form-check-input" type="radio" name={content.interseq} id={content.interseq} checked={content.answerValue == (idx)} readOnly></input>}
+                                                                         {content[name] && <label className="form-check-label" htmlFor={content.interseq} readOnly>{content[name]}</label>}
+                                                                      </>
+                                                                    )}
+                                                                </td>
+                                                                :
+                                                                <td colSpan="2">
+                                                                    {val.map((name,idx) =>
+                                                                        <>
+                                                                        {content[name] &&  <input type="checkbox" id={content.interseq+idx.toString()} checked={(content.answerValue.split(',').filter(i=>i == idx)>0)} className="form-check-input" readOnly/>}
+                                                                        {content[name] &&   <label className="form-check-label" > {content[name]}</label> }
+                                                                        </>
+                                                                    )}
+                                                                </td>
+                                                        }
+                                                    </tr>
+                                                  </>
+                                                ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    ))}
+                               {/*
+
                                 <div className="tab-pane fade" id="pills-cont3" role="tabpanel"
                                      aria-labelledby="pills-tab3">정신...
+                                </div>*/}
+                                    </div>
+                                    <div className="tab-pane fade" id="pills-cont2" role="tabpanel"
+                                         aria-labelledby="pills-tab2">증상...
+
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div className="card indiv history">
@@ -142,10 +205,10 @@ function AdmissionDetail() {
                             <h5 className="title">기록</h5>
                         </div>
                         <div className="body">
-                            <ul className="scrollbar" role={'noticeList'}>
-                                {recordList && recordList.map(value => {
+                            <ul className="scrollbar" role={'recordList'}>
+                                {recordList && recordList.map((value,idx) => {
                                     return(
-                                        <RecordCard data={value} key={value.noticeSeq}/>
+                                        <RecordCard data={value} key={idx}/>
                                     )
                                 })}
                             </ul>
