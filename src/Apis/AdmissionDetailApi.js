@@ -82,6 +82,21 @@ class AdmissionDetailApi {
             return false;
         }
     }
+    //test
+    async test () {
+        try {
+            const response = await AuthorizationAxios.post(process.env.REACT_APP_BASE_URL + '/api/admission/test',
+                JSON.stringify({
+                    admissionId:'0000000079',
+                }),
+                {headers: {'Content-Type': "application/json"}});
+            return response;
+        } catch (e) {
+            console.log(e);
+            console.log(`AdmissionApi discharge`);
+            return false;
+        }
+    }
 
 }
 export default AdmissionDetailApi;

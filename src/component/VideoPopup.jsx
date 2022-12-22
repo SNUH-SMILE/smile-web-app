@@ -33,6 +33,19 @@ function VideoPopup() {
     useEffect(() => {
         connectTokApi()
     },[]);
+    useEffect(() => {
+        const handleTabClose = event => {
+            event.preventDefault();
+            confirm('beforeunload event triggered');
+            handledSessionStop();
+            return (event.returnValue = 'Are you sure you want to exit?');
+        };
+        window.addEventListener('beforeunload', handleTabClose);
+        return () => {
+            window.removeEventListener('beforeunload', handleTabClose);
+        };
+    },[]);
+
 
     const connectTokApi = async ()=>{
         teleHelthApi.select(localStorage.getItem("admissionId"))
@@ -85,6 +98,7 @@ function VideoPopup() {
     const handledSessionStop = () => {
         const session = OT.initSession(api.apiKey, api.sessionId);
         session.disconnect();
+        window.addEventListener('unload');
         console.log(session)
     }
 

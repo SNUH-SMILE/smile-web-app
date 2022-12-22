@@ -327,7 +327,7 @@ function Admission() {
                                 <div className="table-body">
                                     <ReactTable tableHeader={admissionTableColumn} tableBody={admissionTableData}
                                                 sorted={true} customTableStyle={'table table-striped table-hover text-expert'}
-                                                trOnclick={getSelectedAdmissionId}
+                                                trOnclick={getSelectedAdmissionId} trDbOnclicke={getSelectedAdmissionId}
                                     />
                                 </div>
                             </div>

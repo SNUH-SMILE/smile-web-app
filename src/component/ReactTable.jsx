@@ -117,7 +117,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                 </button>
                                             </td>
                                             <td className="cd2">
-                                                {/*<input type="text" className="form-control text-center"/>*/}
+                                                {/*<input type="text" className="form-control text-center   "/>*/}
                                             </td>
                                             <td className="cd3">
                                                 <input type="text"
@@ -352,7 +352,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                     }: (e)=>highlighter(e)}
                                     onDoubleClick={trDbOnclicke ? (e)=>{
                                         onMove(row.original.admissionId);
-                                    }:(e)=>  onMove(row.original.admissionId)}
+                                    }:null}
                                     >
                                         {row.cells.map(cell => {
                                             if(cell.column.Header === '선택'){
