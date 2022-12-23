@@ -78,10 +78,8 @@ const Detail = ({dashBoardData}) => {
     const screenShare = useRef();
     const screenShareOn = useRef();
     const openChat = ()=>{
-
         chatArea.current.classList.toggle('chat')
     }
-
     const openScreenShare = ()=>{
         screenShare.current.classList.toggle('screenShare')
         screenShareOn.current.classList.toggle('screenShareOn')
@@ -153,7 +151,7 @@ const Detail = ({dashBoardData}) => {
 
 ////팝업
     const openPopup=()=>{
-        window.open('/videoPopup', '_blank','width=700px,height=800px,scrollbars=yes')
+        window.open('/videoPopup', '_blank','width=700px,height=800px,scrollbars=yes rel=noopener noreferrer')
     }
 
     const {recentResultInfo} = dashBoardData;
