@@ -389,7 +389,7 @@ function User() {
                                                     <td className="uid">
                                                         <input className="form-control w-100" type="text" role={'detailUserID'}
                                                                ref={userId} defaultValue={''}
-                                                               readOnly={!userOpen}/>
+                                                               readOnly/>
                                                     </td>
                                                 </tr>
                                                 <tr>
