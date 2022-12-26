@@ -5,7 +5,9 @@ import {TitleContext} from "../../Providers/TitleContext";
 import NoticeCard from "../../component/NoticeCard";
 import RecordCard from "../../component/RecordCard";
 import useAlert from "../../Utils/UseAlert";
-import admissionApi from "../../Apis/AdmissionApi";
+import {Nav} from "react-bootstrap";
+
+import InterviewList from "../../component/InterviewList";
 
 function AdmissionDetail() {
     UseSetPageTitle('환자상세','Detail')
@@ -24,7 +26,7 @@ function AdmissionDetail() {
             setDashBoardData(data.result.headerVO);
             setNoticeList(data.result.noticeVOList);
             setRecordList(data.result.recordVOList);
-            console.log(data);
+          //  console.log(data);
         });
     },[])
 
@@ -52,10 +54,10 @@ function AdmissionDetail() {
             }
         }
     };
-    const test = async () =>{
-        admissionDetailApi.test().then(({data}) => {
+    const getInterviewList = async () =>{
+        admissionDetailApi.getInterviewList().then(({data}) => {
             setInterviews(data.result);
-            console.log(data.result);
+            //console.log(data.result);
         })
     }
     const addNotice = async () => {
@@ -105,6 +107,11 @@ function AdmissionDetail() {
     const collapseNoticeArea = ()=>{
         noticeArea.current.classList.toggle('toggled')
     }
+    const [tabCode, setTabCode] = useState();
+    const nextLevel=(eventKey) =>{
+        setTabCode(eventKey);
+
+    }
 
     return (
         <main className="flex_layout_dashboard" style={{padding:"8px"}}>
@@ -112,88 +119,45 @@ function AdmissionDetail() {
                 <div className="col">
                     <div className="card indiv tab3">
                         <div className="header d-flex">
-                            <ul className="nav nav-pills" id="pills-tab" role="tablist">
-                                <li className="nav-item" role="presentation">
-                                    <button className="nav-link active" id="pills-tab1" data-bs-toggle="pill"
-                                            data-bs-target="#pills-cont1" type="button" role="tab"
-                                            aria-controls="pills-cont1" aria-selected="true">자가보고 증상
-                                    </button>
-                                </li>
-                                <li className="nav-item" role="presentation">
-                                    <button className="nav-link" id="pills-tab2" data-bs-toggle="pill"
-                                            data-bs-target="#pills-cont2" type="button" role="tab"
-                                            aria-controls="pills-cont2" aria-selected="false">정신건강 설문
-                                    </button>
-                                </li>
-                                <li className="nav-item" role="presentation">
-                                    <button className="nav-link" id="pills-tab3" data-bs-toggle="pill"
-                                            data-bs-target="#pills-cont3" type="button" role="tab"
-                                            aria-controls="pills-cont3" aria-selected="false">투약내역
-                                    </button>
-                                </li>
-                            </ul>
-                            <input type="date" className="form-control w130 ms-auto"/>
+                            <Nav className="" variant="pills" defaultActiveKey="0">
+                                <Nav.Item style={{marginLeft:"10px"}}>
+                                    <Nav.Link eventKey="0" onClick={()=>nextLevel(0)}>
+                                        자가보고 증상
+                                    </Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item style={{marginLeft:"10px"}}>
+                                    <Nav.Link eventKey="1" onClick={()=>nextLevel(1)}>
+                                        정신건강 설문
+                                    </Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item style={{marginLeft:"10px"}}>
+                                    <Nav.Link eventKey="2" onClick={()=>nextLevel(2)}>
+                                        투약내역
+                                    </Nav.Link>
+                                </Nav.Item>
+                            </Nav>
                         </div>
                         <div className="body">
                             <div className="tab-content" id="pills-tabContent">
-                                <div className="scrollbar" role={'recordList'} style={{overflow:"auto",height:"560px"}}>
-                                    <div className="tab-pane fade show active" id="pills-cont1" role="tabpanel"
-                                         aria-labelledby="pills-tab1">문진...
-
-                                    {interviews && interviews.map((it,idx)=>(
-                                        <div ket={idx} className="interview">
-                                            <h2>{it.interviewTitle}</h2>
-                                            <table>
-                                                <tbody>
-                                                {Object.values(it.interviewContents).filter(i=>i.interCategori.substring(0,1)=='1').map((content, i) => (
-                                                  <>
-                                                      <tr style={{fontSize: "17px"}}>
-                                                        <td>{content.interNo}.</td>
-                                                        <td>{content.interContent}</td>
-                                                     </tr>
-                                                     <tr style={{fontSize: "13px"}}>{/*type에 따라 inputbox(13), radio(10), checkbox(11)로 표현 */}
-
-                                                        { content.interType == '13'?
-                                                            <td colSpan="2">
-                                                                <input type="text" className="form-control" defaultValue={content.answerValue || null} readOnly></input>
-
-                                                            </td>
-                                                            : content.interType =='10' ?
-                                                                <td colSpan="2">
-                                                                    {val.map((name,idx) =>
-                                                                      <> {content[name] &&
-                                                                          <input className="form-check-input" type="radio" name={content.interseq} id={content.interseq} checked={content.answerValue == (idx)} readOnly></input>}
-                                                                         {content[name] && <label className="form-check-label" htmlFor={content.interseq} readOnly>{content[name]}</label>}
-                                                                      </>
-                                                                    )}
-                                                                </td>
-                                                                :
-                                                                <td colSpan="2">
-                                                                    {val.map((name,idx) =>
-                                                                        <>
-                                                                        {content[name] &&  <input type="checkbox" id={content.interseq+idx.toString()} checked={(content.answerValue.split(',').filter(i=>i == idx)>0)} className="form-check-input" readOnly/>}
-                                                                        {content[name] &&   <label className="form-check-label" > {content[name]}</label> }
-                                                                        </>
-                                                                    )}
-                                                                </td>
-                                                        }
-                                                    </tr>
-                                                  </>
-                                                ))}
-                                                </tbody>
-                                            </table>
+                                <div className="scrollbar" role={'recordList'} style={{overflow:"auto",height:"68vh"}}>
+                                    {tabCode == 0 ?
+                                        <div>
+                                            {interviews.length >0 && interviews.map((it,idx)=>(
+                                                <InterviewList key={it.interviewSeq} interviewData={it} idx={idx} type='1'>
+                                                </InterviewList>
+                                            ))}
+                                            </div>
+                                        : null
+                                    }
+                                    {tabCode == 1 ?
+                                        <div>
+                                            {interviews && interviews.map((it,idx)=>(
+                                                <InterviewList key={it.interviewSeq} interviewData={it} idx={idx} type='2'>
+                                                </InterviewList>
+                                            ))}
                                         </div>
-                                    ))}
-                               {/*
-
-                                <div className="tab-pane fade" id="pills-cont3" role="tabpanel"
-                                     aria-labelledby="pills-tab3">정신...
-                                </div>*/}
-                                    </div>
-                                    <div className="tab-pane fade" id="pills-cont2" role="tabpanel"
-                                         aria-labelledby="pills-tab2">증상...
-
-                                    </div>
+                                        : null
+                                    }
                                 </div>
                             </div>
 
