@@ -8,7 +8,6 @@ import RecordCard from "../../component/RecordCard";
 import useAlert from "../../Utils/UseAlert";
 import {Nav} from "react-bootstrap";
 
-import admissionApi from "../../Apis/AdmissionApi";
 import InterviewList from "../../component/InterviewList";
 
 function AdmissionDetail() {
@@ -28,7 +27,7 @@ function AdmissionDetail() {
             setDashBoardData(data.result.headerVO);
             setNoticeList(data.result.noticeVOList);
             setRecordList(data.result.recordVOList);
-            console.log(data);
+          //  console.log(data);
         });
     },[])
 
@@ -59,7 +58,7 @@ function AdmissionDetail() {
     const getInterviewList = async () =>{
         admissionDetailApi.getInterviewList().then(({data}) => {
             setInterviews(data.result);
-            console.log(data.result);
+            //console.log(data.result);
         })
     }
     const addNotice = async () => {
