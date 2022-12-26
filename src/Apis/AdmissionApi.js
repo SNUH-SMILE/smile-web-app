@@ -138,12 +138,12 @@ class AdmissionApi {
     }
 
     //생활치료센터 입소자 퇴실 처리
-    async discharge (admissionId,dischargeDate,quantLocation){
+    async discharge (admissionId,dischargeDate,quantLocation,centerId){
         try{
             const response = await AuthorizationAxios.patch(process.env.REACT_APP_BASE_URL + '/api/admission/center/discharge',
                 JSON.stringify({
                     admissionListSearchByCenterVO:{
-                        centerId:this.searchAdmissionCenter.current.value,
+                        centerId:centerId,
                         patientId:this.searchAdmissionId.current.value,
                         patientNm: this.searchAdmissionNm.current.value,
                         currentPageNo:this.currentPageNo,
