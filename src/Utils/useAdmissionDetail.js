@@ -4,7 +4,8 @@ const useMoveAdmissionDetail = () =>{
     const navigate = useNavigate();
     const onMove = (id)=>{
         localStorage.setItem('admissionId',id);
-        if (id != undefined){
+        if (id === 'undefined') {
+        }else{
             navigate('/admission/detail')
         }
     }

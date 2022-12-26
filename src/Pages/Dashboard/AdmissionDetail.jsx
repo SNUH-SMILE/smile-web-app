@@ -5,7 +5,6 @@ import {TitleContext} from "../../Providers/TitleContext";
 import NoticeCard from "../../component/NoticeCard";
 import RecordCard from "../../component/RecordCard";
 import useAlert from "../../Utils/UseAlert";
-import ReactTable2 from "../../component/ReactTable2";
 import admissionApi from "../../Apis/AdmissionApi";
 
 function AdmissionDetail() {
@@ -139,7 +138,7 @@ function AdmissionDetail() {
                             <div className="tab-content" id="pills-tabContent">
                                 <div className="scrollbar" role={'recordList'} style={{overflow:"auto",height:"560px"}}>
                                     <div className="tab-pane fade show active" id="pills-cont1" role="tabpanel"
-                                         aria-labelledby="pills-tab1">문진...
+                                         aria-labelledby="pills-tab1">
 
                                     {interviews && interviews.map((it,idx)=>(
                                         <div ket={idx} className="interview">
