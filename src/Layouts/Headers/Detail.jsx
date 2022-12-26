@@ -50,18 +50,18 @@ const Detail = ({dashBoardData}) => {
     const {alert,confirm} = useAlert();
     const searchPatientId = useRef('')
     const searchPatientNm = useRef('')
-    const [searchAdmissionCenter,setSearchAdmissionCenter] = useState();
+  /*  const [searchAdmissionCenter,setSearchAdmissionCenter] = useState();*/
+    const searchAdmissionCenter = useRef(dashBoardData.centerId);
     const searchAdmissionState = useRef();
-    const searchAdmissionId = useRef();
-    const searchAdmissionNm = useRef();
+    const searchAdmissionId = useRef('');
+    const searchAdmissionNm = useRef('');
     const searchPatientIsolation = useRef()
     const [paginationObj, setPaginationObj] = useState({currentPageNo: 1, pageSize: 10, recordCountPerPage: 15})
     const [sortedOrder,setSortedOrder] = useState({By:'',Dir:''})
+
     const isolationApi = new IsolationApi(searchPatientId,searchPatientNm,searchPatientIsolation,paginationObj,sortedOrder);
-
-
     // 입소자관련 Api
-    const admissionApi = new AdmissionApi(searchAdmissionCenter,searchAdmissionId,searchAdmissionNm,searchAdmissionState,paginationObj,sortedOrder.By,sortedOrder.Dir);
+    const admissionApi = new AdmissionApi(searchAdmissionCenter,searchPatientNm,searchAdmissionNm,searchAdmissionState,paginationObj,sortedOrder.By,sortedOrder.Dir);
     //재택격리자 격리해제 모달 닫기
     const handledCloseIsolationExitModal = useCallback(() =>{
         setIsolationExitModalObj({show: false, data: {}})
@@ -84,7 +84,10 @@ const Detail = ({dashBoardData}) => {
         screenShare.current.classList.toggle('screenShare')
         screenShareOn.current.classList.toggle('screenShareOn')
     }
+    useEffect(() => {
 
+       /* searchAdmissionCenter.current.value = dashBoardData.centerId;*/
+    },[dashBoardData]) // (1) 첫 번째 useEffect
 
 
     //생활치료센터 퇴소 모달
@@ -96,8 +99,7 @@ const Detail = ({dashBoardData}) => {
     }*/
     const handledAdmissionExitModal = (admissionId) =>{
         isolationApi.detail(admissionId).then(({data}) =>{
-            setSearchAdmissionCenter(dashBoardData.centerNm);
-            data.result.centerNm = dashBoardData.centerNm;
+           /* searchAdmissionCenter.current.value = dashBoardData.centerId;*/
             setAdmissionExitModalObj({show: true, data: {...data.result}})
         })
     }
@@ -111,10 +113,14 @@ const Detail = ({dashBoardData}) => {
         if(dischargeDate===''){
             alert('퇴소일이 공백입니다.')
         }
+        if(quantLocation == null){
+            alert('퇴소시 위치를 입력해주세요')
+            return;
+        }
         else{
             const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`)
             if(confirmState) {
-/*                admissionApi.discharge(admissionId, dischargeDate, quantLocation).then(({data}) => {
+                admissionApi.discharge(admissionId, dischargeDate, quantLocation, dashBoardData.centerId).then(({data}) => {
                     if(data.code==='00'){
                         alert(data.message)
                         handledCloseAdmissionExitModal()
@@ -122,7 +128,7 @@ const Detail = ({dashBoardData}) => {
                     else{
                         alert(data.message)
                     }
-                });*/
+                });
             }
         }
     },[])
@@ -132,9 +138,13 @@ const Detail = ({dashBoardData}) => {
         if(dischargeDate===''){
             alert('격리해제일이 공백입니다.');
         }
+        if(quantLocation == null){
+            alert('퇴소시 위치를 입력해주세요')
+            return;
+        }
         else{
             console.log(quantLocation);
-            const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`);
+            const confirmState = await confirm(`${patientNm} 을 격리해제 하시겠습니까?`);
             if(confirmState) {
                 isolationApi.discharge(admissionId, dischargeDate, quantLocation).then(({data}) => {
                     if(data.code==='00'){

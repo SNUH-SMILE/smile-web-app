@@ -61,7 +61,7 @@ function Isolation() {
     }
 
     const validationModalData = async (nullList,saveData)=>{
-        if(nullList.length > 0){
+        if(nullList.length > 1 && nullList.length > 0){
             nullList[0] === 'patientNm' && alert('이름이 공백입니다.')
             nullList[0] === 'birthDate' && alert('생일이 공백입니다.')
             nullList[0] === 'sex' && alert('성별을 선택해주세요.')
@@ -71,6 +71,11 @@ function Isolation() {
             nullList[0] === 'personCharge' && alert('담당자 공백입니다.')
             saveData[nullList[0]].current.focus();
             return false;
+        }
+        if(saveData.cellPhone.current.value.length < 11){
+            alert('연락처 길이가 맞지 않습니다 ')
+            saveData[nullList[0]].current.focus();
+            return false
         }
         else if(saveData['admissionDate'].current.value >= saveData['dschgeSchdldDate'].current.value){
             alert('종료 예정일은 시작일 이후이어야 합니다.')
