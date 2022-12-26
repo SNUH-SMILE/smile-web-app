@@ -37,6 +37,15 @@ function QnaReplyInsertModal({qnaModalObj,handledClose,onSave,onDelete}) {
                             </colgroup>
                             <tbody>
                             <tr>
+                                <th>문의제목</th>
+                                <td>
+                                    <textarea className="form-control"
+                                              defaultValue={qnaModalObj.data.questionTitle&&qnaModalObj.data.questionTitle}
+                                              readOnly/>
+
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>문의내용</th>
                                 <td>
                                     <textarea className="form-control h140 "
