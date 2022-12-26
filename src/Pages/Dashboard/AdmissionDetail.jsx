@@ -22,8 +22,8 @@ function AdmissionDetail() {
     const [recordList,setRecordList] = useState([])
     useEffect(()=>{
         collapseNoticeArea();
-        test();
-
+        getInterviewList();
+        setTabCode(1);
         admissionDetailApi.select().then(({data}) => {
             setDashBoardData(data.result.headerVO);
             setNoticeList(data.result.noticeVOList);
@@ -56,8 +56,8 @@ function AdmissionDetail() {
             }
         }
     };
-    const test = async () =>{
-        admissionDetailApi.test().then(({data}) => {
+    const getInterviewList = async () =>{
+        admissionDetailApi.getInterviewList().then(({data}) => {
             setInterviews(data.result);
             console.log(data.result);
         })
@@ -112,7 +112,7 @@ function AdmissionDetail() {
     const [tabCode, setTabCode] = useState();
     const nextLevel=(eventKey) =>{
         setTabCode(eventKey);
-        console.log(eventKey);
+
     }
 
     return (
@@ -141,11 +141,11 @@ function AdmissionDetail() {
                         </div>
                         <div className="body">
                             <div className="tab-content" id="pills-tabContent">
-                                <div className="scrollbar" role={'recordList'} style={{overflow:"auto",height:"560px"}}>
+                                <div className="scrollbar" role={'recordList'} style={{overflow:"auto",height:"68vh"}}>
                                     {tabCode == 0 ?
                                         <div>
-                                            {interviews && interviews.map((it,idx)=>(
-                                                <InterviewList interviewData={it} idx={idx} type='1'>
+                                            {interviews.length >0 && interviews.map((it,idx)=>(
+                                                <InterviewList key={it.interviewSeq} interviewData={it} idx={idx} type='1'>
                                                 </InterviewList>
                                             ))}
                                             </div>
@@ -154,7 +154,7 @@ function AdmissionDetail() {
                                     {tabCode == 1 ?
                                         <div>
                                             {interviews && interviews.map((it,idx)=>(
-                                                <InterviewList interviewData={it} idx={idx} type='2'>
+                                                <InterviewList key={it.interviewSeq} interviewData={it} idx={idx} type='2'>
                                                 </InterviewList>
                                             ))}
                                         </div>

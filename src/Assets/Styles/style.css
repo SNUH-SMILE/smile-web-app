@@ -1338,6 +1338,7 @@ current-top .current-btn .btn {
 
 .history-alarm .body {
     padding:20px;
+    height: calc(100% - 135px);
 }
 
 .history-alarm .history .body {height:calc(100% - 135px);}
