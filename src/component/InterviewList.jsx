@@ -5,8 +5,9 @@ function InterviewList({interviewData, idx, type }) {
 
     return (
         <div ket={idx} className="interview">
-            <div style={{display:"flex",alignItems: "center"}}><h3>{interviewData.interviewTitlePlus}</h3> - (<h4>{interviewData.interviewTitle}</h4>)
-               {/* <div style={{marginLeft: "47%"}}>{interviewData.interviewDD}</div>*/}
+            <div className="interviewHeader">
+                <div className="hBox"><h3>{interviewData.interviewTitlePlus}</h3> - (<h4>{interviewData.interviewTitle}</h4>) </div>
+                <div>{interviewData.interviewDD}</div>
             </div>
             <table>
                 <tbody>

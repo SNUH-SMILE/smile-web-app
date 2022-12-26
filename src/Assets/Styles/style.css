@@ -1816,3 +1816,11 @@ input[type=range] {
     border-radius: 1.3em; /* iOS */
 
 }
+.interviewHeader {
+    display: flex;
+    justify-content: space-between;
+}
+.interviewHeader .hBox{
+    display: flex;
+    alignItems: center;
+}

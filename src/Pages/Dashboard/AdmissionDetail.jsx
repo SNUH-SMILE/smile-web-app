@@ -22,7 +22,7 @@ function AdmissionDetail() {
     useEffect(()=>{
         collapseNoticeArea();
         getInterviewList();
-        setTabCode(1);
+        setTabCode(0);
         admissionDetailApi.select().then(({data}) => {
             setDashBoardData(data.result.headerVO);
             setNoticeList(data.result.noticeVOList);
@@ -143,8 +143,8 @@ function AdmissionDetail() {
                                 <div className="scrollbar" role={'recordList'} style={{overflow:"auto",height:"68vh"}}>
                                     {tabCode == 0 ?
                                         <div>
-                                            {interviews.length >0 && interviews.map((it,idx)=>(
-                                                <InterviewList key={it.interviewSeq} interviewData={it} idx={idx} type='1'>
+                                            {interviews && interviews.map((it,idx)=>(
+                                                <InterviewList key={it.interviewSeq+'1'} interviewData={it} idx={idx} type='1'>
                                                 </InterviewList>
                                             ))}
                                             </div>
@@ -153,7 +153,7 @@ function AdmissionDetail() {
                                     {tabCode == 1 ?
                                         <div>
                                             {interviews && interviews.map((it,idx)=>(
-                                                <InterviewList key={it.interviewSeq} interviewData={it} idx={idx} type='2'>
+                                                <InterviewList key={it.interviewSeq+'2'} interviewData={it} idx={idx} type='2'>
                                                 </InterviewList>
                                             ))}
                                         </div>
