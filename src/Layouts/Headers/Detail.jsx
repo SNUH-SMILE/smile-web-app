@@ -10,7 +10,6 @@ import AdmissionExitModal from "../../component/AdmissionExitModal";
 import AdmissionApi from "../../Apis/AdmissionApi";
 
 
-
 const HealthSignal = styled.span`
   display: inline-block;
   margin: 0 2px;
