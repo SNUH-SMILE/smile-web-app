@@ -20,7 +20,19 @@ class AdmissionDetailApi {
             return false;
         }
     }
+    async drugSelect () {
+        try{
+            const response = await AuthorizationAxios.get(
+                process.env.REACT_APP_BASE_URL + '/api/drug/listForDetail',
+                {params: {'admissionId': this.admissionId,}}
+            );
+            return response;
 
+        }catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
 
     async addRecord (record,date) {
         try{
@@ -42,10 +54,10 @@ class AdmissionDetailApi {
         try{
             const response = await AuthorizationAxios.put(
                 process.env.REACT_APP_BASE_URL + '/api/patientDashboard/detail/notice',
-                {
+
+                JSON.stringify({
                     admissionId: this.admissionId,
-                    notice : notice
-                }
+                }),
             )
             return response;
         }catch (e) {

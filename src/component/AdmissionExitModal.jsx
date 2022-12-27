@@ -5,7 +5,9 @@ function AdmissionExitModal({admissionExitModalObj, handledClose, discharge}) {
     const todayInput = useRef()
     const [quantLocation, setQuantLocation] = useState();
     useEffect(()=>{
+        setQuantLocation('1');
         if(admissionExitModalObj.show){
+
             const today = new Date()
             const year = today.getFullYear()
             const month = (today.getMonth()+1) < 10 ? '0'+(today.getMonth()+1):(today.getMonth()+1)

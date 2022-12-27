@@ -46,10 +46,7 @@ function AdmissionSaveModal({admissionSaveModalObj,handledClose, centerList}) {
         }
     }
 
-    useEffect(() => {
-        console.log(Object.keys(admissionSaveModalObj.data).length);
-        console.log(admissionSaveModalObj.data);
-    });
+
     const [rooms, setRooms] = useState([])
     function getRoom(centerId) {
         commonCode('CD005').then(({data}) => {

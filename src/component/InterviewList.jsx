@@ -5,8 +5,9 @@ function InterviewList({interviewData, idx, type }) {
 
     return (
         <div ket={idx} className="interview">
-            <div style={{display:"flex",alignItems: "center"}}><h3>{interviewData.interviewTitlePlus}</h3> - (<h4>{interviewData.interviewTitle}</h4>)
-               {/* <div style={{marginLeft: "47%"}}>{interviewData.interviewDD}</div>*/}
+            <div className="interviewHeader">
+                <div className="hBox"><h3>{interviewData.interviewTitlePlus}</h3> - (<h4>{interviewData.interviewTitle}</h4>) </div>
+                <div>등록일:{interviewData.interviewDD}</div>
             </div>
             <table>
                 <tbody>
@@ -37,7 +38,7 @@ function InterviewList({interviewData, idx, type }) {
                                     <td colSpan="2">
                                         {contentValues.map((name,idx) =>
                                             <>
-                                                {content[name] &&  <input type="checkbox" id={content.interseq+idx.toString()} checked={(content.answerValue.split(',').filter(i=>i == idx)>0)} className="form-check-input" readOnly/>}
+                                                {content[name] &&  <input type="checkbox" id={content.interseq+idx.toString()} checked={(content.answerValue && content.answerValue.split(',').filter(i=>i == idx)>0)} className="form-check-input" readOnly/>}
                                                 {content[name] &&   <label className="form-check-label" > {content[name]}</label> }
                                             </>
                                         )}

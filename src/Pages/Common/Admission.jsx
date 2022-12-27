@@ -40,6 +40,7 @@ function Admission() {
 
     // 현재 로그인한 유저의 생활치료센터 리스트
     const [loginUserTreatmentCenterList, setLoginUserTreatmentCenterList] = useState([]);
+    const [treatmentCenterList, setTreatmentCenterList] = useState([]);
 
     const setPaginationAndAdmissionTableDat = (data) =>{
         setPaginationObj((prevState)=>({...prevState,
@@ -55,7 +56,13 @@ function Admission() {
     // 센터 정보 및 입소자 리스트 요청 및 총 몇페이지인지 저장
     const mountSelectAdmissionListByCenter = () => {
         getLonginUserInfo()
-            .then(({data}) =>setLoginUserTreatmentCenterList(data.result.userTreatmentCenterVOList))
+            .then(({data}) => {
+                    setLoginUserTreatmentCenterList(data.result.userTreatmentCenterVOList);
+                    setTreatmentCenterList(data.result.treatmentCenterVOList);
+
+                    console.log(data);
+                }
+            )
             .catch(()=>console.log('ERROR getLonginUserInfo'))
             .then(()=>{
                 if(searchAdmissionCenter.current.value){
@@ -279,8 +286,8 @@ function Admission() {
                                                 >
                                                     <option value={''}>선택</option>
                                                     {
-                                                        loginUserTreatmentCenterList&&
-                                                        loginUserTreatmentCenterList.map(value =>
+                                                        treatmentCenterList&&
+                                                        treatmentCenterList.map(value =>
                                                             <option key={value.centerId} value={value.centerId}>
                                                                 {value.centerNm}
                                                             </option>
@@ -347,7 +354,7 @@ function Admission() {
         </main>
             <>
                 {/* 신규 수정 모달*/}
-                <AdmissionSaveModal admissionSaveModalObj={admissionSaveModalObj} handledClose={handledCloseAdmissionSaveModal} centerList={loginUserTreatmentCenterList} />
+                <AdmissionSaveModal admissionSaveModalObj={admissionSaveModalObj} handledClose={handledCloseAdmissionSaveModal} centerList={treatmentCenterList} />
             </>
             <>
                 {/* 퇴소 모달*/}
