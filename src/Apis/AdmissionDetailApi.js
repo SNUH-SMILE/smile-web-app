@@ -23,7 +23,7 @@ class AdmissionDetailApi {
     async drugSelect () {
         try{
             const response = await AuthorizationAxios.get(
-                process.env.REACT_APP_BASE_URL + '/api/drug/test',
+                process.env.REACT_APP_BASE_URL + '/api/drug/listForDetail',
                 {params: {'admissionId': this.admissionId,}}
             );
             return response;

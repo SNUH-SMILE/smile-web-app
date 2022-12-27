@@ -22,7 +22,7 @@ function AdmissionDetail() {
     const [recordList,setRecordList] = useState([])
     useEffect(()=>{
         collapseNoticeArea();
-        test();
+        getDrugList();
         getInterviewList();
         setTabCode(0);
         admissionDetailApi.select().then(({data}) => {
@@ -65,7 +65,7 @@ function AdmissionDetail() {
         })
     }
     const [drugList, setDrugList] = useState();
-    const test = async () =>{
+    const getDrugList = async () =>{
         admissionDetailApi.drugSelect().then(({data}) => {
             setDrugList(data.result);
 
