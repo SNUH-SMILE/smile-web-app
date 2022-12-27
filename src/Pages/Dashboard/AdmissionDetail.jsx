@@ -9,6 +9,7 @@ import useAlert from "../../Utils/UseAlert";
 import {Nav} from "react-bootstrap";
 
 import InterviewList from "../../component/InterviewList";
+import {element} from "prop-types";
 
 function AdmissionDetail() {
     UseSetPageTitle('환자상세','Detail')
@@ -21,6 +22,7 @@ function AdmissionDetail() {
     const [recordList,setRecordList] = useState([])
     useEffect(()=>{
         collapseNoticeArea();
+        test();
         getInterviewList();
         setTabCode(0);
         admissionDetailApi.select().then(({data}) => {
@@ -30,6 +32,7 @@ function AdmissionDetail() {
           //  console.log(data);
         });
     },[])
+
 
     const today = new Date()
     const year = today.getFullYear()
@@ -55,11 +58,18 @@ function AdmissionDetail() {
             }
         }
     };
+
     const getInterviewList = async () =>{
         admissionDetailApi.getInterviewList().then(({data}) => {
             setInterviews(data.result);
-            //console.log(data.result);
         })
+    }
+    const [drugList, setDrugList] = useState();
+    const test = async () =>{
+        admissionDetailApi.drugSelect().then(({data}) => {
+            setDrugList(data.result);
+
+        });
     }
     const addNotice = async () => {
         if(!noticeText){
@@ -157,6 +167,39 @@ function AdmissionDetail() {
                                                 </InterviewList>
                                             ))}
                                         </div>
+                                        : null
+                                    }
+                                    {tabCode == 2 ?
+                                            <>
+                                            {drugList && drugList.filter(
+                                                (drug, index, callback) =>
+                                                    index ===  callback.findIndex((find) => find.noticeDd === drug.noticeDd)
+                                               )
+                                                .map((drug1) => (
+                                                    <>
+                                                    <div className="interview">
+                                                        <div className="interviewHeader"> <h3>{drug1.noticeDd.substring(0,4)}년{drug1.noticeDd.substring(4,6)}월{drug1.noticeDd.substring(6,8)}일</h3></div>
+                                                      <table style={{ width: '100%' }}>
+                                                          <colgroup>
+                                                              <col style={{ width: '30%' }} />
+                                                              <col style={{ width: '30%' }} />
+                                                              <col style={{ width: 'auto' }} />
+                                                          </colgroup>
+                                                            {drugList.filter(
+                                                                ( drug2, idx, callback) =>
+                                                                 drug1.noticeDd == drug2.noticeDd
+                                                                ).map((drug3)=>(
+                                                                    <tr>
+                                                                        <td>{drug3.noticeName}</td>
+                                                                        <td>{drug3.noticeTime.substring(0,2)}: {drug3.noticeTime.substring(2,4)}</td>
+                                                                        {drug3.drugDoseSeq != null ?<td>복용완료</td> : <td>복용 미완료</td>}
+                                                                    </tr>
+                                                               ))}
+                                                      </table>
+                                                    </div>
+                                                    </>
+                                            ))}
+                                           </>
                                         : null
                                     }
                                 </div>

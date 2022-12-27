@@ -6,6 +6,7 @@ function IsolationExitModal({isolationExitModalObj, handledClose, discharge}) {
     const todayInput = useRef()
     const [quantLocation, setQuantLocation] = useState();
     useEffect(()=>{
+        setQuantLocation('1')
         if(isolationExitModalObj.show){
             todayInput.current.value= getToday();
         }
