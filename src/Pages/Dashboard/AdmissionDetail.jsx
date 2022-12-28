@@ -3,7 +3,6 @@ import UseSetPageTitle from "../../Utils/UseSetPageTitle";
 import AdmissionDetailApi from "../../Apis/AdmissionDetailApi";
 import {TitleContext} from "../../Providers/TitleContext";
 import NoticeCard from "../../component/NoticeCard";
-
 import RecordCard from "../../component/RecordCard";
 import useAlert from "../../Utils/UseAlert";
 
