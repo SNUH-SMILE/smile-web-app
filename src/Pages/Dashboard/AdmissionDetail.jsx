@@ -5,6 +5,8 @@ import {TitleContext} from "../../Providers/TitleContext";
 import NoticeCard from "../../component/NoticeCard";
 import RecordCard from "../../component/RecordCard";
 import useAlert from "../../Utils/UseAlert";
+import {Nav} from "react-bootstrap";
+import InterviewList from "../../component/InterviewList";
 
 function AdmissionDetail() {
     UseSetPageTitle('환자상세','Detail')
