@@ -68,6 +68,7 @@ function AdmissionDetail() {
     const getDrugList = async () =>{
         admissionDetailApi.drugSelect().then(({data}) => {
             setDrugList(data.result);
+            console.log(data.result)
 
         });
     }
@@ -173,28 +174,30 @@ function AdmissionDetail() {
                                             <>
                                             {drugList && drugList.filter(
                                                 (drug, index, callback) =>
-                                                    index ===  callback.findIndex((find) => find.noticeDd === drug.noticeDd)
+                                                    index ===  callback.findIndex((find) => find.noticeDd == null ?find.noticeStartDate === drug.noticeStartDate :find.noticeDd === drug.noticeDd )
                                                )
                                                 .map((drug1) => (
                                                     <>
                                                     <div className="interview">
-                                                        <div className="interviewHeader"> <h3>{drug1.noticeDd.substring(0,4)}년{drug1.noticeDd.substring(4,6)}월{drug1.noticeDd.substring(6,8)}일</h3></div>
+                                                        <div className="interviewHeader"> <h3>{drug1.noticeStartDate && drug1.noticeStartDate.substring(0,4)}년{drug1.noticeStartDate && drug1.noticeStartDate.substring(4,6)}월{drug1.noticeStartDate && drug1.noticeStartDate.substring(6,8)}일</h3></div>
                                                       <table style={{ width: '100%' }}>
                                                           <colgroup>
                                                               <col style={{ width: '30%' }} />
                                                               <col style={{ width: '30%' }} />
                                                               <col style={{ width: 'auto' }} />
                                                           </colgroup>
+                                                          <tbody>
                                                             {drugList.filter(
                                                                 ( drug2, idx, callback) =>
-                                                                 drug1.noticeDd == drug2.noticeDd
+                                                                 drug1.noticeStartDate == drug2.noticeStartDate
                                                                 ).map((drug3)=>(
                                                                     <tr>
                                                                         <td>{drug3.noticeName}</td>
-                                                                        <td>{drug3.noticeTime.substring(0,2)}: {drug3.noticeTime.substring(2,4)}</td>
+                                                                        <td>{drug1.noticeTime && drug3.noticeTime.substring(0,2)}: {drug1.noticeTime && drug3.noticeTime.substring(2,4)}</td>
                                                                         {drug3.drugDoseSeq != null ?<td>복용완료</td> : <td>복용 미완료</td>}
                                                                     </tr>
                                                                ))}
+                                                          </tbody>
                                                       </table>
                                                     </div>
                                                     </>
