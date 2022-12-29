@@ -54,10 +54,10 @@ class AdmissionDetailApi {
         try{
             const response = await AuthorizationAxios.put(
                 process.env.REACT_APP_BASE_URL + '/api/patientDashboard/detail/notice',
-
-                JSON.stringify({
+                {
                     admissionId: this.admissionId,
-                }),
+                    notice: notice
+                }
             )
             return response;
         }catch (e) {
