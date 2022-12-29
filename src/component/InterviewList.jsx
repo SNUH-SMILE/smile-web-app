@@ -38,7 +38,7 @@ function InterviewList({interviewData, idx, type }) {
                                     <td colSpan="2">
                                         {contentValues.map((name,idx) =>
                                             <>
-                                                {content[name] &&  <input type="checkbox" id={content.interseq+idx.toString()} checked={(content.answerValue && content.answerValue.split(',').filter(i=>i == idx)>0)} className="form-check-input" readOnly/>}
+                                                {content[name] &&  <input type="checkbox" id={content.interseq+idx.toString()} checked={(content.answerValue && content.answerValue.split(',').filter(i=>i == idx).length>0)} className="form-check-input" readOnly/>}
                                                 {content[name] &&   <label className="form-check-label" > {content[name]}</label> }
                                             </>
                                         )}
