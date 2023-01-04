@@ -1342,7 +1342,7 @@ current-top .current-btn .btn {
 }
 
 .history-alarm .history .body {height:calc(100% - 135px);}
-.history-alarm .history .body textarea {height:100%;}
+.history-alarm .history .body .form-control {height:100%;}
 .history-alarm .history .body .btn-wrap {margin-top:20px; font-size:0; text-align:right}
 .history-alarm .history .body .btn-wrap button + button {margin-left:10px;}
 
@@ -1371,7 +1371,7 @@ current-top .current-btn .btn {
 }
 
 .history-alarm .history ul {
-    height:350px; overflow-y: auto;
+    height:450px; overflow-y: auto;
     margin:0; padding:20px 20px 0;
 }
 .history-alarm .history ul li div.from span {
@@ -1388,11 +1388,18 @@ current-top .current-btn .btn {
     height:450px; overflow-y: auto;
     margin:0; padding:20px 20px 0;
 }
-.history-alarm .history ul li {
+.history-alarm .history .record {
+    margin-top: 10px;
     list-style:none;
     padding: 15px;
     border-radius: 10px;
     background-color: #f0f6fb;
+}
+.history-alarm .history .msg {
+    border: none;
+    width: 100%;
+    height:calc(100% - 30px);
+    background-color: #f0f6fb;;
 }
 .history-alarm .history ul li + li {margin-top:10px;}
 .history-alarm .history ul li div.msg {
@@ -1422,7 +1429,7 @@ current-top .current-btn .btn {
     color: #999;
 }
 .history-alarm .footer {
-    height:calc(100% - 350px);
+    height:calc(100% - 535px);
     margin-top:20px; padding:0 20px;
 }
 .history-alarm .footer form {

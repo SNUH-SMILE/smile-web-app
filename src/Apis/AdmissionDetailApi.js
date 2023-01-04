@@ -50,6 +50,22 @@ class AdmissionDetailApi {
             return false;
         }
     }
+    async recordUpdate (medicalSeq,medicalRecord,medicalDate){
+        try{
+            const response = await AuthorizationAxios.patch(process.env.REACT_APP_BASE_URL + '/api/patientDashboard/detail/record/update',
+                JSON.stringify({
+                    admissionId: this.admissionId,
+                    medicalSeq:medicalSeq,
+                    record:medicalRecord,
+                    medicalDate:medicalDate
+                }),
+                {headers: {'Content-Type': "application/json"}});
+            return response;
+        }catch (e) {
+            console.log(`AdmissionApi Update`);
+            return false;
+        }
+    }
     async addNotice (notice) {
         try{
             const response = await AuthorizationAxios.put(
