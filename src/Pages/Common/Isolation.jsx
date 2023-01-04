@@ -195,12 +195,10 @@ function Isolation() {
         {Header: '체온', accessor: 'btResult', vital:true},
         {Header: '산소포화도', accessor: 'spResult', vital:true},
         {Header: '격리상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editElementType:'Isolation',editEvent:handledIsolationExitModal},
-        {Header: '체온다운', accessor: 'btDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
-        {Header: '심박다운', accessor: 'prDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
-        {Header: '호흡다운', accessor: 'rrDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort}
+        {Header: '영상다운', accessor: 'videoDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
+        {Header: '추론', accessor: 'aiExe', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
 
     ]
-
     // 검색 Input Enter 이벤트
     const handledOnSearch = (e) => {
         if (e.keyCode === 13 || e.target.tagName === 'BUTTON'|| e.target.tagName === 'SELECT') {
