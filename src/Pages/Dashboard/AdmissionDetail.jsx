@@ -10,6 +10,7 @@ import {Nav} from "react-bootstrap";
 
 import InterviewList from "../../component/InterviewList";
 import {element} from "prop-types";
+import getToday from "../../Utils/common";
 
 function AdmissionDetail() {
     UseSetPageTitle('환자상세','Detail')
@@ -20,7 +21,16 @@ function AdmissionDetail() {
     const admissionDetailApi=new AdmissionDetailApi(localStorage.getItem('admissionId'));
     const [noticeList,setNoticeList] = useState([])
     const [recordList,setRecordList] = useState([])
+    const [isRecord, setIsRecord] = useState();
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = today.getMonth();
+    const day = today.getDate();
+    const date = useState();
+    const [medicalSeq,setMedicalSeq] = useState();
+    const todayInput =useRef();
     useEffect(()=>{
+        todayInput.current.value = getToday();
         collapseNoticeArea();
         getDrugList();
         getInterviewList();
@@ -34,11 +44,8 @@ function AdmissionDetail() {
     },[])
 
 
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = today.getMonth();
-    const day = today.getDate();
-    const date = useState();
+
+
 
     const [interviews, setInterviews] = useState();
     const [noticeText,setNoticeText] = useState('');
@@ -68,15 +75,14 @@ function AdmissionDetail() {
     const getDrugList = async () =>{
         admissionDetailApi.drugSelect().then(({data}) => {
             setDrugList(data.result);
-            console.log(data.result)
+            //console.log(data.result)
 
         });
     }
     const addNotice = async () => {
         if(!noticeText){
             alert('알림 내용이 공백입니다.')
-        }
-        else{
+        }else{
             const confirmStatus = await confirm('알림을 생성하시겠습니까?');
             if(confirmStatus){
                 admissionDetailApi.addNotice(noticeText,date).then(({data}) => {
@@ -99,10 +105,26 @@ function AdmissionDetail() {
 
         if (!record) {
             alert('작성 내용이 공백입니다.')
-        } else {
+        } else if (isRecord){
+            const confirmStatus = await confirm('기록을 수정하시겠습니까?');
+            if (confirmStatus) {
+
+                admissionDetailApi.recordUpdate(medicalSeq,record,todayInput.current.value).then(({data}) => {
+                    if (data.code === '00') {
+                        alert(data.message);
+                        setRecordList(data.result);
+                        setRecord('');
+                    } else {
+                        alert(data.message);
+                    }
+                });
+            }
+        }
+        else if(!isRecord && record) {
             const confirmStatus = await confirm('기록을 생성하시겠습니까?');
             if (confirmStatus) {
-                admissionDetailApi.addRecord(record,date).then(({data}) => {
+
+                admissionDetailApi.addRecord(record,todayInput.current.value ).then(({data}) => {
                     if (data.code === '00') {
                         alert(data.message);
                         setRecordList(data.result);
@@ -114,6 +136,17 @@ function AdmissionDetail() {
             }
         }
 
+    }
+    const recordReset = () =>{
+        todayInput.current.value = getToday();
+        setRecord('');
+        setIsRecord(false);
+    }
+    const recordSelect =(data, idx, date, recordIdx) =>{
+        setMedicalSeq(recordIdx);
+        todayInput.current.value=date;
+        setRecord(data)
+        setIsRecord(true)
     }
     const noticeArea = useRef();
     const collapseNoticeArea = ()=>{
@@ -218,7 +251,7 @@ function AdmissionDetail() {
                             <ul className="scrollbar" role={'recordList'}>
                                 {recordList && recordList.map((value,idx) => {
                                     return(
-                                        <RecordCard data={value} key={idx}/>
+                                        <RecordCard data={value} key={idx} idx={idx} record={record} recordSelect={recordSelect}/>
                                     )
                                 })}
                             </ul>
@@ -235,7 +268,8 @@ function AdmissionDetail() {
                                 </form>
                             </div>
                             <div className="btn-wrap">
-                                <button type="button" className="btn btn-gr3">신규</button>
+                                <input type="date" className="form-control w200 ms-auto" ref={todayInput}/>
+                                <button type="button" className="btn btn-pr3" onClick={recordReset}>신규</button>
                                 <button type="button" className="btn btn-pr3" onClick={recordSave}>저장</button>
                             </div>
                         </div>

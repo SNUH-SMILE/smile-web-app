@@ -1,20 +1,42 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 
-function RecordCard({data}) {
-    const { medicalSeq, medicalRecord ,medicalRecorder, medicalDate } = data;
+function RecordCard({data, idx, record, recordSelect}) {
+    const { medicalSeq, medicalRecord ,medicalRecorder, medicalDate ,updateDate, updateRecorder} = data;
+    const recordResize = useRef();
+    useEffect(() => {
+  //      console.log(record);
+    });
+    const onRecordResize =() =>{
+        console.log(recordResize.current.id.substr(6))
+      //  console.log(recordResize.current.children[1].children[1].innerHTML)
+        record = recordResize.current.children[0].value;
+        if(recordResize.current.style.height == '240px'){
+            recordResize.current.style.height = '130px'
+        }else{
+
+            recordResize.current.style.height = '240px'
+        }
+        recordSelect(recordResize.current.children[0].value, idx, recordResize.current.children[1].children[1].innerHTML,recordResize.current.id.substr(6))
+    }
+
     useEffect(()=>{
         document.querySelector('#record'+medicalSeq).focus()
     },[])
     return (
-        <li tabIndex={-1} id={'record'+medicalSeq}>
-            <div className="msg">
+        <div className="record" ref={recordResize} tabIndex={-1} id={'record'+medicalSeq} onClick={onRecordResize}>
+            <textarea className="msg">
                 {medicalRecord}
-            </div>
+            </textarea>
             <div className="from d-flex">
-                <span>{medicalRecorder}</span>
+
+                {updateRecorder ?
+                    <span>{updateRecorder}</span>
+                    :
+                    <span>{medicalRecorder}</span>
+                }
                 <span className="ms-auto">{medicalDate}</span>
             </div>
-        </li>
+        </div>
     );
 }
 
