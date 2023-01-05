@@ -108,7 +108,7 @@ const Detail = ({dashBoardData}) => {
     },[])
 
     /*생활치료센터 퇴소 API*/
-    const discharge2 = useCallback(async (admissionId, dischargeDate,quantLocation, patientNm) => {
+    const discharge2 = useCallback(async (admissionId, dischargeDate,quantLocation, patientNm, centerId) => {
         if(dischargeDate===''){
             alert('퇴소일이 공백입니다.')
         }
@@ -119,7 +119,7 @@ const Detail = ({dashBoardData}) => {
         else{
             const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`)
             if(confirmState) {
-                admissionApi.discharge(admissionId, dischargeDate, quantLocation, dashBoardData.centerId).then(({data}) => {
+                admissionApi.discharge(admissionId, dischargeDate, quantLocation, centerId).then(({data}) => {
                     if(data.code==='00'){
                         alert(data.message)
                         handledCloseAdmissionExitModal()
