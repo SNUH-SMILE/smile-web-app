@@ -164,6 +164,12 @@ function Admission() {
             saveData[nullList[0]].current.focus();
             return false;
         }
+        if(saveData.cellPhone.current.value.length < 11){
+            alert('연락처 길이가 맞지 않습니다 ')
+            saveData[nullList[0]].current.focus();
+            return false
+        }
+
         else if(saveData['admissionDate'].current.value >= saveData['dschgeSchdldDate'].current.value){
             alert('종료 예정일은 시작일 이후이어야 합니다.')
             saveData['dschgeSchdldDate'].current.focus();

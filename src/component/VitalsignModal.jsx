@@ -368,11 +368,11 @@ function VitalsignModal({show, handledClose}) {
                     <strong className="dcon">{header.dispCellPhoneInfo}</strong>
                 </div>
                 <div className="me-4 d-flex" style={{marginLeft:'450px'}}>
-                    <span className="dtit">측정일</span>
+                   {/* <span className="dtit">측정일</span>
                     <input type="range" min={0}
                            max={header.searchDtList&&header.searchDtList.length-1}
                            onMouseUp={(e)=>handledRangeValue(e)}
-                           value ={header.searchDtList&&header.searchDtList.map[rangeValue]}/>
+                           value ={header.searchDtList&&header.searchDtList.map[rangeValue]}/>*/}
                 </div>
             </Modal.Header>
             <Modal.Body style={{paddingTop:'15px',overflow:'hidden'}}>

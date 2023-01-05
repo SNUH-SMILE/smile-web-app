@@ -48,7 +48,7 @@ function IsolationExitModal({isolationExitModalObj, handledClose, discharge}) {
                             </td>
                         </tr>
                         <tr>
-                            <th>퇴소일자</th>
+                            <th>격리해제 일자</th>
                             <td>
                                 {/*오늘날짜 기본 셋팅*/}
                                 <input className="form-control w-100 date" type="date"
@@ -57,7 +57,7 @@ function IsolationExitModal({isolationExitModalObj, handledClose, discharge}) {
                             </td>
                         </tr>
                         <tr>
-                            <th>퇴소시 위치</th>
+                            <th>격리해제시 위치</th>
                             <td>
                                 <div className="form-check form-check-inline">
                                     <input className="form-check-input"
