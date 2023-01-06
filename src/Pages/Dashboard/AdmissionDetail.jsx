@@ -203,7 +203,10 @@ function AdmissionDetail() {
                                     }
                                     {tabCode == 2 ?
                                         <>
-                                        {drugList && drugList.map((drug1) => (
+                                        {drugList && drugList.filter(
+                                            (drug, index, callback) =>
+                                                index ===  callback.findIndex((find) => find.drugDoseVO.length > 0)
+                                        ).map((drug1) => (
                                             <div className="interview">
                                                 <div className="interviewHeader"> <h3>{drug1.admissionDate && drug1.admissionDate.substring(0,4)}년{drug1.admissionDate && drug1.admissionDate.substring(4,6)}월{drug1.admissionDate && drug1.admissionDate.substring(6,8)}일</h3></div>
                                                 <table style={{ width: '100%' }}>
