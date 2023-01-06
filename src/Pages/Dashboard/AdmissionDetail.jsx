@@ -202,7 +202,33 @@ function AdmissionDetail() {
                                         : null
                                     }
                                     {tabCode == 2 ?
-                                            <>
+                                        <>
+                                        {drugList && drugList.map((drug1) => (
+                                            <div className="interview">
+                                                <div className="interviewHeader"> <h3>{drug1.admissionDate && drug1.admissionDate.substring(0,4)}년{drug1.admissionDate && drug1.admissionDate.substring(4,6)}월{drug1.admissionDate && drug1.admissionDate.substring(6,8)}일</h3></div>
+                                                <table style={{ width: '100%' }}>
+                                                    <colgroup>
+                                                        <col style={{ width: '30%' }} />
+                                                        <col style={{ width: '30%' }} />
+                                                        <col style={{ width: 'auto' }} />
+                                                    </colgroup>
+                                                    <tbody>
+                                                    {drug1.drugDoseVO && drug1.drugDoseVO.map((drug2)=> (
+                                                    <tr>
+                                                        <td> {drug2.noticeName}</td>
+                                                        <td>{drug2.noticeTime && drug2.noticeTime.substring(0,2)}: {drug2.noticeTime && drug2.noticeTime.substring(2,4)}</td>
+                                                        {drug2.drugDoseSeq > 0 ?<td>복용완료</td> : <td>복용 미완료</td>}
+
+                                                    </tr>
+                                                    ))
+                                                    }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        ))}
+                                        </>
+
+                                            /*<>
                                             {drugList && drugList.filter(
                                                 (drug, index, callback) =>
                                                     index ===  callback.findIndex((find) => find.noticeDd == null ?find.noticeStartDate === drug.noticeStartDate :find.noticeDd === drug.noticeDd )
@@ -233,7 +259,7 @@ function AdmissionDetail() {
                                                     </div>
                                                     </>
                                             ))}
-                                           </>
+                                           </>*/
                                         : null
                                     }
                                 </div>
