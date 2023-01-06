@@ -201,7 +201,7 @@ function Isolation() {
         {Header: '산소포화도', accessor: 'spResult', vital:true},
         {Header: '격리상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editElementType:'Isolation',editEvent:handledIsolationExitModal},
         {Header: '영상다운', accessor: 'videoDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
-        {Header: '추론', accessor: 'aiExe', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
+        {Header: '추론', accessor: 'aiExe', editElement:'aiExeButton', editElementType:'Isolation',editEvent:handledIsolationExitModal},
 
     ]
     // 검색 Input Enter 이벤트
