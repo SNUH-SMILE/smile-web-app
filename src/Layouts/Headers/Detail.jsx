@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Badge} from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import VitalsignModal from "../../component/VitalsignModal";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -355,26 +356,37 @@ const Detail = ({dashBoardData}) => {
                                                 <em> {recentResultInfo && recentResultInfo.sleepUnit}</em>
                                             </div>
                                         </MH83Li>
-                                        <MH83Li className="bl_8" onClick={showVitalsignModal}>
-                                            <h2>호흡기계 위험도</h2>
-                                            <p>{recentResultInfo && recentResultInfo.riskScoreResultDt}</p>
-                                            <div>
-                                                <span>{recentResultInfo && recentResultInfo.riskScoreNm}</span>
-                                                <span>&nbsp; &nbsp;  {recentResultInfo && recentResultInfo.riskScoreResult}</span>
-                                            </div>
-                                            <div>
-                                                <span>{recentResultInfo && recentResultInfo.riskTemperNm}</span>
-                                                <span>&nbsp; &nbsp;  {recentResultInfo && recentResultInfo.riskTemperResult}</span>
-                                            </div>
-                                        </MH83Li>
-                                        <MH83Li className="bl_9" onClick={showVitalsignModal}>
-                                            <h2>정신건강 위험도</h2>
-                                            <p>{recentResultInfo && recentResultInfo.mentalRiskResultDt}</p>
-                                            <div>
-                                                <span>{recentResultInfo && recentResultInfo.mentalRiskNm}</span>
-                                                <span>&nbsp; &nbsp;  {recentResultInfo && recentResultInfo.mentalRiskResult}</span>
-                                            </div>
-                                        </MH83Li>
+                                        <OverlayTrigger placement="bottom" overlay={<Tooltip id="tooltip2">
+                                                            본 알람은 실시간 데이터 수집에 따른 ai추론 알고리즘기반 환자상태 예측 결과입니다 본 지표는 참고용일뿐 임상 전 판단 밑 처치는 의료진의 판단에 따라 이루어져야 합니다.
+                                        </Tooltip>}>
+
+                                            <MH83Li className="bl_8" onClick={showVitalsignModal}>
+                                                <h2>감염 악화</h2>
+
+                                                <p>{recentResultInfo && recentResultInfo.riskScoreResultDt}</p>
+                                                <div>
+                                                    <span>{recentResultInfo && recentResultInfo.riskScoreNm}</span>
+                                                    <span>&nbsp; &nbsp;  {recentResultInfo && recentResultInfo.riskScoreResult}</span>
+                                                </div>
+                                                <div>
+                                                    <span>{recentResultInfo && recentResultInfo.riskTemperNm}</span>
+                                                    <span>&nbsp; &nbsp;  {recentResultInfo && recentResultInfo.riskTemperResult}</span>
+                                                </div>
+                                            </MH83Li>
+                                        </OverlayTrigger>
+                                        <OverlayTrigger placement="bottom" overlay={<Tooltip id="tooltip2">
+                                            본 알람은 실시간 데이터 수집에 따른 ai추론 알고리즘기반 환자상태 예측 결과입니다 본 지표는 참고용일뿐 임상 전 판단 밑 처치는 의료진의 판단에 따라 이루어져야 합니다.
+                                        </Tooltip>}>
+
+                                            <MH83Li className="bl_9" onClick={showVitalsignModal}>
+                                                    <h2>정신건강 악화</h2>
+                                                    <p>{recentResultInfo && recentResultInfo.mentalRiskResultDt}</p>
+                                                    <div>
+                                                        <span>{recentResultInfo && recentResultInfo.mentalRiskNm}</span>
+                                                        <span>&nbsp; &nbsp;  {recentResultInfo && recentResultInfo.mentalRiskResult}</span>
+                                                    </div>
+                                                </MH83Li>
+                                         </OverlayTrigger>
                                     </ul>
                                 </div>
                             </div>
