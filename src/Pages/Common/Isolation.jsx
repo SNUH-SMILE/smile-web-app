@@ -164,6 +164,15 @@ function Isolation() {
     const handledIsolationExitModal = (admissionId) =>{
         isolationApi.detail(admissionId).then(({data}) => setIsolationExitModalObj({show: true, data: {...data.result}}))
     };
+
+
+    //추론 오류 모달
+    const [isolationLogModalObj,setIsolationLogModalObj] = useState({show:false,data: {}});
+    //추론 오류 모달
+    const handledIsolationLogModal = (admissionId) =>{
+        isolationApi.logDetail(admissionId).then(({data}) => setIsolationLogModalObj({show: true, data: {...data.result}}))
+    };
+
     const discharge = useCallback(async (admissionId, dischargeDate,quantLocation,patientNm) => {
         if(dischargeDate===''){
             alert('격리해제일이 공백입니다.');

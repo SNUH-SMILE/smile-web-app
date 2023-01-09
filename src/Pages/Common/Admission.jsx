@@ -119,6 +119,13 @@ function Admission() {
     const handledAdmissionExitModal = (admissionId) =>{
         admissionApi.detail(admissionId).then(({data}) => setAdmissionExitModalObj({show: true, data: {...data.result}}))
     }
+
+    const [admissionLogModalObj,setAdmissionLogModalObj] = useState({show:false,data: {}});
+    //추론 로그 모달
+    const handledAdmissionLogModal = (admissionId) =>{
+        admissionApi.logDetail(admissionId).then(({data}) => setAdmissionLogModalObj({show: true, data: {...data.result}}))
+
+    }
     const discharge = useCallback(async (admissionId, dischargeDate,quantLocation, patientNm) => {
         if(dischargeDate===''){
             alert('퇴소일이 공백입니다.')
@@ -262,7 +269,7 @@ function Admission() {
         {Header: '산소포화도', accessor: 'spResult', vital:true},
         {Header: '재원상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editEvent:handledAdmissionExitModal},
         {Header: '영상다운', accessor: 'videoDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
-        {Header: '추론', accessor: 'aiExe', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
+        {Header: '추론', accessor: 'aiExe', editElement:'aiExeButton', editElementType:'Admission'},
     ]
     return (
         <>

@@ -164,6 +164,19 @@ class AdmissionApi {
             return false;
         }
     }
+
+    async logDetail (admissionId) {
+        try{
+            const response = await AuthorizationAxios.get(
+                process.env.REACT_APP_BASE_URL + '/api/admission/logInfo',
+                {params:{admissionId:admissionId}}
+            );
+            return response;
+        }catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
 }
 
 export default AdmissionApi;
