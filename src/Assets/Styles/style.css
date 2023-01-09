@@ -1831,3 +1831,81 @@ input[type=range] {
     display: flex;
     alignItems: center;
 }
+.videoCamera.on{
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    width: 31px;
+    height: 34px;
+    margin-left: 4px;
+    background:url("../Images/video-cameraOn.png") no-repeat center;
+    border: none;
+}
+.videoCamera.off{
+     position: relative;
+     top: 1px;
+     display: inline-block;
+     width: 31px;
+     height: 34px;
+     margin-left: 4px;
+     background:url("../Images/video-cameraOff.png") no-repeat center;
+     border: none;
+ }
+.audio.on{
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    width: 31px;
+    height: 35px;
+    margin-left: 4px;
+    background:url("../Images/microphone-on.png") no-repeat center;
+    border: none;
+}
+.audio.off{
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    width: 31px;
+    height: 35px;
+    margin-left: 4px;
+    background:url("../Images/microphone-off.png") no-repeat center;
+    border: none;
+}
+.record.on{
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    width: 40px;
+    height: 41px;
+    margin-left: 4px;
+    background:url("../Images/recordOn.png") no-repeat center;
+    border: none;
+}
+.record.off{
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    width: 40px;
+    height: 41px;
+    margin-left: 4px;
+    background:url("../Images/recordOff.png") no-repeat center;
+    border: none;
+}
+.screenShare{
+    position: relative;
+    display: inline-block;
+    width: 47px;
+    height: 40px;
+    background:url("../Images/screenShare.png") no-repeat center;
+    border: none;
+}
+.floatLeftRightDiv {
+    display: flex;
+}
+.floatLeftRightDiv .left{
+    float: left;
+    margin-left: 24px;
+}
+.left p{
+    font-size: 12px;
+}

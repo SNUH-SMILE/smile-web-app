@@ -87,7 +87,6 @@ function VideoPopup() {
     const handledArchive = () => {
         opentok.archive(api.sessionId, localStorage.getItem("admissionId")).then(({data}) => {
             if (data.code === '00') {
-
                 alert(data.message)
                 setArchiveId(data.result);
             } else {
@@ -98,6 +97,7 @@ function VideoPopup() {
     const handledSessionStop = () => {
         const session = OT.initSession(api.apiKey, api.sessionId);
         session.disconnect();
+
       //  window.addEventListener('unload');
         window.close();
         console.log(session)
@@ -108,6 +108,7 @@ function VideoPopup() {
             opentok.archiveStop(archiveId).then(({data}) => {
                 if (data.code == '00') {
                     alert(data.message)
+                    setArchiveId(null);
                 } else {
                     alert(data.message)
                 }
@@ -209,16 +210,57 @@ function VideoPopup() {
                         </main>
                     </div>
                 </div>
-                <div>
-                    <ButtonH34 type="button" className="btn btn-primary" onClick={setChatVideo}>비디오</ButtonH34>
-                    <ButtonH34 type="button" className="btn btn-primary" onClick={setChatAudio}>음소거</ButtonH34>
-                   {/* <ButtonH34 type="button" className="btn btn-primary" onClick={openChat}>채팅</ButtonH34>*/}
-                </div>
-                <div>
-                    <ButtonH34 type="button" className="btn btn-primary" onClick={handleScreenShare}>화면공유</ButtonH34>
-                    <ButtonH34 type="button" className="btn btn-primary" onClick={handledArchive}>녹음 시작</ButtonH34>
-                    <ButtonH34 type="button" className="btn btn-primary" onClick={handledArchiveStop} disabled={!archiveId}>녹음 중지</ButtonH34>
-                    <ButtonH34 type="button" className="btn btn-primary" onClick={handledSessionStop} >세션종료</ButtonH34>
+                <div className="floatLeftRightDiv">
+                    <div className="left">
+                            {video ?
+                                <>
+                                    <button className="videoCamera on" style={{backgroundSize: "90%"}} onClick={setChatVideo}/>
+                                    <p>비디오 중지</p>
+                                  </>
+                                : <>
+                                    <button className="videoCamera off" style={{backgroundSize: "90%"}} onClick={setChatVideo}/>
+                                    <p>비디오 재생</p>
+                                 </>
+                            }
+                    </div>
+                    <div className="left">
+                        {audio ?
+                            <>
+                                <button className="audio on" style={{backgroundSize: "90%"}} onClick={setChatAudio}/>
+                                <p>오디오 중지</p>
+                            </>
+                            : <>
+                                <button className="audio off" style={{backgroundSize: "90%"}} onClick={setChatAudio}/>
+                                <p>오디오 재생</p>
+                            </>
+                        }
+                    </div>
+                    <div className="left">
+                        {archiveId == null ?
+                            <>
+                                <button className="record on" style={{backgroundSize: "90%"}} onClick={handledArchive}/>
+                                <p>녹화시작</p>
+                            </>
+                            : <>
+                                <button className="record off" style={{backgroundSize: "90%"}} onClick={handledArchiveStop}/>
+                                <p>녹화 중지</p>
+                            </>
+                        }
+
+                        {/*    <ButtonH34 type="button" className="videoCamera on" onClick={setChatVideo}></ButtonH34>*/}
+                        {/*  <ButtonH34 type="button" className="btn btn-primary" onClick={setChatAudio}>음소거</ButtonH34>*/}
+                        {/* <ButtonH34 type="button" className="btn btn-primary" onClick={openChat}>채팅</ButtonH34>*/}
+                      {/*  <ButtonH34 type="button" className="btn btn-primary" onClick={handleScreenShare}>화면공유</ButtonH34>
+                        <ButtonH34 type="button" className="btn btn-primary" onClick={handledArchive}>녹음 시작</ButtonH34>
+                        <ButtonH34 type="button" className="btn btn-primary" onClick={handledArchiveStop} disabled={!archiveId}>녹음 중지</ButtonH34>*/}
+                    </div>
+                    <div className="left">
+                        <button className="screenShare" style={{backgroundSize: "90%"}} onClick={handledArchive}/>
+                        <p>녹화시작</p>
+                    </div>
+                    <div style={{marginLeft:'80%'}}>
+                        <ButtonH34 type="button" className="btn btn-primary" onClick={handledSessionStop} >세션종료</ButtonH34>
+                    </div>
                 </div>
             </div>
         </div>

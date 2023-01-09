@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {getLonginUserInfo} from "../../Apis/CommonCode";
 import styled from "styled-components";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const BlackOption = styled.option`
   color: #333;
@@ -68,8 +69,15 @@ const Dashboard = ({mode, data, dashBoardFunc}) => {
                     <div className="d-flex mb-1 bts">
                         <div><p>중증도 악화</p></div>
                         <span className="basic"><i/> 없음</span>
-                        <span className="taste"><i/> 호흡기계</span>
-                        <span className="smell"><i/> 정신건강</span>
+                        <span className="taste"><i/> 감염약화</span>
+                        <OverlayTrigger placement="bottom"
+                                        overlay={<Tooltip id="tooltip2">
+                                            <text>본 알람은 실시간 데이터 수집에 따른 ai추론 알고리즘기반 환자상태 예측 결과입니다. <br/>'감염악화'는 병원입원기능성이 있거나 발열위험이 있는 경우를 의미합니다. <br/>
+                                            '정신건강 악화'는 격리해제 이후 우울증 또는 불안장애로 진행할 위험이 있음을 의미합니다.본 지표는 참고용일 뿐, 임상적 판단 및 처치는 의료진의 판단에 따라 이루어져야 합니다.
+                                            </text>
+                                        </Tooltip>}>
+                        <span className="smell"><i/> 정신건강 약화</span>
+                        </OverlayTrigger>
                     </div>
                 </div>
                 <div className="dashboard_head-text">

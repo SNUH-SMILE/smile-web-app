@@ -91,7 +91,6 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                 </thead>
                 <tbody {...getTableBodyProps()}>
                 {
-
                     pagination ?
                         page.map((row) => {
                             prepareRow(row)
