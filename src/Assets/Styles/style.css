@@ -1873,29 +1873,25 @@ input[type=range] {
 }
 .record.on{
     position: relative;
-    top: 1px;
     display: inline-block;
-    width: 40px;
-    height: 41px;
-    margin-left: 4px;
-    background:url("../Images/recordOn.png") no-repeat center;
+    width: 39px;
+    height: 34px;
+    background:url("../Images/record_on.png") no-repeat center;
     border: none;
 }
 .record.off{
     position: relative;
-    top: 1px;
     display: inline-block;
-    width: 40px;
-    height: 41px;
-    margin-left: 4px;
-    background:url("../Images/recordOff.png") no-repeat center;
+    width: 39px;
+    height: 34px;
+    background:url("../Images/record_off.png") no-repeat center;
     border: none;
 }
 .screenShare{
     position: relative;
     display: inline-block;
-    width: 47px;
-    height: 40px;
+    width: 38px;
+    height: 36px;
     background:url("../Images/screenShare.png") no-repeat center;
     border: none;
 }
