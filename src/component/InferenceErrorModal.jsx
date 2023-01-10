@@ -24,19 +24,18 @@ function InferenceErrorModal({inferenceModal, handledClose}) {
                 <Modal.Title>추론오류 리스트</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="table-responsive">
+                <div className="table-responsive" style={{height:'600px',overflow :"scroll"}}>
                     <table className="table table-borderless mt-3">
                         <tbody>
                         <tr>
                             <th>일자</th>
+                            <th>추론</th>
                             <th>메세지</th>
                         </tr>
-                       {/* <tr> {inference.length > 0 && inference.map(value =><td>  {value.admissionId}</td>)} </tr>*/}
                       {inference.length >0 && inference.map((value,idx)=>(
                         <tr>
-
                             <td>{value.cdate}</td>
-
+                            <td>{value.infDivNm}</td>
                             <td>{value.message.substring(value.message.lastIndexOf('=')+1)}</td>
 
                         </tr>
