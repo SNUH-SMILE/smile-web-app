@@ -357,7 +357,7 @@ const Detail = ({dashBoardData}) => {
                                             </div>
                                         </MH83Li>
                                         <OverlayTrigger placement="bottom" overlay={<Tooltip id="tooltip2">
-                                                            본 알람은 실시간 데이터 수집에 따른 ai추론 알고리즘기반 환자상태 예측 결과입니다 본 지표는 참고용일뿐 임상 전 판단 밑 처치는 의료진의 판단에 따라 이루어져야 합니다.
+                                                            본 알람은 실시간 데이터 수집에 따른 ai추론알고리즘기반 환자상태 예측 결과입니다 본 지표는 참고용일뿐 임상 전 판단 밑 처치는 의료진의 판단에 따라 이루어져야 합니다.
                                         </Tooltip>}>
 
                                             <MH83Li className="bl_8" onClick={showVitalsignModal}>

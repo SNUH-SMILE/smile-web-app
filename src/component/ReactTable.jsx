@@ -435,6 +435,10 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                         <td className={cell.column.styleClassName} {...cell.getCellProps()}>
                                                             <button type="button"
                                                                     className={cell.value === 'X'? "btn btn-exit" : "btn btn-exit-done"}
+                                                                    onClick={cell.column.editEvent
+                                                                        ? ()=>{cell.column.editEvent(row.original.admissionId)}
+                                                                        : null
+                                                                    }
                                                             >
                                                                 {cell.column.editElementType !== 'Isolation'? cell.value === 'O' ? '추론완료' :'추론오류': null}
                                                                 {cell.column.editElementType === 'Isolation'? cell.value === 'O' ? '추론완료' :'추론오류': null}

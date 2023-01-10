@@ -239,7 +239,7 @@ function VideoPopup() {
                         {archiveId == null ?
                             <>
                                 <button className="record on" style={{backgroundSize: "90%"}} onClick={handledArchive}/>
-                                <p>녹화시작</p>
+                                <p>녹화 시작</p>
                             </>
                             : <>
                                 <button className="record off" style={{backgroundSize: "90%"}} onClick={handledArchiveStop}/>
@@ -255,8 +255,8 @@ function VideoPopup() {
                         <ButtonH34 type="button" className="btn btn-primary" onClick={handledArchiveStop} disabled={!archiveId}>녹음 중지</ButtonH34>*/}
                     </div>
                     <div className="left">
-                        <button className="screenShare" style={{backgroundSize: "90%"}} onClick={handledArchive}/>
-                        <p>녹화시작</p>
+                        <button className="screenShare" style={{backgroundSize: "90%"}} onClick={handleScreenShare}/>
+                        <p>화면 공유</p>
                     </div>
                     <div style={{marginLeft:'80%'}}>
                         <ButtonH34 type="button" className="btn btn-primary" onClick={handledSessionStop} >세션종료</ButtonH34>

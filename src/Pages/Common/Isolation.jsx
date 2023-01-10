@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Pagination from "../../component/Pagination";
 import IsolationExitModal from "../../component/IsolationExitModal";
 import IsolationSaveModal from "../../component/IsolationSaveModal";
+import InferenceErrorModal from "../../component/InferenceErrorModal";
 import ReactTable from "../../component/ReactTable";
 import IsolationApi from "../../Apis/IsolationApi";
 import useAlert from "../../Utils/UseAlert";
@@ -18,6 +19,7 @@ function Isolation() {
     const [paginationObj, setPaginationObj] = useState({currentPageNo: 1, pageSize: 10, recordCountPerPage: 15})
     const [totalPageCount, setTotalPageCount] = useState(null);
     const [isolationTableData,setIsolationTableData] = useState([]);
+
     // 정렬
     // By: 정렬 컬럼명
     // Div: 정렬 방식 ('' || asc || desc)
@@ -164,8 +166,18 @@ function Isolation() {
     const handledIsolationExitModal = (admissionId) =>{
         isolationApi.detail(admissionId).then(({data}) => setIsolationExitModalObj({show: true, data: {...data.result}}))
     };
-
-
+    /*추론오류 모달*/
+    const [inferenceModal, setInferenceModal] = useState({show:false, data:{}});
+    /*추론 오류 팝업 닫기 */
+    const handledCloseInterfaceExitModal = () =>{
+        setInferenceModal({show: false, data:{}});
+    }
+    /*추론 오류 팝업 열기*/
+    const handledInferenceModal = (admissionId) =>{
+        isolationApi.logDetail(admissionId).then(({data}) => {
+            setInferenceModal({show: true, data: data.result})
+        })
+    }
     //추론 오류 모달
     const [isolationLogModalObj,setIsolationLogModalObj] = useState({show:false,data: {}});
     //추론 오류 모달
@@ -210,7 +222,7 @@ function Isolation() {
         {Header: '산소포화도', accessor: 'spResult', vital:true},
         {Header: '격리상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editElementType:'Isolation',editEvent:handledIsolationExitModal},
         {Header: '영상다운', accessor: 'videoDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
-        {Header: '추론', accessor: 'aiExe', editElement:'aiExeButton', editElementType:'Isolation',editEvent:handledIsolationExitModal},
+        {Header: '추론', accessor: 'aiExe', editElement:'aiExeButton', editElementType:'Isolation',editEvent:handledInferenceModal},
 
     ]
     // 검색 Input Enter 이벤트
@@ -289,6 +301,10 @@ function Isolation() {
             <>
                 {/* 퇴소 모달*/}
                 <IsolationExitModal isolationExitModalObj={isolationExitModalObj} handledClose={handledCloseIsolationExitModal} discharge={discharge}/>
+            </>
+            <>
+                {/* 추론오류 모달 */}
+                <InferenceErrorModal inferenceModal={inferenceModal} handledClose={handledCloseInterfaceExitModal}/>
             </>
         </>
     );
