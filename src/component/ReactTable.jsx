@@ -433,6 +433,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                 else if(cell.column.editElement === 'aiExeButton'){
                                                     return (
                                                         <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            {cell.value !== 'N' &&
                                                             <button type="button"
                                                                     className={cell.value === 'X'? "btn btn-exit" : "btn btn-exit-done"}
                                                                     onClick={cell.column.editEvent && cell.value !== 'N'
@@ -443,6 +444,7 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                                 {cell.column.editElementType !== 'Isolation'? cell.value === 'O' ? '추론완료' :'추론오류': null}
                                                                 {cell.column.editElementType === 'Isolation'? cell.value === 'O' ? '추론완료' :'추론오류': null}
                                                             </button>
+                                                            }
                                                         </td>
                                                     )
                                                 }
