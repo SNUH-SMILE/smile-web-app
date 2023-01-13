@@ -81,7 +81,7 @@ function VitalsignModal({show, handledClose}) {
 
                     },
                 },
-
+                /*초기 또는 데이터 업데이트 중에 발생하는 모든 애니메이션을 활성화 또는 비활성화합니다.*/
                 animations: {
                     enabled: false
                 },
@@ -205,13 +205,14 @@ function VitalsignModal({show, handledClose}) {
                     enabled: false
                 }
             },
+            /*차트 범례 */
             legend: {
                 show: false,
-                position: "top",
-                offsetY: -0,
+                position: "bottom",
+                offsetY: -10,
                 offsetX: -5,
                 markers: {
-                    width: 5,
+                    width: 20,
                     height: 0,
                 },
                 onItemHover: {

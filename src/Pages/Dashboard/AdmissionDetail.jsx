@@ -31,6 +31,7 @@ function AdmissionDetail() {
         todayInput.current.value = getToday();
         collapseNoticeArea();
         getDrugList();
+        document.getElementById('scrollbar').scrollTo(0,0);
         getInterviewList();
         setTabCode(0);
         admissionDetailApi.select().then(({data}) => {
@@ -182,7 +183,7 @@ function AdmissionDetail() {
                         </div>
                         <div className="body">
                             <div className="tab-content" id="pills-tabContent">
-                                <div className="scrollbar" role={'recordList'} style={{overflow:"auto",height:"68vh"}}>
+                                <div className="scrollbar" id="scrollbar" role={'recordList'} style={{overflow:"auto",height:"68vh"}}>
                                     {tabCode == 0 ?
                                         <div>
                                             {interviews && interviews.map((it,idx)=>(
@@ -274,7 +275,31 @@ function AdmissionDetail() {
                         <div className="header d-flex">
                             <h5 className="title">기록</h5>
                         </div>
-                        <div className="body">
+                        <ul className="scrollbar" role={'recordList'}>
+                            {recordList && recordList.map((value,idx) => {
+                                return(
+                                    <RecordCard data={value} key={idx} idx={idx} record={record} recordSelect={recordSelect}/>
+                                )
+                            })}
+                        </ul>
+                        <div className="footer">
+                            <form>
+                                <textarea className="form-control w-100"
+                                          placeholder="텍스트를 입력해 주세요"
+                                          value={record}
+                                          role={'noticeText'}
+                                          onChange={(e)=>maxLength(e,maxLen,'record')}
+
+                                />
+                                <div className="btn_wrap d-flex">
+                                    <span className="byte"><strong>{noticeText.length}</strong> / 500</span>
+                                    <input type="date" className="form-control w200 ms-auto" ref={todayInput}/>
+                                    <button type="button" className="btn btn-pr3" onClick={recordReset}>신규</button>
+                                    <button type="button" className="btn btn-pr3" onClick={recordSave}>저장</button>
+                                </div>
+                            </form>
+                        </div>
+                      {/*  <div className="body">
                             <ul className="scrollbar" role={'recordList'}>
                                 {recordList && recordList.map((value,idx) => {
                                     return(
@@ -299,7 +324,7 @@ function AdmissionDetail() {
                                 <button type="button" className="btn btn-pr3" onClick={recordReset}>신규</button>
                                 <button type="button" className="btn btn-pr3" onClick={recordSave}>저장</button>
                             </div>
-                        </div>
+                        </div>*/}
                     </div>
                     <div className="card indiv alarm">
                         <div className="header d-flex">

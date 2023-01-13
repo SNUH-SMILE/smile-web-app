@@ -41,7 +41,8 @@ export default function Publisher({videoSource,video,audio,width,height,openScre
                         height: '85vh',
                         publishAudio: audio,
                         publishVideo: video,
-                        videoSource: videoSource === "screen" ? "screen" : undefined
+                        videoSource: videoSource === "screen" ? "screen" : undefined,
+                       /* insertMode: 'replace'*/
                     }}
                     onError={onError}
                 /> : <div></div>

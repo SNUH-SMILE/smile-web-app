@@ -24,7 +24,7 @@ function RecordCard({data, idx, record, recordSelect}) {
     },[])
     return (
         <div className="record" ref={recordResize} tabIndex={-1} id={'record'+medicalSeq} onClick={onRecordResize}>
-            <textarea className="msg">
+            <textarea className="msg" value={medicalRecord} readOnly>
                 {medicalRecord}
             </textarea>
             <div className="from d-flex">
