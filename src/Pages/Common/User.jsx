@@ -140,17 +140,6 @@ function User() {
             )
         )
     }
-    useEffect(() =>{
-        userList.forEach((i) =>{
-            if(i.lvl=="0"){
-                i.lvl = "전체";
-            }else if(i.lvl == "1"){
-                i.lvl="운영자"
-            }else{
-                i.lvl="진료진"
-            }
-        })
-    },[userList])
 
     useEffect(()=>{
 
@@ -224,7 +213,18 @@ function User() {
 
     // 사용자 리스트 요청
     const selectUserList = () => {
-        userApi.select().then(({data}) => setUserList(data.result));
+        userApi.select().then(({data}) =>{
+            data.result.forEach((i) =>{
+                if(i.lvl=="0"){
+                    i.lvl = "전체";
+                }else if(i.lvl == "1"){
+                    i.lvl="운영자"
+                }else{
+                    i.lvl="진료진"
+                }
+            })
+            setUserList(data.result)
+        });
         clear();
     }
 
