@@ -37,6 +37,7 @@ function VitalsignModal({show, handledClose}) {
     const [prResultList, setPrResultList] = useState([])
     const [header, setHeader] = useState({})
     const vitalChart = {
+        /*데이터 */
         series: [
             {
                 name: "수축기",
@@ -100,20 +101,22 @@ function VitalsignModal({show, handledClose}) {
                 },
             },
             colors: ["#9CBAE3", "#646464", "#E73323", "#F4C243", "#A1CE63", "#67359A",],
+            /*포인트*/
             markers: {
                 size: 5,
                 hover: {
                     size: 3
                 }
             },
+            /*사용자가 차트 영역 위로 마우스를 가져가면 툴팁을 표시합니다.*/
             tooltip: {
                 enabled: true,
                 enabledOnSeries: undefined,
-                shared: true,
+                shared: true,/*시리즈가 여러개인 툴팁 다 한꺼번에 표시*/
                 followCursor: false,
-                intersect: false,
+                intersect: false,/*정확한 포인터에서만 툴팁을 표시*/
                 inverseOrder: false,
-                x: {
+                x: {/*툴팁 맨 위에 타이틀*/
                     show: true,
                     formatter: function (value) {
                         const xTitleDate = new Date(value);
@@ -139,6 +142,7 @@ function VitalsignModal({show, handledClose}) {
                     highlightDataSeries: true,
                 },
             },
+            /*툴팁 위에 데이터 보여지는것*/
             dataLabels: {
                 enabled: false,
                 enabledOnSeries: [0, 1, 2, 3, 4],
@@ -155,6 +159,7 @@ function VitalsignModal({show, handledClose}) {
                     borderColor: '#fff'
                 },
             },
+            /*데이터 선*/
             stroke: {
                 width: 3,
                 curve: "straight",
@@ -163,12 +168,14 @@ function VitalsignModal({show, handledClose}) {
                 text: '',
                 align: 'left'
             },
+            /*막대형차트로 변경*/
             plotOptions: {
                 bar: {
                     horizontal: false,
                     borderRadius: 10
                 },
             },
+            /*그래프 아래에 색상채우는것*/
             fill: {
                 //opacity: [0.85, 0.25, 1],
                 gradient: {
