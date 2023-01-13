@@ -112,7 +112,7 @@ function User() {
         {Header: '사용자ID', accessor: 'userId', styleClassName:'uid'},
         {Header: '사용자명', accessor: 'userNm', styleClassName:'uname'},
         {Header: '생활치료센터', accessor: 'mainCenterNm', styleClassName:'cname'},
-        {Header: 'lvl', accessor: 'lvl', styleClassName:'uname'},
+        {Header: '권한', accessor: 'lvl', styleClassName:'uname'},
         {Header: '리마크', accessor: 'remark', styleClassName:'umark text-start'},
     ]
     // 사용자 리스트
