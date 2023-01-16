@@ -168,7 +168,7 @@ const Detail = ({dashBoardData}) => {
     return (
         <>
             <div className="dashboard-info">
-                <div className="row">
+                <div className="row" style={{cursor: "pointer"}}>
                     <div className="col col-4 d-flex flex-column justify-content-start">
                         <div className="current-top">
 
@@ -181,7 +181,7 @@ const Detail = ({dashBoardData}) => {
                                 }
                                 {
                                     dashBoardData.qantnDiv === '1' ?
-                                        <ButtonH34 type="button" className="btn btn-primary"  style = {{width : "200px"}}>
+                                        <ButtonH34 type="button" className="btn btn-primary"  style = {{width : "200px",cursor: "auto"}}>
                                             <strong>자택</strong>
                                         </ButtonH34> : null
                                 }
@@ -214,7 +214,7 @@ const Detail = ({dashBoardData}) => {
                             </div>
                             <div className="head">
                                 <div className="current-head">
-                                    <div className="bts2 is-tooltip d-flex">
+                                    <div className="bts2 is-tooltip d-flex" style={{cursor: "pointer"}}>
                                         {/*<HealthSignal value={dashBoardData ?'N':dashBoardData.healthSignalVO.signal1Yn} color={'#3ed06f'}/>*/}
                                         <HealthSignal value={dashBoardData.healthSignalVO?.signal1Yn} color={'#3ed06f'}/>
                                         {/*<HealthSignal value={dashBoardData ?'N':dashBoardData.healthSignalVO.signal2Yn} color={'#d03e3e'}/>*/}

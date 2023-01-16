@@ -183,7 +183,7 @@ function AdmissionDetail() {
                         </div>
                         <div className="body">
                             <div className="tab-content" id="pills-tabContent">
-                                <div className="scrollbar" id="scrollbar" role={'recordList'} style={{overflow:"auto",height:"68vh"}}>
+                                <div className="scrollbar" id="scrollbar" role={'recordList'} style={{overflow:"auto",height:"54vh"}}>
                                     {tabCode == 0 ?
                                         <div>
                                             {interviews && interviews.map((it,idx)=>(

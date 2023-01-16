@@ -7,7 +7,7 @@ function InterviewList({interviewData, idx, type }) {
     return (
         <div ket={idx} className="interview">
             <div className="interviewHeader">
-                <div className="hBox"><h3>{interviewData.interviewTitlePlus}</h3> - (<h4>{interviewData.interviewTitle}</h4>) </div>
+                <div className="hBox"><h4>{interviewData.interviewTitlePlus}</h4>{/* - (<h4>{interviewData.interviewTitle}</h4>) */}</div>
                 <div>등록일:{interviewData.interviewDD.substring(0,4)+'-'+interviewData.interviewDD.substring(4,6)+'-'+interviewData.interviewDD.substring(6,8)}</div>
             </div>
             <table>

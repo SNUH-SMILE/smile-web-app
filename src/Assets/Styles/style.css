@@ -1350,7 +1350,7 @@ current-top .current-btn .btn {
     height:100%;
 }
 .history-alarm .alarm ul {
-    height:450px; overflow-y: auto;
+    height:43vh; overflow-y: auto;
     margin:0; padding:20px 20px 0;
 }
 .history-alarm .alarm ul li {
@@ -1371,9 +1371,9 @@ current-top .current-btn .btn {
 }
 
 .history-alarm .history ul {
-
     overflow: auto;
-    height: 33vh;
+    height: 41vh;
+    padding: 20px;
 }
 .history-alarm .history ul li div.from span {
     font-size: 13px;
@@ -1430,7 +1430,7 @@ current-top .current-btn .btn {
     color: #999;
 }
 .history-alarm .footer {
-    height:calc(100% - 535px);
+    height:calc(100% - 572px);
     margin-top:20px; padding:0 20px;
 }
 .history-alarm .footer form {
@@ -1839,7 +1839,7 @@ input[type=range] {
     width: 31px;
     height: 34px;
     margin-left: 4px;
-    background:url("../Images/video-cameraOn.png") no-repeat center;
+    background:url("../Images/video-cameraOff.png") no-repeat center;
     border: none;
 }
 .videoCamera.off{
@@ -1849,7 +1849,7 @@ input[type=range] {
      width: 31px;
      height: 34px;
      margin-left: 4px;
-     background:url("../Images/video-cameraOff.png") no-repeat center;
+     background:url("../Images/video-cameraOn.png") no-repeat center;
      border: none;
  }
 .audio.on{
