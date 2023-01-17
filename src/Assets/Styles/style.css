@@ -1007,8 +1007,8 @@ main {padding:30px;}
 .dashboard_head .bts2.is-tooltip:after {
     display:none; content:"";
     position:absolute; top:-50px; left:50%; transform:translateX(-50%);
-    width:186px; height:44px;
-    background:url("../Images/tooltip.png") no-repeat center;
+    width:220px; height:44px;
+    background:url("../Images/tooltip2.png") no-repeat center;
 }
 .dashboard_head .bts2.is-tooltip:hover:after {display:block;}
 .dashboard_head-text {
@@ -1372,7 +1372,7 @@ current-top .current-btn .btn {
 
 .history-alarm .history ul {
     overflow: auto;
-    height: 41vh;
+    height: 37vh;
     padding: 20px;
 }
 .history-alarm .history ul li div.from span {
@@ -1430,7 +1430,7 @@ current-top .current-btn .btn {
     color: #999;
 }
 .history-alarm .footer {
-    height:calc(100% - 572px);
+    height:calc(100% - 461px);
     margin-top:20px; padding:0 20px;
 }
 .history-alarm .footer form {
