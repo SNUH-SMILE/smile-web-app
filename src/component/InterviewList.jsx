@@ -14,11 +14,11 @@ function InterviewList({interviewData, idx, type }) {
                 <tbody>
                 {Object.values(interviewData.interviewContents).filter(i=>i.interCategori.substring(0,1) == type).map((content, i) => (
                     <>
-                        <tr style={{fontSize: "15px"}}>
+                        <tr style={{fontSize: "14px"}}>
                             <td>{content.interNo}.</td>
                             <td>{content.interContent}</td>
                         </tr>
-                        <tr style={{fontSize: "10px"}}>{/*type에 따라 inputbox(13), radio(10), checkbox(11)로 표현*/}
+                        <tr style={{fontSize: "9px"}}>{/*type에 따라 inputbox(13), radio(10), checkbox(11)로 표현*/}
 
                             { content.interType == '13'?
                                 <td colSpan="2">
