@@ -1906,3 +1906,11 @@ input[type=range] {
 .left p{
     font-size: 12px;
 }
+.inferenceModal{
+    width: 650px;
+    left: 34%;
+}
+.inferenceModal .modal-dialog {
+    max-width:1000px;
+
+}

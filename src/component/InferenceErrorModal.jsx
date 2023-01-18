@@ -19,7 +19,10 @@ function InferenceErrorModal({inferenceModal, handledClose}) {
     })
     return(
         <Modal show={inferenceModal.show}
-               onHide={() => handledClose()}>
+               onHide={() => handledClose()}
+               className={'inferenceModal'}
+               dialogClassName={'modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xlg'}
+        >
             <Modal.Header closeButton>
                 <Modal.Title>추론오류 리스트</Modal.Title>
             </Modal.Header>
