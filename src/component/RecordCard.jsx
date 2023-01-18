@@ -20,7 +20,7 @@ function RecordCard({data, idx, record, recordSelect}) {
     }
 
     useEffect(()=>{
-        document.querySelector('#record'+medicalSeq).focus()
+      /*  document.querySelector('#record'+medicalSeq).focus()*/
     },[])
     return (
         <div className="record" ref={recordResize} tabIndex={-1} id={'record'+medicalSeq} onClick={onRecordResize}>
