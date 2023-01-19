@@ -115,7 +115,29 @@ class IsolationApi {
             return false;
         }
     }
-
+    //격리해제취소
+    async charge (admissionId){
+        try{
+            const response = await AuthorizationAxios.patch(process.env.REACT_APP_BASE_URL + '/api/admission/quarantine/charge',
+                JSON.stringify({
+                    admissionListSearchByQuarantineVO:{
+                        patientId: this.searchPatientId.current.value,
+                        patientNm: this.searchPatientNm.current.value,
+                        currentPageNo: this.currentPageNo,
+                        recordCountPerPage: this.recordCountPerPage,
+                        pageSize: this.pageSize,
+                        orderBy: this.sortedOrderBy,
+                        orderDir: this.sortedOrderDir,
+                    },
+                    admissionId:admissionId,
+                }),
+                {headers: {'Content-Type': "application/json"}});
+            return response;
+        }catch (e) {
+            console.log(`AdmissionApi charge`);
+            return false;
+        }
+    }
 
     //자가격리자 격리해제 처리
     async discharge (admissionId,dischargeDate,quantLocation){

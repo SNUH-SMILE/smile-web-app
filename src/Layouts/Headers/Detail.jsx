@@ -68,7 +68,9 @@ const Detail = ({dashBoardData}) => {
     },[])
     //재택격리자 격리해제 모달 열기
     const handledIsolationExitModal = (admissionId) =>{
-        isolationApi.detail(admissionId).then(({data}) => setIsolationExitModalObj({show: true, data: {...data.result}}))
+        isolationApi.detail(admissionId).then(({data}) => {
+            setIsolationExitModalObj({show: true, data: {...data.result}})
+        })
     };
     //재택격리자 격리해제 모달
     const [isolationExitModalObj,setIsolationExitModalObj] = useState({show:false,data: {}});
@@ -134,22 +136,37 @@ const Detail = ({dashBoardData}) => {
     },[])
 
     /*재택격리자 해제 API*/
-    const discharge = useCallback(async (admissionId, dischargeDate, quantLocation, patientNm) => {
-        if(dischargeDate===''){
-            alert('격리해제일이 공백입니다.');
-        }
-        if(quantLocation == null){
-            alert('퇴소시 위치를 입력해주세요')
-            return;
-        }
-        else{
-            console.log(quantLocation);
-            const confirmState = await confirm(`${patientNm} 을 격리해제 하시겠습니까?`);
+    const discharge = useCallback(async (admissionId, dischargeDate, quantLocation, patientNm, del) => {
+        /*격리해제*/
+        if(del){
+            if(dischargeDate===''){
+                alert('격리해제일이 공백입니다.');
+            }
+            if(quantLocation == null){
+                alert('퇴소시 위치를 입력해주세요')
+                return;
+            }
+            else{
+
+                const confirmState = await confirm(`${patientNm} 을 격리해제 하시겠습니까?`);
+                if(confirmState) {
+                    isolationApi.discharge(admissionId, dischargeDate, quantLocation).then(({data}) => {
+                        if(data.code==='00'){
+                            alert(data.message);
+
+                        }
+                        else{
+                            alert(data.message);
+                        }
+                    });
+                }
+            }
+        }else{//격리해제 취소
+            const confirmState = await confirm(`${patientNm} 을 격리해제 취소하시겠습니까?`);
             if(confirmState) {
-                isolationApi.discharge(admissionId, dischargeDate, quantLocation).then(({data}) => {
+                isolationApi.charge(admissionId).then(({data}) => {
                     if(data.code==='00'){
                         alert(data.message);
-
                     }
                     else{
                         alert(data.message);
@@ -157,6 +174,7 @@ const Detail = ({dashBoardData}) => {
                 });
             }
         }
+
     },[])
 
 ////팝업
@@ -186,8 +204,8 @@ const Detail = ({dashBoardData}) => {
                                         </ButtonH34> : null
                                 }
                                 <ButtonH34 type="button" className="btn btn-exit"
-                                           disabled={dashBoardData.dschgeDate != null}
-                                           onClick={dashBoardData.qantnDiv !== '2'&& dashBoardData.dschgeDate == null ? () =>handledIsolationExitModal(dashBoardData.admissionId):()=> handledAdmissionExitModal(dashBoardData.admissionId)}>
+                                          /* disabled={dashBoardData.dschgeDate != null}*/
+                                           onClick={dashBoardData.qantnDiv !== '2'/*&& dashBoardData.dschgeDate == null*/ ? () =>handledIsolationExitModal(dashBoardData.admissionId):()=> handledAdmissionExitModal(dashBoardData.admissionId)}>
                                     <strong>{dashBoardData.qantnDiv === '2' ? '퇴소 / 전원관리' : '격리 해제 관리'}</strong>
                                 </ButtonH34>
                             </div>

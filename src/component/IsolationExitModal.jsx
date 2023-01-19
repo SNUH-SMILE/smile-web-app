@@ -86,11 +86,19 @@ function IsolationExitModal({isolationExitModalObj, handledClose, discharge}) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <button type="button" className="btn btn-pr4"
-                        role={'modalDischargeButton'}
-                        onClick={()=>discharge(isolationExitModalObj.data.admissionId,todayInput.current.value,quantLocation,isolationExitModalObj.data.patientNm)}>
-                    격리해제
-                </button>
+                {isolationExitModalObj.data.dschgeDate == null ?
+                    <button type="button" className="btn btn-pr4"
+                            role={'modalDischargeButton'}
+                            onClick={() => discharge(isolationExitModalObj.data.admissionId, todayInput.current.value, quantLocation, isolationExitModalObj.data.patientNm, true)}>
+                        격리해제
+                    </button>
+                    :
+                    <button type="button" className="btn btn-pr4"
+                            role={'modalDischargeButton'}
+                            onClick={() => discharge(isolationExitModalObj.data.admissionId, todayInput.current.value, quantLocation, isolationExitModalObj.data.patientNm, false)}>
+                        격리해제 취소
+                    </button>
+                }
             </Modal.Footer>
         </Modal>
     );
