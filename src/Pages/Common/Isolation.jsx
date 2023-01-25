@@ -19,13 +19,14 @@ function Isolation() {
     const [paginationObj, setPaginationObj] = useState({currentPageNo: 1, pageSize: 10, recordCountPerPage: 15})
     const [totalPageCount, setTotalPageCount] = useState(null);
     const [isolationTableData,setIsolationTableData] = useState([]);
+    const [activeStatus, setActiveStatus] = useState();
 
     // 정렬
     // By: 정렬 컬럼명
     // Div: 정렬 방식 ('' || asc || desc)
     const [sortedOrder,setSortedOrder] = useState({By:'',Dir:''})
 
-    const isolationApi = new IsolationApi(searchPatientId,searchPatientNm,searchPatientIsolation,paginationObj,sortedOrder);
+    const isolationApi = new IsolationApi(searchPatientId,searchPatientNm, activeStatus, searchPatientIsolation,paginationObj,sortedOrder);
 
     useEffect(()=>{
         getIsolationList();
@@ -40,6 +41,11 @@ function Isolation() {
         }))
         setTotalPageCount(data.result.paginationInfoVO.totalPageCount)
         setIsolationTableData(data.result.admissionByQuarantineVOList)
+    }
+    //라디오버튼
+    const handledActiveStatus = (e) => {
+        setActiveStatus(e.target.value);
+        handledOnSearch(e);
     }
 
     // 자가격리자 리스트 조회
@@ -229,7 +235,8 @@ function Isolation() {
     ]
     // 검색 Input Enter 이벤트
     const handledOnSearch = (e) => {
-        if (e.keyCode === 13 || e.target.tagName === 'BUTTON'|| e.target.tagName === 'SELECT') {
+
+        if (e.keyCode === 13 || e.target.tagName === 'BUTTON'|| e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') {
             if(paginationObj.currentPageNo === 1){
                 getIsolationList();
             }
@@ -265,15 +272,26 @@ function Isolation() {
                                                     <select className="form-select"  defaultValue={'1'} ref={searchPatientIsolation} onChange={(e)=>handledOnSearch(e)}>
                                                         <option value={''}>전체</option>
                                                         <option value={'1'}>격리중</option>
-                                                        <option value={'2'}>격리해제 30일 이하</option>
-                                                        <option value={'3'}>격리해제 30일 이상</option>
+                                                        <option value={'2'}>격리해제</option>
+                                                        <option value={'3'}>격리해제 30일 이하</option>
+                                                        <option value={'4'}>격리해제 30일 이상</option>
                                                     </select>
+                                                </div>
+                                                <div className="me-3 d-flex">
+                                                    <span className="stit">격리상태</span>
+                                                    <div>
+                                                        <input className="form-check-input" type="radio" name="active" id="active" value="1" onChange={(e)=>handledActiveStatus(e)}/>
+                                                        <label className="form-check-label" htmlFor="active">ACTIVE</label>
+
+                                                        <input className="form-check-input" type="radio" name="active" id="inActive" value="2" onChange={(e)=>handledActiveStatus(e)}/>
+                                                        <label className="form-check-label" htmlFor="inActive">INACTIVE</label>
+                                                    </div>
                                                 </div>
                                                 <div className="ms-auto">
                                                     <div className="btn_wrap d-flex">
                                                         <button type="button" className="btn btn-gray" onClick={handledOnSearch}>검색</button>
                                                         <button type="button" className="btn btn-white"
-                                                                onClick={()=>handledIsolationSaveModal('','C')}>신규
+                                                                onClick={()=>handledIsolationSaveModal('','C')}>등록
                                                         </button>
                                                         <button type="button" className="btn btn-ccolor"
                                                                 onClick={()=>handledIsolationSaveModal(selectedIsolationId.current,'U')}>수정

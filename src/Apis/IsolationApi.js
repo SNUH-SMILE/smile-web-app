@@ -1,7 +1,7 @@
 import AuthorizationAxios from "../Utils/AuthorizationAxios";
 
 class IsolationApi {
-    constructor(searchPatientId, searchPatientNm, searchPatientIsolation, paginationObj, sortedOrder) {
+    constructor(searchPatientId, searchPatientNm, activeStatus, searchPatientIsolation, paginationObj, sortedOrder) {
         this.searchPatientId = searchPatientId;
         this.searchPatientNm = searchPatientNm;
         this.searchPatientIsolation = searchPatientIsolation;
@@ -10,6 +10,7 @@ class IsolationApi {
         this.pageSize = paginationObj.pageSize;
         this.sortedOrderBy = sortedOrder.By;
         this.sortedOrderDir = sortedOrder.Dir;
+        this.activeStatus =activeStatus;
     }
 
     //자가격리자 리스트 조회
@@ -21,6 +22,7 @@ class IsolationApi {
                     patientId: this.searchPatientId.current.value,
                     patientNm: this.searchPatientNm.current.value,
                     qantnStatus: this.searchPatientIsolation.current.value,
+                    activeStatus: this.activeStatus,
                     currentPageNo: this.currentPageNo,
                     recordCountPerPage: this.recordCountPerPage,
                     pageSize: this.pageSize,

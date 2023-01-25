@@ -58,8 +58,9 @@ const Detail = ({dashBoardData}) => {
     const searchPatientIsolation = useRef()
     const [paginationObj, setPaginationObj] = useState({currentPageNo: 1, pageSize: 10, recordCountPerPage: 15})
     const [sortedOrder,setSortedOrder] = useState({By:'',Dir:''})
+    const [activeStatus, setActiveStatus] =useState();
 
-    const isolationApi = new IsolationApi(searchPatientId,searchPatientNm,searchPatientIsolation,paginationObj,sortedOrder);
+    const isolationApi = new IsolationApi(searchPatientId,searchPatientNm,activeStatus, searchPatientIsolation,paginationObj,sortedOrder);
     // 입소자관련 Api
     const admissionApi = new AdmissionApi(searchAdmissionCenter,searchPatientNm,searchAdmissionNm,searchAdmissionState,paginationObj,sortedOrder.By,sortedOrder.Dir);
     //재택격리자 격리해제 모달 닫기
@@ -276,6 +277,7 @@ const Detail = ({dashBoardData}) => {
                         <div>
                            {/* <ButtonH34 type="button" className="btn btn-exit" onClick={popup}>화상채팅 팝업</ButtonH34>*/}
                             <ButtonH34 type="button" className="btn btn-exit" onClick={openPopup}>화상상담</ButtonH34>
+                            <ButtonH34 type="button" className="btn btn-exit" onClick={openPopup}>화상상담 저장</ButtonH34>
 
                         </div>
                     </div>
