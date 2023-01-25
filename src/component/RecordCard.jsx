@@ -3,12 +3,8 @@ import React, {useEffect, useRef} from 'react';
 function RecordCard({data, idx, record, recordSelect}) {
     const { medicalSeq, medicalRecord ,medicalRecorder, medicalDate ,updateDate, updateRecorder} = data;
     const recordResize = useRef();
-    useEffect(() => {
-  //      console.log(record);
-    });
+
     const onRecordResize =() =>{
-        console.log(recordResize.current.id.substr(6))
-      //  console.log(recordResize.current.children[1].children[1].innerHTML)
         record = recordResize.current.children[0].value;
         if(recordResize.current.style.height == '240px'){
             recordResize.current.style.height = '130px'

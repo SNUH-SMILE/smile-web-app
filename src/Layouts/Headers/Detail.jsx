@@ -111,23 +111,35 @@ const Detail = ({dashBoardData}) => {
     },[])
 
     /*생활치료센터 퇴소 API*/
-    const discharge2 = useCallback(async (admissionId, dischargeDate,quantLocation, patientNm, centerId) => {
-        if(dischargeDate===''){
-            alert('퇴소일이 공백입니다.')
-        }
-        if(quantLocation == null){
-            alert('퇴소시 위치를 입력해주세요')
-            return;
-        }
-        else{
-            const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`)
-            if(confirmState) {
-                admissionApi.discharge(admissionId, dischargeDate, quantLocation, centerId).then(({data}) => {
-                    if(data.code==='00'){
+    const discharge2 = useCallback(async (admissionId, dischargeDate,quantLocation, patientNm, centerId, del) => {
+        if(del) {
+            if (dischargeDate === '') {
+                alert('퇴소일이 공백입니다.')
+            }
+            if (quantLocation == null) {
+                alert('퇴소시 위치를 입력해주세요')
+                return;
+            } else {
+                const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`)
+                if (confirmState) {
+                    admissionApi.discharge(admissionId, dischargeDate, quantLocation, centerId).then(({data}) => {
+                        if (data.code === '00') {
+                            alert(data.message)
+                            handledCloseAdmissionExitModal()
+                        } else {
+                            alert(data.message)
+                        }
+                    });
+                }
+            }
+        }else{
+            const confirmState = await confirm(`${patientNm} 을 복귀처리 하시겠습니까?`)
+            if (confirmState) {
+                admissionApi.charge(admissionId, dischargeDate, quantLocation, centerId).then(({data}) => {
+                    if (data.code === '00') {
                         alert(data.message)
                         handledCloseAdmissionExitModal()
-                    }
-                    else{
+                    } else {
                         alert(data.message)
                     }
                 });
@@ -136,7 +148,7 @@ const Detail = ({dashBoardData}) => {
     },[])
 
     /*재택격리자 해제 API*/
-    const discharge = useCallback(async (admissionId, dischargeDate, quantLocation, patientNm, del) => {
+    const discharge = useCallback(async (admissionId, dischargeDate, quantLocation, patientNm, del, patientState) => {
         /*격리해제*/
         if(del){
             if(dischargeDate===''){
@@ -147,13 +159,11 @@ const Detail = ({dashBoardData}) => {
                 return;
             }
             else{
-
                 const confirmState = await confirm(`${patientNm} 을 격리해제 하시겠습니까?`);
                 if(confirmState) {
-                    isolationApi.discharge(admissionId, dischargeDate, quantLocation).then(({data}) => {
+                    isolationApi.discharge(admissionId, dischargeDate, quantLocation, patientState).then(({data}) => {
                         if(data.code==='00'){
                             alert(data.message);
-
                         }
                         else{
                             alert(data.message);

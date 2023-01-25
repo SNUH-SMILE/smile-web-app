@@ -107,6 +107,8 @@ class IsolationApi {
                     dschgeSchdldDate:saveData.dschgeSchdldDate.current.value.replaceAll('-',''),
                     personCharge:saveData.personCharge.current.value,
                     searsAccount: saveData.searsAccount.current.value,
+                    activeStatus: saveData.patientState,
+                    memo: saveData.memo,
                 }),
                 {headers: {'Content-Type': "application/json"}});
             return response;
@@ -140,7 +142,7 @@ class IsolationApi {
     }
 
     //자가격리자 격리해제 처리
-    async discharge (admissionId,dischargeDate,quantLocation){
+    async discharge (admissionId,dischargeDate,quantLocation,patientState){
         try{
             const response = await AuthorizationAxios.patch(process.env.REACT_APP_BASE_URL + '/api/admission/quarantine/discharge',
                 JSON.stringify({
@@ -155,7 +157,8 @@ class IsolationApi {
                     },
                     admissionId:admissionId,
                     dschgeDate:dischargeDate.replaceAll('-',''),
-                    quantLocation:quantLocation
+                    quantLocation:quantLocation,
+                    patientState:patientState
                 }),
                 {headers: {'Content-Type': "application/json"}});
             return response;

@@ -92,9 +92,15 @@ function AdmissionExitModal({admissionExitModalObj, handledClose, discharge}) {
                 </div>
             </Modal.Body>
             <Modal.Footer>
+                {admissionExitModalObj.data.dschgeDate == null ?
                 <button type="button" className="btn btn-pr4"
                         role={'modalDischargeButton'}
-                        onClick={()=>discharge(admissionExitModalObj.data.admissionId,todayInput.current.value,quantLocation,admissionExitModalObj.data.patientNm,admissionExitModalObj.data.centerId)}>퇴소</button>
+                        onClick={()=>discharge(admissionExitModalObj.data.admissionId,todayInput.current.value,quantLocation,admissionExitModalObj.data.patientNm,admissionExitModalObj.data.centerId, true)}>퇴소</button>
+                    :
+                    <button type="button" className="btn btn-pr4"
+                            role={'modalDischargeButton'}
+                            onClick={()=>discharge(admissionExitModalObj.data.admissionId,todayInput.current.value,quantLocation,admissionExitModalObj.data.patientNm,admissionExitModalObj.data.centerId, false)}>복귀</button>
+                }
             </Modal.Footer>
         </Modal>
     );

@@ -136,6 +136,33 @@ class AdmissionApi {
             return false;
         }
     }
+    //생활치료센터 입소자 복구 처리
+    async charge (admissionId,dischargeDate,quantLocation,centerId){
+        try{
+            const response = await AuthorizationAxios.patch(process.env.REACT_APP_BASE_URL + '/api/admission/center/charge',
+                JSON.stringify({
+                    admissionListSearchByCenterVO:{
+                        centerId:centerId,
+                        patientId:this.searchAdmissionId.current.value,
+                        patientNm: this.searchAdmissionNm.current.value,
+                        currentPageNo:this.currentPageNo,
+                        recordCountPerPage:this.recordCountPerPage,
+                        pageSize:this.pageSize,
+                        orderBy:this.sortedOrderBy,
+                        orderDir:this.sortedOrderDir,
+                    },
+                    admissionId:admissionId,
+                    dschgeDate:dischargeDate.replaceAll('-',''),
+                    quantLocation:quantLocation,
+                }),
+                {headers: {'Content-Type': "application/json"}});
+            return response;
+        }catch (e) {
+            console.log(e);
+            console.log(`AdmissionApi discharge`);
+            return false;
+        }
+    }
 
     //생활치료센터 입소자 퇴실 처리
     async discharge (admissionId,dischargeDate,quantLocation,centerId){

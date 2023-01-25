@@ -13,6 +13,9 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
     const admissionDate = useRef();
     const dschgeSchdldDate = useRef();
     const personCharge = useRef();
+    const [patientState, setPatientState] = useState();
+    const [memo, setMemo] = useState();
+    const memoResize = useRef();
 
     const [cellPhoneValue, setCellPhoneValue] = useState('')
     const saveData = {
@@ -25,7 +28,25 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
         admissionDate: admissionDate,
         dschgeSchdldDate: dschgeSchdldDate,
         personCharge: personCharge,
-        searsAccount: searsAccount
+        searsAccount: searsAccount,
+        patientState: patientState,
+        memo: memo
+    }
+
+    const resize =() =>{
+        console.log(memoResize.current.style.height);
+        if(memoResize.current.style.height == '30px'){
+            memoResize.current.style.height = '150px'
+        }else {
+            memoResize.current.style.height = '30px'
+        }
+    }
+    const maxLength =(e)=>{
+        const len = e.target.value.length;
+        if(len <=300){
+            setMemo(e.target.value);
+        }else {
+        }
     }
 
     const handledCellphoneValue = (e)=>{
@@ -36,6 +57,8 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
     }
 
     useEffect(()=>{
+        setMemo(isolationSaveModalObj.data.memo)
+        setPatientState(isolationSaveModalObj.data.activeStatus)
         setSex(isolationSaveModalObj.data.sex);
         setCellPhoneValue(isolationSaveModalObj.data.cellPhone);
     },[isolationSaveModalObj])
@@ -177,6 +200,52 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                         />
                                     </td>
                                 </tr>
+                                {isolationSaveModalObj.data.admissionId &&
+                                    <>
+                                        <tr>
+                                            <th>환자상태</th>
+                                            <td>
+                                                <div className="form-check form-check-inline">
+                                                    <input className="form-check-input"
+                                                           name="location"
+                                                           id="location1"
+                                                           type="radio"
+                                                           defaultChecked={isolationSaveModalObj.data.activeStatus =='1'}
+                                                           onClick={()=> setPatientState('1')}/>
+
+                                                    <label className="form-check-label" htmlFor="location1">ACTIVE</label>
+                                                </div>
+                                                <div className="form-check form-check-inline">
+                                                    <input className="form-check-input"
+                                                           name="location"
+                                                           id="location2"
+                                                           defaultChecked={isolationSaveModalObj.data.activeStatus == '2'}
+                                                           onClick={()=> setPatientState('2')}
+                                                           type="radio"
+                                                    />
+                                                    <label className="form-check-label" htmlFor="location2">INACTIVE</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>환자상태 메모</th>
+                                            <td>
+                                                <textarea className="form-control w-100" type="text"
+                                                       role={'memo'}
+                                                       style={{height:'30px'}}
+                                                       ref={memoResize}
+                                                       defaultValue={isolationSaveModalObj.data.memo}
+                                                       onChange={(e)=>maxLength(e)}
+                                                       onClick={()=>resize()}
+                                                       required/>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan="2"> <span className="byteLength"><strong>{memo && memo.length}</strong> / 300</span></td>
+                                        </tr>
+                                    </>
+                                }
                                 </tbody>
                             </table>
                         </div>

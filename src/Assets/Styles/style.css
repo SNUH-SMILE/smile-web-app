@@ -260,20 +260,12 @@
     background:url("../Images/ic_logout.png") no-repeat center;
 }
 
-
-
-
-
-
-
-
-
-
 /* 커스텀 */
 textarea.form-control {
     resize:none;
     line-height:20px !important;
 }
+
 
 /* float */
 .clear {zoom:1;}
@@ -1913,4 +1905,15 @@ input[type=range] {
 .inferenceModal .modal-dialog {
     max-width:1000px;
 
+}
+
+.byteLength {
+    font-size: 11px;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: right;
+    color: #999;
+    margin-left: 89%;
 }

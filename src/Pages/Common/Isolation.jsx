@@ -90,7 +90,7 @@ function Isolation() {
     // 신규생성
     const create = async (saveData) => {
         let nullList = Object.keys(saveData)
-            .filter(value => value!=='admissionId' && value !== 'patientId')
+            .filter(value => value!=='admissionId' && value !== 'patientId' &&  value !== 'patientState' && value !== 'memo')
             .filter(value=>value === 'sex' ? saveData[value] === '' :saveData[value].current.value==='');
         const validation = await validationModalData(nullList,saveData)
         if(validation){
@@ -117,7 +117,9 @@ function Isolation() {
 
     // 수정
     const update = async (saveData) => {
-        let nullList = Object.keys(saveData).filter(value=>value === 'sex' ? saveData[value] === '' :saveData[value].current.value==='');
+        let nullList = Object.keys(saveData)
+            .filter(value => value!=='patientState' && value !== 'memo')
+            .filter(value=>value === 'sex' ? saveData[value] === '' :saveData[value].current.value==='');
         const validation = await validationModalData(nullList,saveData)
 
         if(validation){
@@ -260,10 +262,11 @@ function Isolation() {
                                                 </div>
                                                 <div className="me-3 d-flex">
                                                     <span className="stit">격리상태</span>
-                                                    <select className="form-select"  defaultValue={''} ref={searchPatientIsolation} onChange={(e)=>handledOnSearch(e)}>
+                                                    <select className="form-select"  defaultValue={'1'} ref={searchPatientIsolation} onChange={(e)=>handledOnSearch(e)}>
                                                         <option value={''}>전체</option>
                                                         <option value={'1'}>격리중</option>
-                                                        <option value={'2'}>격리해제</option>
+                                                        <option value={'2'}>격리해제 30일 이하</option>
+                                                        <option value={'3'}>격리해제 30일 이상</option>
                                                     </select>
                                                 </div>
                                                 <div className="ms-auto">
