@@ -360,7 +360,7 @@ const Detail = ({dashBoardData}) => {
                                                         <BlueSpan>{recentResultInfo.st1Result}</BlueSpan>
                                                         : <span>{recentResultInfo && recentResultInfo.st1Result}</span>
                                                 }
-                                                <span> / </span>
+
                                                 {recentResultInfo && recentResultInfo.st2RiskGb === 'H'
                                                     ? <RedSpan>{recentResultInfo.st2Result}</RedSpan>
 

@@ -29,8 +29,13 @@ function Isolation() {
     const isolationApi = new IsolationApi(searchPatientId,searchPatientNm, activeStatus, searchPatientIsolation,paginationObj,sortedOrder);
 
     useEffect(()=>{
+
         getIsolationList();
     },[sortedOrder,paginationObj.currentPageNo])
+
+    useEffect(()=>{
+        setActiveStatus('1');
+    },[])
 
     const setPaginationAndAdmissionTableData = (data) =>{
         setPaginationObj((prevState)=>({...prevState,
@@ -45,6 +50,7 @@ function Isolation() {
     //라디오버튼
     const handledActiveStatus = (e) => {
         setActiveStatus(e.target.value);
+        console.log(activeStatus)
         handledOnSearch(e);
     }
 
@@ -280,11 +286,19 @@ function Isolation() {
                                                 <div className="me-3 d-flex">
                                                     <span className="stit">격리상태</span>
                                                     <div>
-                                                        <input className="form-check-input" type="radio" name="active" id="active" value="1" onChange={(e)=>handledActiveStatus(e)}/>
+                                                        <input className="form-check-input" type="radio" name="active" id="active"
+                                                               defaultChecked={activeStatus && activeStatus === '1'}
+                                                               value='1'
+                                                               onClick={(e)=>handledActiveStatus(e)}/>
                                                         <label className="form-check-label" htmlFor="active">ACTIVE</label>
 
-                                                        <input className="form-check-input" type="radio" name="active" id="inActive" value="2" onChange={(e)=>handledActiveStatus(e)}/>
+                                                        <input className="form-check-input" type="radio" name="active" id="inActive"
+                                                               defaultChecked={activeStatus && activeStatus === '2'}
+                                                               value='2'
+                                                               onClick={(e)=>handledActiveStatus(e)}/>
                                                         <label className="form-check-label" htmlFor="inActive">INACTIVE</label>
+
+
                                                     </div>
                                                 </div>
                                                 <div className="ms-auto">
