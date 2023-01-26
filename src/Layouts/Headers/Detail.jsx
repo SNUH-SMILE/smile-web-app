@@ -9,6 +9,7 @@ import IsolationApi from "../../Apis/IsolationApi";
 import useAlert from "../../Utils/UseAlert";
 import AdmissionExitModal from "../../component/AdmissionExitModal";
 import AdmissionApi from "../../Apis/AdmissionApi";
+import TeleHelthApi from "../../Apis/TeleHelthApi";
 
 
 const HealthSignal = styled.span`
@@ -59,7 +60,8 @@ const Detail = ({dashBoardData}) => {
     const [paginationObj, setPaginationObj] = useState({currentPageNo: 1, pageSize: 10, recordCountPerPage: 15})
     const [sortedOrder,setSortedOrder] = useState({By:'',Dir:''})
     const [activeStatus, setActiveStatus] =useState();
-
+    //videoApi
+    const teleHelthApi = new TeleHelthApi();
     const isolationApi = new IsolationApi(searchPatientId,searchPatientNm,activeStatus, searchPatientIsolation,paginationObj,sortedOrder);
     // 입소자관련 Api
     const admissionApi = new AdmissionApi(searchAdmissionCenter,searchPatientNm,searchAdmissionNm,searchAdmissionState,paginationObj,sortedOrder.By,sortedOrder.Dir);
@@ -192,7 +194,16 @@ const Detail = ({dashBoardData}) => {
     const openPopup=()=>{
         window.open('/videoPopup', '_blank','width=1700px,height=800px,scrollbars=yes rel=noopener noreferrer')
     }
-
+    const saveVideo =() =>{
+        teleHelthApi.saveVideo(dashBoardData.admissionId).then(({data})=> {
+            if(data.code==='00'){
+                alert(data.message);
+            }
+            else{
+                alert(data.message);
+            }
+        });
+    }
     const {recentResultInfo} = dashBoardData;
     return (
         <>
@@ -275,10 +286,8 @@ const Detail = ({dashBoardData}) => {
                             </div>
                         </div>
                         <div>
-                           {/* <ButtonH34 type="button" className="btn btn-exit" onClick={popup}>화상채팅 팝업</ButtonH34>*/}
                             <ButtonH34 type="button" className="btn btn-exit" onClick={openPopup}>화상상담</ButtonH34>
-                            <ButtonH34 type="button" className="btn btn-exit" onClick={openPopup}>화상상담 저장</ButtonH34>
-
+                            <ButtonH34 type="button" className="btn btn-exit" onClick={saveVideo}>화상상담 저장</ButtonH34>
                         </div>
                     </div>
                     <div className="col col-8">
@@ -361,13 +370,6 @@ const Detail = ({dashBoardData}) => {
                                                         : <span>{recentResultInfo && recentResultInfo.st1Result}</span>
                                                 }
 
-                                                {recentResultInfo && recentResultInfo.st2RiskGb === 'H'
-                                                    ? <RedSpan>{recentResultInfo.st2Result}</RedSpan>
-
-                                                    : recentResultInfo && recentResultInfo.st2RiskGb === 'L' ?
-                                                        <BlueSpan>{recentResultInfo.st2Result}</BlueSpan>
-                                                        : <span>{recentResultInfo && recentResultInfo.st2Result}</span>
-                                                }
                                                 <em> {recentResultInfo && recentResultInfo.stUnit}</em>
                                             </div>
                                         </MH83Li>
