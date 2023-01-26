@@ -228,7 +228,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>환자상태 메모</th>
+                                            <th>환자메모</th>
                                             <td>
                                                 <textarea className="form-control w-100" type="text"
                                                        role={'memo'}

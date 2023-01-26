@@ -34,6 +34,7 @@ function Isolation() {
     },[sortedOrder,paginationObj.currentPageNo])
 
     useEffect(()=>{
+        console.log(isolationTableData)
         setActiveStatus('1');
     },[])
 
@@ -225,6 +226,7 @@ function Isolation() {
     },[])
 
     const isolationTableColumn = [
+        /*{Header: 'test', accessor: 'admissionId', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},*/
         {Header: '환자ID', accessor: 'patientId', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '환자명', accessor: 'patientNm', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '격리시작일', accessor: 'admissionDate', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
@@ -284,8 +286,8 @@ function Isolation() {
                                                     </select>
                                                 </div>
                                                 <div className="me-3 d-flex">
-                                                    <span className="stit">격리상태</span>
-                                                    <div>
+                                                    <span className="stit">환자상태</span>
+                                                    <div style={{alignSelf: 'center'}}>
                                                         <input className="form-check-input" type="radio" name="active" id="active"
                                                                defaultChecked={activeStatus && activeStatus === '1'}
                                                                value='1'

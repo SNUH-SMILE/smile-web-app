@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {CgChevronLeft, CgChevronRight} from "react-icons/cg";
 import {BsCheckLg, BsX} from "react-icons/bs";
 import {useTable, useSortBy, usePagination} from "react-table";
@@ -37,7 +37,9 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
     },sorted && useSortBy,pagination && usePagination)
     const hilighter = useRef(undefined)
 
-    const highlighter = (e) =>{
+    const [radioClick, setRadioClick] = useState();
+    const highlighter = (e,test) =>{
+        setRadioClick(test);
         hilighter.current !== undefined && hilighter.current.classList.remove('active');
         hilighter.current=e.currentTarget;
         hilighter.current.classList.add('active');
@@ -347,8 +349,8 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                     <tr {...row.getRowProps()} onClick={trOnclick ? (e)=>
                                     {
                                         trOnclick(row.cells[0].value,row.original);
-                                        highlighter(e);
-                                    }: (e)=>highlighter(e)}
+                                        highlighter(e,row.cells[0].value);
+                                    }: (e)=>highlighter(e,row.cells[0].value)}
                                     onDoubleClick={trDbOnclicke ? (e)=>{
                                         onMove(row.original.admissionId);
                                     }:null}
@@ -484,6 +486,14 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                                 <span >{cell.render('Cell')}</span>
                                                             </td>)
                                                 }
+                                              /*  else if(cell.column.id === 'admissionId'){
+                                                    return <td>
+                                                        <input type="radio" name="check" id={cell.render('Cell')}
+                                                               defaultChecked={cell.render('Cell') == radioClick }
+                                                        />
+                                                        <label htmlFor={cell.render('Cell')}>{radioClick && radioClick} {cell.render('Cell')}</label>
+                                                    </td>
+                                                }*/
                                                 else if(cell.column.id === 'btResult'){
                                                     return (row.original.btRiskGb === 'H'
                                                         ? <td className={cell.column.styleClassName} {...cell.getCellProps()}>
@@ -585,7 +595,9 @@ ReactTable.defaultProps={
     trDbOnclicke:null,
     deleteRow:null ,
     targetSelectData:null,
-    primaryKey:''
+    primaryKey:'',
+
+
 }
 ReactTable.propTypes = {
     tableHeader:PropTypes.array.isRequired,
@@ -597,6 +609,7 @@ ReactTable.propTypes = {
     trDbOnclicke:PropTypes.func,
     deleteRow:PropTypes.func ,
     targetSelectData:PropTypes.array,
-    primaryKey:PropTypes.string
+    primaryKey:PropTypes.string,
+
 }
 export default ReactTable;

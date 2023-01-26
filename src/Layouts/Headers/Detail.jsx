@@ -287,7 +287,7 @@ const Detail = ({dashBoardData}) => {
                         </div>
                         <div>
                             <ButtonH34 type="button" className="btn btn-exit" onClick={openPopup}>화상상담</ButtonH34>
-                            <ButtonH34 type="button" className="btn btn-exit" onClick={saveVideo}>화상상담 저장</ButtonH34>
+                            <ButtonH34 type="button" className="btn btn-exit" onClick={saveVideo}>녹화파일 다운</ButtonH34>
                         </div>
                     </div>
                     <div className="col col-8">
