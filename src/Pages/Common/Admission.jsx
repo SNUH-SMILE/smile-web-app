@@ -17,6 +17,7 @@ function Admission() {
     const searchAdmissionState = useRef();
     const searchAdmissionId = useRef();
     const searchAdmissionNm = useRef();
+    const [activeStatus, setActiveStatus] = useState();
 
     // 정렬
     // By: 정렬 컬럼명
@@ -29,9 +30,18 @@ function Admission() {
         mountSelectAdmissionListByCenter();
     },[sortedOrder,paginationObj.currentPageNo])
 
+    useEffect(() =>{
+        setActiveStatus('1');
+    })
+
+    //환자상태 클릭이벤트
+    const handledActiveStatus = (e) => {
+        setActiveStatus(e.target.value);
+        handledOnSearch(e);
+    }
 
     // 입소자관련 Api
-    const admissionApi = new AdmissionApi(searchAdmissionCenter,searchAdmissionId,searchAdmissionNm,searchAdmissionState,paginationObj,sortedOrder.By,sortedOrder.Dir);
+    const admissionApi = new AdmissionApi(searchAdmissionCenter,searchAdmissionId,searchAdmissionNm,activeStatus,searchAdmissionState,paginationObj,sortedOrder.By,sortedOrder.Dir);
     // 입소자 리스트
     const [admissionTableData, setAdmissionTableData] = useState([]);
 
@@ -104,7 +114,7 @@ function Admission() {
 
     // 검색 Input Enter 이벤트
     const handledOnSearch = (e) => {
-        if (e.keyCode === 13 || e.target.tagName === 'BUTTON'|| e.target.tagName === 'SELECT') {
+        if (e.keyCode === 13 || e.target.tagName === 'BUTTON'|| e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') {
             if(paginationObj.currentPageNo === 1){
                 selectAdmissionListByCenter();
             }
@@ -332,6 +342,24 @@ function Admission() {
                                                     <option value={'2'}>퇴소</option>
                                                 </select>
                                             </div>
+                                  {/*          <div className="me-3 d-flex">
+                                                <span className="stit">환자상태</span>
+                                                <div style={{alignSelf: 'center'}}>
+                                                    <input className="form-check-input" type="radio" name="active" id="active"
+                                                           defaultChecked={activeStatus && activeStatus === '1'}
+                                                           value='1'
+                                                           onClick={(e)=>handledActiveStatus(e)}/>
+                                                    <label className="form-check-label" htmlFor="active">ACTIVE</label>
+
+                                                    <input className="form-check-input" type="radio" name="active" id="inActive"
+                                                           defaultChecked={activeStatus && activeStatus === '2'}
+                                                           value='2'
+                                                           onClick={(e)=>handledActiveStatus(e)}/>
+                                                    <label className="form-check-label" htmlFor="inActive">INACTIVE</label>
+
+
+                                                </div>
+                                            </div>*/}
                                             <div className="ms-auto">
                                                 <div className="btn_wrap d-flex">
                                                     <button type="button" className="btn btn-gray" onClick={(e)=>handledOnSearch(e)}>검색</button>

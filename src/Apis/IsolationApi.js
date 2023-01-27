@@ -14,7 +14,7 @@ class IsolationApi {
     }
 
     //자가격리자 리스트 조회
-    async select() {
+    async select(activeStatus) {
         try {
             const response = await AuthorizationAxios.post(
                 process.env.REACT_APP_BASE_URL + '/api/admission/quarantine/list',
@@ -22,7 +22,7 @@ class IsolationApi {
                     patientId: this.searchPatientId.current.value,
                     patientNm: this.searchPatientNm.current.value,
                     qantnStatus: this.searchPatientIsolation.current.value,
-                    activeStatus: this.activeStatus,
+                    activeStatus: activeStatus != null ? activeStatus : this.activeStatus,
                     currentPageNo: this.currentPageNo,
                     recordCountPerPage: this.recordCountPerPage,
                     pageSize: this.pageSize,
