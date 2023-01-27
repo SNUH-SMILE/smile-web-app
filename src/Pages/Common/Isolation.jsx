@@ -34,7 +34,6 @@ function Isolation() {
     },[sortedOrder,paginationObj.currentPageNo])
 
     useEffect(()=>{
-        console.log(isolationTableData)
         setActiveStatus('1');
     },[])
 
@@ -51,13 +50,13 @@ function Isolation() {
     //라디오버튼
     const handledActiveStatus = (e) => {
         setActiveStatus(e.target.value);
-        console.log(activeStatus)
         handledOnSearch(e);
     }
 
     // 자가격리자 리스트 조회
-    const getIsolationList = () =>{
-        isolationApi.select().then(({data}) => {
+    const getIsolationList = (activeStatus) =>{
+
+        isolationApi.select(activeStatus).then(({data}) => {
             selectedIsolationId.current='';
             setPaginationAndAdmissionTableData(data);
         });
@@ -226,7 +225,7 @@ function Isolation() {
     },[])
 
     const isolationTableColumn = [
-        /*{Header: 'test', accessor: 'admissionId', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},*/
+       /* {Header: 'test', accessor: 'admissionId', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},*/
         {Header: '환자ID', accessor: 'patientId', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '환자명', accessor: 'patientNm', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '격리시작일', accessor: 'admissionDate', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
@@ -243,10 +242,17 @@ function Isolation() {
     ]
     // 검색 Input Enter 이벤트
     const handledOnSearch = (e) => {
-
-        if (e.keyCode === 13 || e.target.tagName === 'BUTTON'|| e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') {
+        if (e.keyCode === 13 || e.target.tagName === 'BUTTON'|| e.target.tagName === 'SELECT') {
             if(paginationObj.currentPageNo === 1){
                 getIsolationList();
+            }
+            else{
+                setPaginationObj({currentPageNo:1,pageSize:10,recordCountPerPage:15})
+            }
+        }
+        if(e.target.tagName === 'INPUT'){
+            if(paginationObj.currentPageNo === 1){
+                getIsolationList(e.target.value);
             }
             else{
                 setPaginationObj({currentPageNo:1,pageSize:10,recordCountPerPage:15})
@@ -299,8 +305,6 @@ function Isolation() {
                                                                value='2'
                                                                onClick={(e)=>handledActiveStatus(e)}/>
                                                         <label className="form-check-label" htmlFor="inActive">INACTIVE</label>
-
-
                                                     </div>
                                                 </div>
                                                 <div className="ms-auto">

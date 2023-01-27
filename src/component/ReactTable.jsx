@@ -5,6 +5,7 @@ import {useTable, useSortBy, usePagination} from "react-table";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import useAdmissionDetail from "../Utils/useAdmissionDetail";
+import {click} from "@testing-library/user-event/dist/click";
 
 const RedSpan = styled.span`
   color:#ff2020;
@@ -39,12 +40,19 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
 
     const [radioClick, setRadioClick] = useState();
     const highlighter = (e,test) =>{
+/*        console.log(e.target.parentElement.childNodes[0].childNodes)
         setRadioClick(test);
+        const test2= document.querySelector('#3345');
+        console.log(test2)*/
         hilighter.current !== undefined && hilighter.current.classList.remove('active');
         hilighter.current=e.currentTarget;
         hilighter.current.classList.add('active');
 
     }
+/*    const clickee = (e) =>{
+       /!* document.querySelector*!/
+      console.log(  e.target.checked);
+    }*/
     useEffect(()=>{
         if(crud !== 'U'){
             hilighter.current !== undefined && hilighter.current.classList.remove('active');
@@ -486,10 +494,11 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                                 <span >{cell.render('Cell')}</span>
                                                             </td>)
                                                 }
-                                              /*  else if(cell.column.id === 'admissionId'){
+                                               /* else if(cell.column.id === 'admissionId'){
                                                     return <td>
-                                                        <input type="radio" name="check" id={cell.render('Cell')}
-                                                               defaultChecked={cell.render('Cell') == radioClick }
+                                                        <input type="radio" name="check" id="3345"
+                                                               defaultChecked={cell.render('Cell') && cell.render('Cell') === radioClick && radioClick }
+                                                               onClick={(e)=> clickee(e)}
                                                         />
                                                         <label htmlFor={cell.render('Cell')}>{radioClick && radioClick} {cell.render('Cell')}</label>
                                                     </td>
