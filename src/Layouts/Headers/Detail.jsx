@@ -197,7 +197,9 @@ const Detail = ({dashBoardData}) => {
     const saveVideo =() =>{
         teleHelthApi.saveVideo(dashBoardData.admissionId).then(({data})=> {
             if(data.code==='00'){
-                alert(data.message);
+                //alert(data.message);
+                var link = data.result.uri;
+                window.open(link,'_blank','width=300px,height=300px,scrollbars=yes rel=noopener noreferrer');
             }
             else{
                 alert(data.message);
