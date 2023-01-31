@@ -245,7 +245,7 @@ function Admission() {
         }
     }
     // 저장 모달 열기 (admissionId 로 api 요청 하려고 인자로 받음)
-    const handledAdmissionSaveModal = (admissionId) =>{
+    const handledAdmissionSaveModal = (admissionId,test) =>{
         if(admissionId === '신규'){
             console.log(admissionId)
             setAdmissionSaveModalObj({show: true, data:{},confirmFunc: create})
@@ -280,6 +280,7 @@ function Admission() {
         {Header: '재원상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editEvent:handledAdmissionExitModal},
         {Header: '영상다운', accessor: 'videoDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '추론', accessor: 'aiExe', editElement:'aiExeButton', editElementType:'Admission'},
+        {Header: '수정', accessor: 'update', editElement:'updateButton', editElementType:'Isolation',editEvent:handledAdmissionSaveModal},
     ]
     return (
         <>
@@ -367,9 +368,9 @@ function Admission() {
                                                             // hidden={!selectValue}
                                                             onClick={()=>handledAdmissionSaveModal('신규')}>신규
                                                     </button>
-                                                    <button type="button" className="btn btn-ccolor"
+{/*                                                    <button type="button" className="btn btn-ccolor"
                                                             onClick={()=>handledAdmissionSaveModal(selectedAdmissionId.current)}>수정
-                                                    </button>
+                                                    </button>*/}
                                                 </div>
                                             </div>
                                         </div>

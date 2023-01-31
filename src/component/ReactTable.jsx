@@ -39,20 +39,15 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
     const hilighter = useRef(undefined)
 
     const [radioClick, setRadioClick] = useState();
-    const highlighter = (e,test) =>{
-/*        console.log(e.target.parentElement.childNodes[0].childNodes)
-        setRadioClick(test);
-        const test2= document.querySelector('#3345');
-        console.log(test2)*/
+    const highlighter = (e,test) => {
+        /*        console.log(e.target.parentElement.childNodes[0].childNodes)
+                setRadioClick(test);
+                const test2= document.querySelector('#3345');
+                console.log(test2)*/
         hilighter.current !== undefined && hilighter.current.classList.remove('active');
-        hilighter.current=e.currentTarget;
+        hilighter.current = e.currentTarget;
         hilighter.current.classList.add('active');
-
     }
-/*    const clickee = (e) =>{
-       /!* document.querySelector*!/
-      console.log(  e.target.checked);
-    }*/
     useEffect(()=>{
         if(crud !== 'U'){
             hilighter.current !== undefined && hilighter.current.classList.remove('active');
@@ -437,6 +432,21 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                                 {cell.column.editElementType !== 'Isolation'? cell.value === '1' ? '재원중' :'퇴소': null}
                                                                 {cell.column.editElementType === 'Isolation'? cell.value === '1' ? '격리중' :'격리해제': null}
                                                             </button>
+                                                        </td>
+                                                    )
+                                                }
+                                                else if(cell.column.editElement === 'updateButton'){
+                                                    return (
+                                                        <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            {cell.value !== 'N' &&
+                                                                <button type="button"
+                                                                        className="btn btn-exit"
+                                                                        onClick={()=>cell.column.editEvent(row.original.admissionId,'U')}
+                                                                       /* onClick={cell.column.editEvent((Object(row.values)[primaryKey]),'U')
+                                                                        }*/
+                                                                >수정
+                                                                </button>
+                                                            }
                                                         </td>
                                                     )
                                                 }

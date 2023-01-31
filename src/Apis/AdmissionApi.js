@@ -129,6 +129,8 @@ class AdmissionApi {
                     centerId:saveData.centerId.current.value,
                     room:saveData.room.current.value,
                     searsAccount: saveData.searsAccount.current.value,
+                    activeStatus:'1',
+                    memo: null
                 }),
                 {headers: {'Content-Type': "application/json"}});
             return response;

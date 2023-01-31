@@ -507,11 +507,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 /*    visibility:inherit;*/
 /*}*/
 .text-expert tr.active > * {
-    --bs-table-accent-bg: var(--bs-table-hover-bg) !important;
+    --bs-table-accent-bg: #69a2d3 !important;
 }
-
-
-
 
 
 /* 쓰기 테이블 */

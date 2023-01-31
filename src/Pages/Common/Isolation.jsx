@@ -238,6 +238,7 @@ function Isolation() {
         {Header: '격리상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editElementType:'Isolation',editEvent:handledIsolationExitModal},
         {Header: '영상다운', accessor: 'videoDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '추론', accessor: 'aiExe', editElement:'aiExeButton', editElementType:'Isolation',editEvent:handledInferenceModal},
+        {Header: '수정', accessor: 'update', editElement:'updateButton', editElementType:'Isolation',editEvent:handledIsolationSaveModal},
 
     ]
     // 검색 Input Enter 이벤트
@@ -313,9 +314,9 @@ function Isolation() {
                                                         <button type="button" className="btn btn-white"
                                                                 onClick={()=>handledIsolationSaveModal('','C')}>등록
                                                         </button>
-                                                        <button type="button" className="btn btn-ccolor"
+{/*                                                        <button type="button" className="btn btn-ccolor"
                                                                 onClick={()=>handledIsolationSaveModal(selectedIsolationId.current,'U')}>수정
-                                                        </button>
+                                                        </button>*/}
                                                     </div>
                                                 </div>
                                             </div>
