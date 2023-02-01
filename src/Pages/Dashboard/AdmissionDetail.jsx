@@ -7,7 +7,7 @@ import RecordCard from "../../component/RecordCard";
 import useAlert from "../../Utils/UseAlert";
 import {Nav} from "react-bootstrap";
 import InterviewList from "../../component/InterviewList";
-import {element} from "prop-types";
+import {element, func} from "prop-types";
 import getToday from "../../Utils/common";
 
 function AdmissionDetail() {
@@ -38,7 +38,7 @@ function AdmissionDetail() {
             setDashBoardData(data.result.headerVO);
             setNoticeList(data.result.noticeVOList);
             setRecordList(data.result.recordVOList);
-          //  console.log(data);
+
         });
     },[])
 
@@ -67,6 +67,14 @@ function AdmissionDetail() {
 
     const getInterviewList = async () =>{
         admissionDetailApi.getInterviewList().then(({data}) => {
+            data.result.forEach(function (data){
+                data.countBoolen = false
+                data.interviewContents.forEach(function (test){
+                    if(test.interCategori.substring(0,1) == '2'){
+                      data.countBoolen = true;
+                    }
+                })
+            })
             setInterviews(data.result);
         })
     }
@@ -74,7 +82,7 @@ function AdmissionDetail() {
     const getDrugList = async () =>{
         admissionDetailApi.drugSelect().then(({data}) => {
             setDrugList(data.result);
-            //console.log(data.result)
+
 
         });
     }
@@ -187,6 +195,7 @@ function AdmissionDetail() {
                                     {tabCode == 0 ?
                                         <div>
                                             {interviews && interviews.map((it,idx)=>(
+                                                it.interviewContents.length >0 &&
                                                 <InterviewList key={it.interviewSeq+'1'} interviewData={it} idx={idx} type='1'>
                                                 </InterviewList>
                                             ))}
@@ -195,10 +204,15 @@ function AdmissionDetail() {
                                     }
                                     {tabCode == 1 ?
                                         <div>
-                                            {interviews && interviews.map((it,idx)=>(
-                                                <InterviewList key={it.interviewSeq+'2'} interviewData={it} idx={idx} type='2'>
-                                                </InterviewList>
-                                            ))}
+                                            {interviews && interviews.filter(id => id.countBoolen).map((it,idx)=>
+                                                {
+                                                    return(
+                                                        <InterviewList key={it.interviewSeq + '2'} interviewData={it}
+                                                                       idx={idx} type='2'>
+                                                        </InterviewList>
+                                                     )
+                                                }
+                                            )}
                                         </div>
                                         : null
                                     }
