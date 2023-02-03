@@ -199,12 +199,10 @@ const Detail = ({dashBoardData}) => {
             if(data.code==='00'){
                 //alert(data.message);
                 var link = data.result.uri;
-                var filename = dashBoardData.patientId + '.zip';
-                var element = document.createElement('a');
-                element.setAttribute('href','data:text/plain;charset=utf-8, ' + encodeURIComponent(link));
-                element.setAttribute('download', filename);
-                document.body.appendChild(element);
-                element.click();
+                //console.log(link);
+                var options = 'top=10, left=10, width=200, height=50, status=no, menubar=no, toolbar=no, resizable=no';
+                window.open(link, '', options);
+
             }
             else{
                 alert(data.message);
