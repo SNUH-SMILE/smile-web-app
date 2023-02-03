@@ -201,7 +201,7 @@ const Detail = ({dashBoardData}) => {
                 var link = data.result.uri;
                 //console.log(link);
                 var options = 'top=10, left=10, width=200, height=50, status=no, menubar=no, toolbar=no, resizable=no';
-                window.open(link, '', options);
+                window.open(link, '_blank', options);
 
             }
             else{
