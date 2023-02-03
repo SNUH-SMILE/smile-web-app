@@ -67,6 +67,14 @@ function AdmissionDetail() {
 
     const getInterviewList = async () =>{
         admissionDetailApi.getInterviewList().then(({data}) => {
+            data.result.forEach(function (data){
+                data.countBoolen = false
+                data.interviewContents.forEach(function (test){
+                    if(test.interCategori.substring(0,1) == '2'){
+                        data.countBoolen = true;
+                    }
+                })
+            })
             setInterviews(data.result);
         })
     }
@@ -195,10 +203,15 @@ function AdmissionDetail() {
                                     }
                                     {tabCode == 1 ?
                                         <div>
-                                            {interviews && interviews.map((it,idx)=>(
-                                                <InterviewList key={it.interviewSeq+'2'} interviewData={it} idx={idx} type='2'>
-                                                </InterviewList>
-                                            ))}
+                                            {interviews && interviews.filter(id => id.countBoolen).map((it,idx)=>
+                                                {
+                                                    return(
+                                                        <InterviewList key={it.interviewSeq + '2'} interviewData={it}
+                                                                       idx={idx} type='2'>
+                                                        </InterviewList>
+                                                    )
+                                                }
+                                            )}
                                         </div>
                                         : null
                                     }
