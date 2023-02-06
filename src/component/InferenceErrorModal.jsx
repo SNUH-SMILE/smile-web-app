@@ -24,7 +24,7 @@ function InferenceErrorModal({inferenceModal, handledClose}) {
                dialogClassName={'modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xlg'}
         >
             <Modal.Header closeButton>
-                <Modal.Title>추론오류 리스트</Modal.Title>
+                <Modal.Title>추론 결과 리스트</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="table-responsive" style={{height:'600px',overflow :"scroll"}}>

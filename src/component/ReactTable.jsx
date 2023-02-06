@@ -461,8 +461,8 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                                         : null
                                                                     }
                                                             >
-                                                                {cell.column.editElementType !== 'Isolation'? cell.value === 'O' ? '추론완료' :'추론오류': null}
-                                                                {cell.column.editElementType === 'Isolation'? cell.value === 'O' ? '추론완료' :'추론오류': null}
+                                                                {cell.column.editElementType !== 'Isolation'? cell.value === 'O' ? '추론결과' :'추론결과': null}
+                                                                {cell.column.editElementType === 'Isolation'? cell.value === 'O' ? '추론결과' :'추론결과': null}
                                                             </button>
                                                             }
                                                         </td>
