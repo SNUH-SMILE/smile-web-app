@@ -143,6 +143,8 @@ function Isolation() {
                         handledCloseIsolationSaveModal();
                         setTotalPageCount(data.result.admissionListResponseByQuarantineVO .paginationInfoVO.totalPageCount);
                         setIsolationTableData(data.result.admissionListResponseByQuarantineVO .admissionByQuarantineVOList);
+                        /** 수정 후 전체 조회 되는 것을 막고자  재조회를 함**/
+                        getIsolationList();
                     }
                     else{
                         alert(data.message);
@@ -156,13 +158,9 @@ function Isolation() {
     const handledIsolationSaveModal = (admissionId,flag) =>{
         if(flag === 'U' && admissionId ===''){
             alert('자택격리자를 선택해주세요.');
-        }
-
-        else if(admissionId === ''){
+        } else if(admissionId === ''){
             setIsolationSaveModalObj({show: true, data:{},confirmFunc: create})
-        }
-
-        else{
+        } else {
             isolationApi.detail(admissionId).then(({data}) => {
                 setIsolationSaveModalObj({show: true, data: {...data.result}, confirmFunc: update})
             });
