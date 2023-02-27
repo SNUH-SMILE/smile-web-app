@@ -169,7 +169,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>시작일</th>
+                                    <th>연구 시작일</th>
                                     <td>
                                         <input className="form-control w-100 date" type="date" ref={admissionDate}
                                                role={'admissionDate'}
@@ -179,7 +179,7 @@ function IsolationSaveModal({isolationSaveModalObj, handledClose}) {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>종료예정일</th>
+                                    <th>격리 해제 예정일</th>
                                     <td>
                                         <input className="form-control w-100 date" type="date" ref={dschgeSchdldDate}
                                                role={'dschgeSchdldDate'}

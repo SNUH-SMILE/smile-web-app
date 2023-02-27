@@ -80,8 +80,8 @@ function Isolation() {
             nullList[0] === 'birthDate' && alert('생일이 공백입니다.')
             nullList[0] === 'sex' && alert('성별을 선택해주세요.')
             nullList[0] === 'cellPhone' && alert('연락처가 공백입니다.')
-            nullList[0] === 'admissionDate' && alert('시작일이 공백입니다.')
-            nullList[0] === 'dschgeSchdldDate' && alert('종료예정일이 공백입니다.')
+            nullList[0] === 'admissionDate' && alert('연구 시작일이 공백입니다.')
+            nullList[0] === 'dschgeSchdldDate' && alert('격리해제 예정일이 공백입니다.')
             nullList[0] === 'personCharge' && alert('담당자 공백입니다.')
             saveData[nullList[0]].current.focus();
             return false;
@@ -92,7 +92,7 @@ function Isolation() {
             return false
         }
         else if(saveData['admissionDate'].current.value >= saveData['dschgeSchdldDate'].current.value){
-            alert('종료 예정일은 시작일 이후이어야 합니다.')
+            alert('격리해제  예정일은 시작일 이후이어야 합니다.')
             saveData['dschgeSchdldDate'].current.focus();
             return false;
         }
@@ -202,7 +202,7 @@ function Isolation() {
             alert('격리해제일이 공백입니다.');
         }
         else{
-            const confirmState = await confirm(`${patientNm} 을 퇴소처리 하시겠습니까?`);
+            const confirmState = await confirm(`${patientNm} 을 격리해제 처리 하시겠습니까?`);
             if(confirmState) {
                 isolationApi.discharge(admissionId, dischargeDate, quantLocation).then(({data}) => {
                     if(data.code==='00'){
