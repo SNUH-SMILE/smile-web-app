@@ -42,7 +42,7 @@ export default function Publisher({videoSource,video,audio,width,height,openScre
                         publishAudio: audio,
                         publishVideo: video,
                         videoSource: videoSource === "screen" ? "screen" : undefined,
-                        videoFilter:{type:"backgroundBlur",blurStrength:'high'},
+                        //videoFilter:{type:"backgroundBlur",blurStrength:'high'},
                        /* insertMode: 'replace'*/
                     }}
                     onError={onError}
@@ -56,7 +56,7 @@ export default function Publisher({videoSource,video,audio,width,height,openScre
                         publishAudio: audio,
                         publishVideo: video,
                         videoSource: videoSource === "screen" ? "screen" : undefined,
-                        videoFilter:{type:"backgroundBlur",blurStrength:'high'},
+                        //videoFilter:{type:"backgroundBlur",blurStrength:'high'},
                     }}
                     onError={onError}
                 /> : <div></div>
