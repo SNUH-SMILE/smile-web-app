@@ -7,6 +7,7 @@ import ReactTable from "../../component/ReactTable";
 import IsolationApi from "../../Apis/IsolationApi";
 import useAlert from "../../Utils/UseAlert";
 import UseSetPageTitle from "../../Utils/UseSetPageTitle";
+import LocationModal from '../../component/LocationModal';
 
 function Isolation() {
 
@@ -220,7 +221,20 @@ function Isolation() {
     // 격리해제 모달 닫기
     const handledCloseIsolationExitModal = useCallback(() =>{
         setIsolationExitModalObj({show: false, data: {}})
-    },[])
+    }, [])
+
+    // 위치정보 모달
+    const [locationModal, setLocationModal] = useState({show:false, data:{}});
+    // 위치정보 모달 열기
+    const handledLocationModal = (admissionId) =>{
+        isolationApi.logDetail(admissionId).then(({data}) => {
+            setLocationModal({show: true, data: data.result})
+        })
+    }
+    // 위치정보 모달 닫기
+    const handledCloseLocationModal =  useCallback(() =>{
+        setLocationModal({show: false, data:{}});
+    }, [])
 
     const isolationTableColumn = [
        /* {Header: 'test', accessor: 'admissionId', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},*/
@@ -236,8 +250,8 @@ function Isolation() {
         {Header: '격리상태', accessor: 'qantnStatus', editElement:'AdmissionButton', editElementType:'Isolation',editEvent:handledIsolationExitModal},
         {Header: '영상다운', accessor: 'videoDown', sortedYn:true, orderBy:sortedOrder.By, orderDiv:sortedOrder.Dir, sortedEvent:handledSearchWithSort},
         {Header: '추론', accessor: 'aiExe', editElement:'aiExeButton', editElementType:'Isolation',editEvent:handledInferenceModal},
-        {Header: '수정', accessor: 'update', editElement:'updateButton', editElementType:'Isolation',editEvent:handledIsolationSaveModal},
-
+        {Header: '수정', accessor: 'update', editElement: 'updateButton', editElementType: 'Isolation', editEvent: handledIsolationSaveModal},
+        {Header: '위치정보', accessor: 'location', editElement: 'locationButton', editElementType: 'Isolation', editEvent: handledLocationModal}
     ]
     // 검색 Input Enter 이벤트
     const handledOnSearch = (e) => {
@@ -345,6 +359,10 @@ function Isolation() {
             <>
                 {/* 추론오류 모달 */}
                 <InferenceErrorModal inferenceModal={inferenceModal} handledClose={handledCloseInterfaceExitModal}/>
+            </>
+            <>
+                {/* 위치정보 모달 */}
+                {<LocationModal locationModal={locationModal} handledClose={handledCloseLocationModal} />}
             </>
         </>
     );

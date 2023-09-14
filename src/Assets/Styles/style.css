@@ -617,6 +617,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 /* selfIsolationInsertModal */
 .selfIsolationInsertModal .modal-dialog {max-width:1000px;}
 
+/* locationModal */
+.locationModal .modal-dialog {max-width: 800px;}
+
 /* QnaReplyInsertModal */
 .QnaReplyInsertModal .modal-dialog {max-width:1000px;}
 
@@ -1913,4 +1916,47 @@ input[type=range] {
     text-align: right;
     color: #999;
     margin-left: 89%;
+}
+
+.divideLine{
+    color: #cdcdcd;
+    font-weight: 500;
+    font-size: 13px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.modalSubTitle {
+    color: rgb(57, 57, 57);
+    font-weight: 600;
+    font-size: 13px;
+    margin-right: 10px;
+}
+.headerText{
+    font-weight: 700;
+    font-size: 13px;
+    margin-right: 20px;
+}
+.dateContainer{
+    display: flex;
+    flex-direction: row;
+    justify-items: left;
+    margin-top: 10px;
+}
+.inputLabel{
+    font-weight: 600;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+.inputWidth{
+    width: 150px;
+}
+.tHeader th{
+    background-color: #005580;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+}
+.alignCenter{
+    text-align: center;
 }

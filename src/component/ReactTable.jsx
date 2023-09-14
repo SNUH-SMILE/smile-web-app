@@ -468,6 +468,21 @@ function ReactTable({ customTableStyle='',tableHeader, tableBody, sorted, edited
                                                         </td>
                                                     )
                                                 }
+                                                else if(cell.column.editElement === 'locationButton'){
+                                                    return (
+                                                        <td className={cell.column.styleClassName} {...cell.getCellProps()}>
+                                                            {cell.value !== 'N' &&
+                                                                <button type="button"
+                                                                        className="btn btn-exit"
+                                                                        onClick={()=>cell.column.editEvent(row.original.admissionId,'U')}
+                                                                       /* onClick={cell.column.editEvent((Object(row.values)[primaryKey]),'U')
+                                                                        }*/
+                                                                >위치
+                                                                </button>
+                                                            }
+                                                        </td>
+                                                    )
+                                                }
                                                 else if(cell.column.id === 'bp'){
                                                     return (
                                                         <td className={cell.column.styleClassName} {...cell.getCellProps()}>
