@@ -26,7 +26,6 @@ class PatientLocationsApi {
           process.env.REACT_APP_BASE_URL + "/api/patient-locations",
           { params: { admissionId: admissionId, resultDate: resultDate } }
         );
-        console.log(response.data);
         return response;
       } catch (e) {
         console.log(e);

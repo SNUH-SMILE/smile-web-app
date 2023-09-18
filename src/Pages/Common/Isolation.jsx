@@ -314,7 +314,6 @@ function Isolation() {
   // 위치정보 모달 열기
   const handledLocationModal = (admissionId) => {
     const locationApi = new PatientLocationsApi();
-    console.log("조회시작");
     locationApi.detail(admissionId).then(({ data }) => {
       setLocationModal({ show: true, data: { ...data }, admissionId });
     });
