@@ -13,22 +13,22 @@ function LocationModal({ locationModal, handledClose }) {
     setLocationData(locationModal.data);
     if (locationModal.show) {
       todayInput.current.value = getToday();
+      setResultDate(getToday());
     }
   }, [locationModal.show]);
 
   useEffect(() => {
-    locationApi
-      .update(locationModal.admissionId, resultDate)
-      .then(({ data }) => {
-        setLocationData({ ...data });
-      });
-  }, [resultDate]);
+    if (locationModal.admissionId && resultDate) {
+      locationApi
+        .update(locationModal.admissionId, resultDate)
+        .then(({ data }) => {
+          setLocationData({ ...data });
+        });
+    }
+  }, [resultDate, locationModal.admissionId]);
 
   function onChangeDate(e) {
-    console.log(e.target.value);
     setResultDate(e.target.value);
-    console.log(`set : ${resultDate}`);
-    console.log(locationModal.admissionId);
   }
   return (
     <Modal
@@ -77,7 +77,7 @@ function LocationModal({ locationModal, handledClose }) {
             <tbody>
               {locationData.patientLocations &&
                 locationData.patientLocations.map((value, idx) => (
-                  <tr>
+                  <tr key={idx}>
                     <td>{value.resultDt}</td>
                     <td>{value.latitude}</td>
                     <td>{value.longitude}</td>
